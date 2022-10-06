@@ -2,9 +2,13 @@
 # Trommelhelden Webfrontend
 
 ## Start Backend
-1. Connect to HTW VPN via CISCO client
-2. install dependencies `npm i`
-3. run `cd backend && npm run dev` to start backend dev server on `localhost:5000`
+1. Create .env file in backend folder containing the following string
+
+`DATABASE_URL="sqlserver://141.56.2.45:1433;database=iw19sxxxxx;user=sxxxxx;password=xxxxx;trustServerCertificate=true;" `
+
+2. Connect to HTW VPN via CISCO client
+3. install dependencies `npm i`
+4. run `cd backend && npm run dev` to start backend dev server on `localhost:5000`
 
 ## Start Frontend
 1. run `cd frontend && npm i`
