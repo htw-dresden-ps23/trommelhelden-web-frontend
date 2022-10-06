@@ -12,7 +12,7 @@
 4. run `npx prisma generate --schema=./src/prisma/schema.prisma` to generate DB schema
 5. run `cd backend && npm run dev` to start backend dev server on `localhost:5000`
 
-## Start Prisma GUI 
+## Start Prisma Studio (GUI) 
 
 run `cd backend && npx prisma studio --schema=./src/prisma/schema.prisma`
 
