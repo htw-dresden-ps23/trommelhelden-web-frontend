@@ -8,7 +8,8 @@
 
 2. Connect to HTW VPN via CISCO client
 3. install dependencies `npm i`
-4. run `cd backend && npm run dev` to start backend dev server on `localhost:5000`
+4. run `npx prisma generate --schema=./src/prisma/schema.prisma` to generate DB schema
+5. run `cd backend && npm run dev` to start backend dev server on `localhost:5000`
 
 ## Start Frontend
 1. run `cd frontend && npm i`
