@@ -5,7 +5,7 @@ import { send } from "process";
 
 const prisma = new PrismaClient();
 
-export const getSalesData = async (req: Request, res: Response) => {
+export const getAssignments = async (req: Request, res: Response) => {
     try {
         console.log("Request received");
     
@@ -16,7 +16,7 @@ export const getSalesData = async (req: Request, res: Response) => {
       }
       
 }; 
-export const updateSalesData = async (req: Request, res: Response) => {
+export const updateAssignments = async (req: Request, res: Response) => {
     try {
         console.log("Request received");
     
@@ -27,7 +27,7 @@ export const updateSalesData = async (req: Request, res: Response) => {
       }
       
 }; 
-export const deleteSalesData = async (req: Request, res: Response) => {
+export const deleteAssignments = async (req: Request, res: Response) => {
     try {
         console.log("Request received");
     
