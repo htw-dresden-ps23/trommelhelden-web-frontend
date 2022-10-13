@@ -1,11 +1,7 @@
 <template>
-  <DataTable
-    :value="values"
-    responsiveLayout="scroll"
-    v-if="values"
-    isLoading=""
-  >
+  <DataTable :value="values" responsiveLayout="scroll" :loading="isLoading">
     <Column
+      v-if="values"
       v-for="col in Object.keys(values[0])"
       :key="col"
       :field="col"
@@ -24,11 +20,11 @@ const values = ref();
 const internalInstance = getCurrentInstance();
 
 onMounted(async () => {
-  internalInstance.appContext.config.globalProperties.$Progress.start();
-
-  values.value = (await listOrders()).data;
-  console.log(values.value);
-  internalInstance.appContext.config.globalProperties.$Progress.finish();
+  isLoading.value = true;
+  values.value = listOrders().then((x) => {
+    values.value = x.data;
+    isLoading.value = false;
+  });
 });
 </script>
 

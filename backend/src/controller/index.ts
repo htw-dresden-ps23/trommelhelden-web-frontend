@@ -7,9 +7,10 @@ const prisma = new PrismaClient();
 
 export const getEmployees = async (req: Request, res: Response) => {
   try {
-    console.log("Request received");
+    console.log("Request received employees");
 
     const data = await prisma.mitarbeiter.findMany();
+
     return res.send(JSON.stringify(data));
   } catch (e) {
     return res.status(400).send(e);
@@ -41,7 +42,6 @@ export class OrderController {
           where: {
             Aufnr: Number(id),
             ...query,
-            
           },
           include: {
             Kunde: true,
