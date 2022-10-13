@@ -30,15 +30,72 @@ export class OrderController {
   async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       const { id } = req.params;
+      const { query } = req;
+
+      console.log(query);
+
       if (id) {
+        console.log("id");
+
         const orders = await prisma.auftrag.findMany({
           where: {
             Aufnr: Number(id),
+            ...query,
+            
+          },
+          include: {
+            Kunde: true,
+            Mitarbeiter: true,
+            Montage: true,
+            _count: true,
+            Rechnung: true,
           },
         });
         return res.json(orders);
       } else {
-        const orders = await prisma.auftrag.findMany();
+        const orders = await prisma.auftrag.findMany({
+          where: {
+            ...query,
+          },
+          select: {
+            Kunde: true,
+            Mitarbeiter: {
+              select: {
+                NLNr: true,
+                Niederlassung: true,
+              },
+            },
+            Montage: {
+              select: {
+                Ersatzteil: {
+                  select: {
+                    EtBezeichnung: true,
+                    EtAnzLager: true,
+                    EtHersteller: true,
+                    EtPreis: true,
+                  },
+                },
+              },
+            },
+            _count: true,
+            Rechnung: {
+              select: {
+                AufNr: true,
+                Kunde: {
+                  select: {
+                    KunName: true,
+                    KunStrasse: true,
+                    KunNr: true,
+                    KunPLZ: true,
+                    KunOrt: true,
+                  },
+                },
+                RechBetrag: true,
+                RechDat: true,
+              },
+            },
+          },
+        });
         return res.json(orders);
       }
     } catch (err) {
