@@ -1,26 +1,28 @@
 <template>
-  <header>
-    <div class="flex h-10 items-center bg-[#3A3A3A]">
-      <div class="m-4 mr-auto flex">
-        <Button
-          @click="menuIsOpen = !menuIsOpen"
-          icon="pi pi-align-justify"
-          iconClass="text-[#f6f6f6]"
-          class="p-button-rounded p-button-text p-button-plain"
-        ></Button>
+  <div class="h-screen">
+    <header>
+      <div class="flex h-10 items-center bg-[#3A3A3A]">
+        <div class="m-4 mr-auto flex">
+          <Button
+            @click="menuIsOpen = !menuIsOpen"
+            icon="pi pi-align-justify"
+            iconClass="text-[#f6f6f6]"
+            class="p-button-rounded p-button-text p-button-plain"
+          ></Button>
+        </div>
       </div>
-    </div>
-  </header>
-  <Sidebar v-model:visible="menuIsOpen" class="">
-    <template #header><h4>Trommelhelden DB</h4></template>
-    <PanelMenu class="flex-1" :model="menuItems"></PanelMenu>
-    <div class="mt-auto">
-      <Avatar label="P" class="mr-2" size="large" />
-      <!-- USER -->
-    </div>
-  </Sidebar>
-  <vue-progress-bar></vue-progress-bar>
-  <router-view></router-view>
+    </header>
+    <Sidebar v-model:visible="menuIsOpen" class="">
+      <template #header><h4>Trommelhelden DB</h4></template>
+      <PanelMenu class="flex-1" :model="menuItems"> </PanelMenu>
+      <div class="mt-auto">
+        <Avatar label="P" class="mr-2" size="large" />
+        <!-- USER -->
+      </div>
+    </Sidebar>
+    <vue-progress-bar></vue-progress-bar>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -30,7 +32,6 @@ import Editor from "primevue/editor";
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { onMounted, ref } from "vue";
 import HelloWorld from "./components/HelloWorld.vue";
-import { getEmployees } from "./services/db";
 
 const menuIsOpen = ref(false);
 const menuItems = ref([
@@ -45,12 +46,46 @@ const menuItems = ref([
   },
   {
     key: "1",
-    to: "/order",
     label: "Auftrag",
-    command: () => {
-      menuIsOpen.value = false;
-    },
     icon: "pi pi-fw pi-pencil",
+    items: [
+      {
+        key: "2_0",
+        label: "Übersicht",
+        command: () => {
+          menuIsOpen.value = false;
+        },
+        to: "/orders",
+        icon: "pi pi-id-card",
+      },
+      {
+        key: "2_0",
+        label: "Erstellen",
+        command: () => {
+          menuIsOpen.value = false;
+        },
+        to: "/orders/create",
+        icon: "pi pi-id-card",
+      },
+      {
+        key: "2_0",
+        label: "Planen",
+        command: () => {
+          menuIsOpen.value = false;
+        },
+        to: "/orders/plan",
+        icon: "pi pi-id-card",
+      },
+      {
+        key: "2_0",
+        label: "Bearbeiten",
+        command: () => {
+          menuIsOpen.value = false;
+        },
+        to: "/orders/edit",
+        icon: "pi pi-id-card",
+      },
+    ],
   },
   {
     key: "2",
@@ -105,13 +140,6 @@ const menuItems = ref([
     ],
   },
 ]);
-
-// const data = await getEmployees();
-const values = ref();
-onMounted(async () => {
-  const { data } = await getEmployees();
-  values.value = data;
-});
 </script>
 
 <style>
