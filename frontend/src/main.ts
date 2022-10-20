@@ -19,6 +19,8 @@ import Textarea from "primevue/textarea";
 import Divider from "primevue/divider";
 import Calendar from "primevue/calendar";
 import Chip from "primevue/chip";
+import InputText from "primevue/inputtext";
+import InputNumber from "primevue/inputnumber";
 
 import OverlayPanel from "primevue/overlaypanel";
 import { router } from "./router";
@@ -34,6 +36,8 @@ app.component("Button", Button);
 
 app.component("Sidebar", Sidebar);
 app.component("PanelMenu", PanelMenu);
+app.component("InputText", InputText);
+app.component("InputNumber", InputNumber);
 
 app.component("Column", Column);
 app.component("ColumnGroup", ColumnGroup);

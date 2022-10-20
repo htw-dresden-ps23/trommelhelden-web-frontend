@@ -4,54 +4,115 @@
       :value="customers"
       selectionMode="single"
       :paginator="true"
-      :rows="5"
+      :rowHover="true"
+      isLoading="isLoading"
+      class="p-datatable-sm"
+      @page="onPage($event)"
+      @sort="onSort($event)"
+      @filter="onFilter($event)"
+      :lazy="true"
+      :rows="rows"
+      :totalRecords="customers ? customers.length : 0"
+      filterDisplay="menu"
       @rowSelect="onProductSelect"
+      showGridlines
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
+      :rowsPerPageOptions="[5, 10, 20, 50]"
+      v-model:filters="filters"
       responsiveLayout="scroll"
     >
       <Column
         v-for="cols in columns"
         :field="cols.field"
         :header="cols.header"
+        :showAddButton="false"
+        :showFilterOperator="false"
+        :dataType="cols.type"
         sortable
-        style="width: 50%"
-      ></Column>
+        ><template #filter="{ filterModel }">
+          <InputText
+            v-if="cols.type === 'text'"
+            v-model="filterModel.value"
+            class="p-column-filter"
+            :placeholder="`Search by ${cols.header}`"
+          />
+          <InputNumber
+            v-model="filterModel.value"
+            class="p-column-filter"
+            :placeholder="`Search by ${cols.header}`"
+            v-else
+          ></InputNumber>
+        </template>
+      </Column>
     </DataTable>
   </div>
 </template>
 <script setup lang="ts">
-import { Kunde } from "@/types";
 import { onMounted, ref } from "vue";
+import { FilterMatchMode, FilterOperator } from "primevue/api";
+import CustomerService from "@/services/Customers";
+import { IKunde } from "@/types";
 
-const count = ref(0);
+const customerService = new CustomerService();
+const isLoading = ref(false);
+const customers = ref<IKunde[]>();
+const rows = ref(5);
+const page = ref(0);
+const sortOptions: any = ref({});
+const filterOptions: any = ref({});
+
 const emit = defineEmits(["selectRow"]);
 
-const customers = ref<Kunde[]>();
+const filters = ref({
+  KunName: {
+    operator: FilterOperator.AND,
+    constraints: [{ matchMode: FilterMatchMode.CONTAINS, value: null }],
+  },
+  KunNr: {
+    operator: FilterOperator.AND,
+    constraints: [{ matchMode: FilterMatchMode.EQUALS, value: null }],
+  },
+  KunOrt: {
+    operator: FilterOperator.AND,
+    constraints: [{ matchMode: FilterMatchMode.CONTAINS, value: null }],
+  },
+  KunPLZ: {
+    operator: FilterOperator.AND,
+    constraints: [{ matchMode: FilterMatchMode.EQUALS, value: null }],
+  },
+  KunStrasse: {
+    operator: FilterOperator.AND,
+    constraints: [{ matchMode: FilterMatchMode.CONTAINS, value: null }],
+  },
+});
+
 const columns = [
   {
     header: "Name",
     field: "KunName",
+    type: "text",
   },
   {
     header: "Kunden Nr.",
     field: "KunNr",
+    type: "numeric",
   },
   {
     header: "Ort",
     field: "KunOrt",
+    type: "text",
   },
   {
     header: "Postleitzahl",
     field: "KunPLZ",
+    type: "numeric",
   },
   {
     header: "Straße",
     field: "KunStrasse",
+    type: "text",
   },
 ];
-
-const onProductSelect = (event: any) => {
-  emit("selectRow", event.data);
-};
 
 onMounted(async () => {
   customers.value = [
@@ -3571,6 +3632,53 @@ onMounted(async () => {
     },
   ];
 });
+
+const onPage = async (event: any) => {
+  page.value = event.first;
+  await fetchCustomers();
+};
+
+const onFilter = async (event: any) => {
+  const { filters } = event;
+  Object.keys(filters).forEach((x) => {
+    if (filters[x].constraints[0].value) {
+      filterOptions.value[x] = {
+        value: filters[x].constraints[0].value,
+        matchMode: filters[x].constraints[0].matchMode,
+      };
+    } else {
+      filterOptions.value.hasOwnProperty(x)
+        ? delete filterOptions.value[x]
+        : null;
+    }
+  });
+  await fetchCustomers();
+};
+
+const onSort = async (event: any) => {
+  const { sortField, sortOrder } = event;
+  if (sortField) {
+    sortOptions.value[sortField] = sortOrder === 1 ? "asc" : "desc";
+  } else {
+    sortOptions.value = {};
+  }
+  await fetchCustomers();
+};
+
+const fetchCustomers = async () => {
+  isLoading.value = true;
+  await customerService.list(
+    sortOptions.value,
+    filterOptions.value,
+    page.value,
+    rows.value
+  );
+  isLoading.value = false;
+};
+
+const onProductSelect = (event: any) => {
+  emit("selectRow", event.data);
+};
 </script>
 
 <style scoped></style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto mt-14">
+  <div class="container mx-auto mt-8">
     <div
       class="card mx-[20%] flex flex-col items-stretch justify-center rounded-xl p-6 shadow-2xl"
     >
@@ -45,7 +45,8 @@
             appendTo="body"
             :showCloseIcon="true"
             id="overlay_panel"
-            style="width: 800px"
+            style="width: 900px"
+            :dismissable="false"
             :breakpoints="{ '960px': '75vw' }"
           >
             <CustomerTable @selectRow="onSelectCustomer" />
@@ -76,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-// import { Auftrag, Kunde } from "@/types";
+import { IKunde, Auftrag } from "@/types";
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import Calendar from "primevue/calendar";
@@ -85,7 +86,7 @@ import { required } from "@vuelidate/validators";
 import CustomerService from "@/services/Customers";
 import CustomerTable from "../../components/CustomerTable.vue";
 const router = useRouter();
-const customers = ref<Kunde[]>();
+const customers = ref<IKunde[]>();
 const isLoading = ref(false);
 const customerService = new CustomerService();
 const op = ref();
@@ -96,7 +97,7 @@ const toggle = async (event: Event) => {
   op.value.toggle(event);
 };
 
-const onSelectCustomer = (customer: Kunde) => {
+const onSelectCustomer = (customer: IKunde) => {
   console.log();
   order.value.Kunde = customer;
   op.value.hide();
