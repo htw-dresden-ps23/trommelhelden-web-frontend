@@ -1,7 +1,4 @@
-// AUTO GENERATED FILE BY @kalissaac/prisma-typegen
-// DO NOT EDIT
-
-export interface Auftrag {
+interface Auftrag {
   Aufnr: number;
   MitID?: string;
   KunNr: number;
@@ -10,13 +7,13 @@ export interface Auftrag {
   Dauer?: number;
   Anfahrt?: number;
   Beschreibung?: string;
-  Kunde: Kunde;
+  Kunde: IKunde;
   Mitarbeiter?: Mitarbeiter;
   Montage: Montage[];
   Rechnung: Rechnung[];
 }
 
-export interface Ersatzteil {
+interface Ersatzteil {
   EtID: string;
   EtBezeichnung: string;
   EtPreis: number;
@@ -25,13 +22,13 @@ export interface Ersatzteil {
   Montage: Montage[];
 }
 
-export interface Gebiet {
+interface Gebiet {
   GebietID: string;
   NLNr?: number;
   Niederlassung?: Niederlassung;
 }
 
-export interface Geografie {
+interface Geografie {
   Land_ID: string;
   Bundesland?: string;
   Region?: string;
@@ -40,7 +37,7 @@ export interface Geografie {
   Umsatzdaten: Umsatzdaten[];
 }
 
-export interface Kunde {
+interface IKunde {
   KunNr: number;
   KunName: string;
   KunOrt: string;
@@ -50,7 +47,7 @@ export interface Kunde {
   Rechnung?: Rechnung[];
 }
 
-export interface Mitarbeiter {
+interface Mitarbeiter {
   MitID: string;
   MitName: string;
   MitVorname?: string;
@@ -62,7 +59,7 @@ export interface Mitarbeiter {
   Auftrag: Auftrag[];
 }
 
-export interface MitarbeiterShop {
+interface MitarbeiterShop {
   Mitarbeiter_ID: string;
   Name?: string;
   Manager_ID?: string;
@@ -71,7 +68,7 @@ export interface MitarbeiterShop {
   Umsatzdaten: Umsatzdaten[];
 }
 
-export interface Montage {
+interface Montage {
   EtID: string;
   AufNr: number;
   Anzahl: number;
@@ -79,14 +76,14 @@ export interface Montage {
   Auftrag: Auftrag;
 }
 
-export interface Niederlassung {
+interface Niederlassung {
   NLNr: number;
   Ort?: string;
   Gebiet: Gebiet[];
   Mitarbeiter: Mitarbeiter[];
 }
 
-export interface Plandaten {
+interface Plandaten {
   Mon_ID: string;
   Land_ID: string;
   Produkt_ID: string;
@@ -96,7 +93,7 @@ export interface Plandaten {
   Produkt: Produkt;
 }
 
-export interface Produkt {
+interface Produkt {
   Produkt_ID: string;
   Markenname?: string;
   Produktname?: string;
@@ -107,14 +104,14 @@ export interface Produkt {
   Umsatzdaten: Umsatzdaten[];
 }
 
-export interface Produktkategorie {
+interface Produktkategorie {
   Kategorie_ID: string;
   Kategorie?: string;
   Kategorie_Manager?: string;
   Produktsubkategorie: Produktsubkategorie[];
 }
 
-export interface Produktsubkategorie {
+interface Produktsubkategorie {
   Subkategorie_ID: string;
   Subkategorie?: string;
   Subkategorie_Manager?: string;
@@ -124,16 +121,16 @@ export interface Produktsubkategorie {
   Produkt: Produkt[];
 }
 
-export interface Rechnung {
+interface Rechnung {
   KunNr: number;
   AufNr: number;
   RechDat: Date;
   RechBetrag: number;
-  Kunde: Kunde;
+  Kunde: IKunde;
   Auftrag: Auftrag;
 }
 
-export interface Umsatzdaten {
+interface Umsatzdaten {
   Produkt_ID: string;
   Mon_ID: string;
   Land_ID: string;
@@ -146,7 +143,7 @@ export interface Umsatzdaten {
   Produkt: Produkt;
 }
 
-export interface Zeit {
+interface Zeit {
   Mon_ID: string;
   Monatsname?: string;
   Q_ID?: string;
@@ -155,3 +152,22 @@ export interface Zeit {
   Plandaten: Plandaten[];
   Umsatzdaten: Umsatzdaten[];
 }
+
+export {
+  Auftrag,
+  Ersatzteil,
+  Gebiet,
+  Geografie,
+  IKunde,
+  Mitarbeiter,
+  MitarbeiterShop,
+  Montage,
+  Niederlassung,
+  Plandaten,
+  Produkt,
+  Produktkategorie,
+  Produktsubkategorie,
+  Rechnung,
+  Umsatzdaten,
+  Zeit,
+};
