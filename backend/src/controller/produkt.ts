@@ -5,36 +5,55 @@ import { send } from "process";
 
 const prisma = new PrismaClient();
 
-export const getProducts = async (req: Request, res: Response) => {
+export class ProductsController {
+  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-        console.log("Request received");
-    
-        const data = await prisma.auftrag.findMany();
-        return res.send(JSON.stringify(data));
-      } catch (e) {
-        return res.status(400).send(e);
+      const { id } = req.params;
+      const { query } = req;
+
+      console.log(query);
+
+      if (id) {
+        console.log("id");
+        return res.json();
       }
-      
-}; 
-export const updateProducts = async (req: Request, res: Response) => {
+    } catch (err) {
+      await prisma.$disconnect()
+      return next(err);
+    }
+  }
+  async delete(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-        console.log("Request received");
-    
-        const data = await prisma.auftrag.findMany();
-        return res.send(JSON.stringify(data));
-      } catch (e) {
-        return res.status(400).send(e);
-      }
-      
-}; 
-export const deleteProducts = async (req: Request, res: Response) => {
+      const { id } = req.params;
+      const product = await prisma.produkt.delete({
+        where: {
+
+        },
+      });
+
+      return res.json(product);
+    } catch (err) {
+      await prisma.$disconnect()
+      return next(err);
+    }
+  }
+  async update(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-        console.log("Request received");
-    
-        const data = await prisma.auftrag.findMany();
-        return res.send(JSON.stringify(data));
-      } catch (e) {
-        return res.status(400).send(e);
-      }
-      
-}; 
+      const { id } = req.params;
+      console.log(req.body);
+
+      const { data }: { data: Prisma.ProduktUpdateInput } = req.body;
+
+      const product = await prisma.produkt.updateMany({
+        data,
+        where: {
+        },
+      });
+
+      return res.json(product);
+    } catch (err) {
+      await prisma.$disconnect()
+      return next(err);
+    }
+  }
+}

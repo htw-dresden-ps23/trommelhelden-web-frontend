@@ -5,36 +5,56 @@ import { send } from "process";
 
 const prisma = new PrismaClient();
 
-export const getEmployees = async (req: Request, res: Response) => {
+export class EmployeesController {
+  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-        console.log("Request received");
-    
-        const data = await prisma.auftrag.findMany();
-        return res.send(JSON.stringify(data));
-      } catch (e) {
-        return res.status(400).send(e);
+      const { id } = req.params;
+      const { query } = req;
+
+      console.log(query);
+
+      if (id) {
+        console.log("id");
+        return res.json();
       }
-      
-}; 
-export const updateEmployees = async (req: Request, res: Response) => {
+    } catch (err) {
+      await prisma.$disconnect()
+      return next(err);
+    }
+  }
+  async delete(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-        console.log("Request received");
-    
-        const data = await prisma.auftrag.findMany();
-        return res.send(JSON.stringify(data));
-      } catch (e) {
-        return res.status(400).send(e);
-      }
-      
-}; 
-export const deleteEmployees = async (req: Request, res: Response) => {
+      const { id } = req.params;
+      const employee = await prisma.mitarbeiter.delete({
+        where: {
+
+        },
+      });
+
+      return res.json(employee);
+    } catch (err) {
+      await prisma.$disconnect()
+      return next(err);
+    }
+  }
+  async update(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-        console.log("Request received");
-    
-        const data = await prisma.auftrag.findMany();
-        return res.send(JSON.stringify(data));
-      } catch (e) {
-        return res.status(400).send(e);
-      }
-      
-}; 
+      const { id } = req.params;
+      console.log(req.body);
+
+      const { data }: { data: Prisma.AuftragUpdateInput } = req.body;
+
+      const employee = await prisma.mitarbeiter.updateMany({
+        data,
+        where: {
+          
+        },
+      });
+
+      return res.json(employee);
+    } catch (err) {
+      await prisma.$disconnect()
+      return next(err);
+    }
+  }
+}

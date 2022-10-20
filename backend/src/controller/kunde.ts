@@ -5,36 +5,55 @@ import { send } from "process";
 
 const prisma = new PrismaClient();
 
-export const getCustomers = async (req: Request, res: Response) => {
+export class CustomersController {
+  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-        console.log("Request received");
-    
-        const data = await prisma.auftrag.findMany();
-        return res.send(JSON.stringify(data));
-      } catch (e) {
-        return res.status(400).send(e);
+      const { id } = req.params;
+      const { query } = req;
+
+      console.log(query);
+
+      if (id) {
+        console.log("id");
+        return res.json();
       }
-      
-}; 
-export const updateCustomers = async (req: Request, res: Response) => {
+    } catch (err) {
+      await prisma.$disconnect()
+      return next(err);
+    }
+  }
+  async delete(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-        console.log("Request received");
-    
-        const data = await prisma.auftrag.findMany();
-        return res.send(JSON.stringify(data));
-      } catch (e) {
-        return res.status(400).send(e);
-      }
-      
-}; 
-export const deleteCustomers = async (req: Request, res: Response) => {
+      const { id } = req.params;
+      const customer = await prisma.kunde.delete({
+        where: {
+
+        },
+      });
+
+      return res.json(customer);
+    } catch (err) {
+      await prisma.$disconnect()
+      return next(err);
+    }
+  }
+  async update(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-        console.log("Request received");
-    
-        const data = await prisma.auftrag.findMany();
-        return res.send(JSON.stringify(data));
-      } catch (e) {
-        return res.status(400).send(e);
-      }
-      
-}; 
+      const { id } = req.params;
+      console.log(req.body);
+
+      const { data }: { data: Prisma.KundeUpdateInput } = req.body;
+
+      const customer = await prisma.kunde.updateMany({
+        data,
+        where: {
+        },
+      });
+
+      return res.json(customer);
+    } catch (err) {
+      await prisma.$disconnect()
+      return next(err);
+    }
+  }
+}
