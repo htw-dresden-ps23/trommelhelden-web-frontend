@@ -1,9 +1,13 @@
 <template>
   <div class="container mx-auto mt-8">
     <div
-      class="card mx-[20%] flex flex-col items-stretch justify-center rounded-xl p-6 shadow-2xl"
+      class="card mx-[20%] flex flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl"
     >
-      <h2 class="my-4 mb-4 text-3xl">Auftrag planen</h2>
+      <h1
+        class="bg-gradient-to-l from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
+      >
+        Auftrag planen
+      </h1>
       <Divider />
       <DataTable
         :value="orders"
