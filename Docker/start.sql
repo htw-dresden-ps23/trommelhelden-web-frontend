@@ -1,0 +1,1 @@
+SELECT * INTO "TrommeldenNeu.dbo.<TabelleNeu>" FROM Trommelden.dbo.<Tabelle>

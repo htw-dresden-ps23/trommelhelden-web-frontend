@@ -1,0 +1,10 @@
+database:
+    image: microsoft/mssql-server-linux:2022-latest
+    container_name: database
+    ports:
+      - 4000:4000
+    volumes:
+      - /var/opt/mssql
+    environment:
+      SA_PASSWORD: "Tromm€lh€ld€n"
+      ACCEPT_EULA: "Y"
