@@ -1,7 +1,9 @@
 <template>
-  <div class="h-screen">
-    <header>
-      <div class="flex h-10 items-center bg-[#3A3A3A]">
+  <div class="max-h-full min-h-screen bg-[#ffffffe7]">
+    <Header>
+      <div
+        class="flex h-10 items-center bg-gradient-to-r from-blue-400 to-pink-600 shadow-2xl"
+      >
         <div class="m-4 mr-auto flex">
           <Button
             @click="menuIsOpen = !menuIsOpen"
@@ -11,17 +13,19 @@
           ></Button>
         </div>
       </div>
-    </header>
+    </Header>
     <Sidebar v-model:visible="menuIsOpen" class="">
-      <template #header><h4>Trommelhelden DB</h4></template>
+      <template #header><div>Trommelhelden DB</div></template>
       <PanelMenu class="flex-1" :model="menuItems"> </PanelMenu>
       <div class="mt-auto">
         <Avatar label="P" class="mr-2" size="large" />
         <!-- USER -->
       </div>
     </Sidebar>
-    <vue-progress-bar></vue-progress-bar>
-    <router-view></router-view>
+    <div class="container mx-auto mt-8"><router-view></router-view></div>
+
+    <Toast />
+    <ScrollTop />
   </div>
 </template>
 

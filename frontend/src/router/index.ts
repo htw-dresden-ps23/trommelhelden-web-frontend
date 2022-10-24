@@ -12,6 +12,12 @@ const routes = [
     component: () => import("@/views/Orders/CreateOrder.vue"),
   },
   {
+    // UserProfile will be rendered inside User's <router-view>
+    // when /user/:id/profile is matched
+    path: "/orders/plan",
+    component: () => import("@/views/Orders/PlanOrder.vue"),
+  },
+  {
     path: "/",
     redirect: "/dashboard",
   },

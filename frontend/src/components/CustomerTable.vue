@@ -39,6 +39,8 @@
           <InputNumber
             v-model="filterModel.value"
             class="p-column-filter"
+            :useGrouping="false"
+            :format="false"
             :placeholder="`Search by ${cols.header}`"
             v-else
           ></InputNumber>
@@ -105,7 +107,7 @@ const columns = [
   {
     header: "Postleitzahl",
     field: "KunPLZ",
-    type: "numeric",
+    type: "text",
   },
   {
     header: "Straße",
