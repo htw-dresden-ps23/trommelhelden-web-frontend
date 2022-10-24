@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 export class CustomersController {
   async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
+      console.log("req", req);
       const { id } = req.params;
       const { query } = req;
 

@@ -21,11 +21,13 @@ app.delete("/tables/Order/:id", ordersController.delete);
 
 const customersController = new CustomersController();
 app.get("/tables/customer/:id?", customersController.get);
+app.get("/customers", customersController.get);
 app.patch("/tables/customer/:id", customersController.update);
 app.delete("/tables/customer/:id", customersController.delete);
 
 const employeesController = new EmployeesController();
 app.get("/tables/employee/:id?", employeesController.get);
+app.get("/tables/employees", employeesController.get);
 app.patch("/tables/employee/:id", employeesController.update);
 app.delete("/tables/employee/:id", employeesController.delete);
 

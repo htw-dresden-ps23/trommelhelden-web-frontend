@@ -37,7 +37,7 @@ interface Geografie {
   Umsatzdaten: Umsatzdaten[];
 }
 
-interface IKunde {
+interface Kunde {
   KunNr: number;
   KunName: string;
   KunOrt: string;
@@ -158,7 +158,7 @@ export {
   Ersatzteil,
   Gebiet,
   Geografie,
-  IKunde,
+  Kunde,
   Mitarbeiter,
   MitarbeiterShop,
   Montage,
