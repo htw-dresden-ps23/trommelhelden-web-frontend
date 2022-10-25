@@ -76,12 +76,12 @@
 </template>
 
 <script setup lang="ts">
-import { IKunde, Auftrag } from "@/types";
+import { IKunde, IAuftrag } from "@/types";
 import { ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import Calendar from "primevue/calendar";
 import { useLoading } from "vue-loading-overlay";
-import CustomerService from "@/services/Customers";
+import CustomerService from "@/api/services/Customers";
 import CustomerTable from "../../components/CustomerTable.vue";
 import { useRouter } from "vue-router";
 
@@ -92,7 +92,7 @@ const customers = ref<IKunde[]>();
 
 const customerService = new CustomerService();
 const op = ref();
-const order = ref<Auftrag>({} as Auftrag);
+const order = ref<IAuftrag>({} as IAuftrag);
 
 const toggle = async (event: Event) => {
   // customers.value = await customerService.list();

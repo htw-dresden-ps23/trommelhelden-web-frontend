@@ -28,6 +28,7 @@ import VueLoading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 import Card from "primevue/card";
 import ScrollTop from "primevue/scrolltop";
+import Skeleton from "primevue/skeleton";
 
 import OverlayPanel from "primevue/overlaypanel";
 import DialogService from "primevue/dialogservice";
@@ -40,6 +41,7 @@ app.component("Avatar", Avatar);
 app.component("AvatarGroup", AvatarGroup);
 app.component("Divider", Divider);
 app.component("ScrollTop", ScrollTop);
+app.component("Skeleton", Skeleton);
 
 app.component("Button", Button);
 
