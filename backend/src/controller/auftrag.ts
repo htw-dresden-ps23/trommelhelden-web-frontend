@@ -6,8 +6,21 @@ import { send } from "process";
 const prisma = new PrismaClient();
 
 export class OrdersController {
+  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+      const allOrders = await prisma.auftrag.findMany();
+      if(allOrders.length > 0) {
+        return res.status(200).json(allOrders);
+      }
+      return res.status(500).send('Keine Aufträge gefunden')
+    } catch (err) {
+      await prisma.$disconnect()
+      return next(err);
+    }
+  }
   async put(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
+      
       const { id } = req.params;
       const { query } = req;
 
@@ -16,22 +29,6 @@ export class OrdersController {
       if (id) {
         console.log("id");
         return res.status(200);
-      }
-    } catch (err) {
-      await prisma.$disconnect()
-      return next(err);
-    }
-  }
-  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-    try {
-      const { id } = req.params;
-      const { query } = req;
-
-      console.log(query);
-
-      if (id) {
-        console.log("id");
-        return res.json();
       }
     } catch (err) {
       await prisma.$disconnect()
