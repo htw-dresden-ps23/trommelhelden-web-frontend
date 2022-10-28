@@ -1,6 +1,6 @@
 <template>
-  <div class="max-h-full min-h-screen bg-[#ffffffe7]">
-    <Header>
+  <div class="flex max-h-full min-h-screen flex-col bg-[#ffffffe7]">
+    <header>
       <div
         class="flex h-10 items-center bg-gradient-to-r from-blue-400 to-pink-600 shadow-2xl"
       >
@@ -13,8 +13,8 @@
           ></Button>
         </div>
       </div>
-    </Header>
-    <Sidebar v-model:visible="menuIsOpen" class="">
+    </header>
+    <Sidebar v-model:visible="menuIsOpen" class="" style="'overflow': 'scroll'">
       <template #header><div>Trommelhelden DB</div></template>
       <PanelMenu class="flex-1" :model="menuItems"> </PanelMenu>
       <div class="mt-auto">
@@ -22,7 +22,10 @@
         <!-- USER -->
       </div>
     </Sidebar>
-    <div class="container mx-auto mt-8"><router-view></router-view></div>
+    <!-- MAIN CONTENT -->
+    <div class="container m-auto h-full">
+      <router-view></router-view>
+    </div>
 
     <Toast />
     <ScrollTop />
@@ -147,6 +150,10 @@ const menuItems = ref([
 </script>
 
 <style>
+body {
+  overflow-y: scroll !important;
+}
+
 .p-sidebar-content {
   padding: 0 !important;
   margin: 0 !important;

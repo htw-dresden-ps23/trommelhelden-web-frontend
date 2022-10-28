@@ -52,16 +52,16 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
-import CustomerService from "@/services/Customers";
-import { IKunde } from "@/types";
+import CustomerService from "@/api/services/Customers";
+import { IFilter, IKunde, ISort } from "@/types";
 
 const customerService = new CustomerService();
 const isLoading = ref(false);
 const customers = ref<IKunde[]>();
 const rows = ref(5);
 const page = ref(0);
-const sortOptions: any = ref({});
-const filterOptions: any = ref({});
+const sortOptions = ref<ISort>({});
+const filterOptions = ref<IFilter>({});
 
 const emit = defineEmits(["selectRow"]);
 
