@@ -39,7 +39,7 @@ interface IGeografie {
   Umsatzdaten: IUmsatzdaten[];
 }
 
-interface IKunde {
+interface Kunde {
   KunNr: number;
   KunName: string;
   KunOrt: string;
@@ -169,6 +169,7 @@ interface IFilterValue {
 }
 
 export {
+
   IAuftrag,
   IErsatzteil,
   IGebiet,
