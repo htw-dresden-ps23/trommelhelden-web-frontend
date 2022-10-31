@@ -1,0 +1,263 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Auftrag {
+  Aufnr        Int          @id(map: "PK__Auftrag__D56A0E13A096AE56")
+  MitID        String?      @db.Char(3)
+  KunNr        Int
+  AufDat       DateTime     @default(dbgenerated("CONVERT([date],getdate())"), map: "df_Auftragsdatum") @db.Date
+  ErlDat       DateTime?    @db.Date
+  Dauer        Decimal?     @db.Decimal(5, 1)
+  Anfahrt      Int?
+  Beschreibung String?      @db.VarChar(200)
+  Kunde        Kunde        @relation(fields: [KunNr], references: [KunNr], onUpdate: NoAction, map: "FK__Auftrag__KunNr__30F848ED")
+  Mitarbeiter  Mitarbeiter? @relation(fields: [MitID], references: [MitID], onDelete: NoAction, onUpdate: NoAction, map: "FK__Auftrag__MitID__300424B4")
+  Montage      Montage[]
+  Rechnung     Rechnung[]
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model AUFTRAG_KOPIE {
+  Aufnr        Int
+  MitID        String?   @db.Char(3)
+  KunNr        Int
+  AufDat       DateTime  @db.Date
+  ErlDat       DateTime? @db.Date
+  Dauer        Decimal?  @db.Decimal(5, 1)
+  Anfahrt      Int?
+  Beschreibung String?   @db.Text
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model Auftrag_Protokoll {
+  Aufnr           Int
+  MitID           String?   @db.Char(3)
+  KunNr           Int
+  AufDat          DateTime  @db.Date
+  ErlDat          DateTime? @db.Date
+  Dauer           Decimal?  @db.Decimal(5, 1)
+  Anfahrt         Int?
+  Beschreibung    String?   @db.VarChar(200)
+  Datenbanknutzer String?   @db.VarChar(100)
+  nderungsart     String?   @map("Änderungsart") @db.VarChar(100)
+  Zeitstempel     DateTime? @db.Date
+
+  @@ignore
+}
+
+model BelegeTMP {
+  Beleg_ID  Int       @id(map: "PK__BelegeTM__EFB5509C920E79E4") @default(autoincrement())
+  BON_ID    String?   @db.VarChar(4)
+  Fil_ID    String?   @db.VarChar(5)
+  Datum     DateTime? @db.Date
+  ProduktID String?   @db.VarChar(4)
+  Preis     Float?    @db.Money
+  Anzahl    Int?
+}
+
+model Ersatzteil {
+  EtID          String    @id(map: "PK__Ersatzte__E294A340180D917B") @db.Char(5)
+  EtBezeichnung String    @db.VarChar(100)
+  EtPreis       Float     @db.SmallMoney
+  EtAnzLager    Int
+  EtHersteller  String    @db.VarChar(30)
+  Montage       Montage[]
+}
+
+model Gebiet {
+  GebietID      String         @id(map: "PK__Gebiet__4A0BE64CC4519E84") @db.Char(2)
+  NLNr          Int?
+  Niederlassung Niederlassung? @relation(fields: [NLNr], references: [NLNr], onDelete: NoAction, onUpdate: NoAction, map: "FK__Gebiet__NLNr__08B54D69")
+}
+
+model Geografie {
+  Land_ID     String        @id(map: "PK__Geografi__075CE4EDB9508CB8") @db.VarChar(2)
+  Bundesland  String?       @db.VarChar(25)
+  Region      String?       @db.VarChar(25)
+  Staat       String?       @db.VarChar(25)
+  Plandaten   Plandaten[]
+  Umsatzdaten Umsatzdaten[]
+}
+
+model Kunde {
+  KunNr      Int        @id(map: "PK__Kunde__B067D81D772B141B")
+  KunName    String     @db.VarChar(20)
+  KunOrt     String     @db.VarChar(20)
+  KunPLZ     String     @db.Char(5)
+  KunStrasse String     @db.VarChar(20)
+  Auftrag    Auftrag[]
+  Rechnung   Rechnung[]
+}
+
+model Mitarbeiter {
+  MitID          String         @id(map: "PK__Mitarbei__7D0DA8082B751B63") @db.Char(3)
+  MitName        String         @db.VarChar(20)
+  MitVorname     String?        @db.VarChar(20)
+  MitGebDat      DateTime       @db.Date
+  MitJob         String         @default("Monteur", map: "df_MitJob") @db.VarChar(20)
+  MitStundensatz Float?         @db.SmallMoney
+  NLNr           Int?
+  Niederlassung  Niederlassung? @relation(fields: [NLNr], references: [NLNr], onDelete: NoAction, onUpdate: NoAction, map: "FK__Mitarbeite__NLNr__09A971A2")
+  Auftrag        Auftrag[]
+}
+
+model MitarbeiterShop {
+  Mitarbeiter_ID        String            @id(map: "PK__Mitarbei__380B4EFCB6976E8F") @db.VarChar(2)
+  Name                  String?           @db.VarChar(25)
+  Manager_ID            String?           @db.VarChar(2)
+  MitarbeiterShop       MitarbeiterShop?  @relation("MitarbeiterShopToMitarbeiterShop", fields: [Manager_ID], references: [Mitarbeiter_ID], onDelete: NoAction, onUpdate: NoAction, map: "FK__Mitarbeit__Manag__03BB8E22")
+  other_MitarbeiterShop MitarbeiterShop[] @relation("MitarbeiterShopToMitarbeiterShop")
+  Umsatzdaten           Umsatzdaten[]
+}
+
+model Montage {
+  EtID       String     @db.Char(5)
+  AufNr      Int
+  Anzahl     Int
+  Ersatzteil Ersatzteil @relation(fields: [EtID], references: [EtID], onUpdate: NoAction, map: "FK__Montage__EtID__32E0915F")
+  Auftrag    Auftrag    @relation(fields: [AufNr], references: [Aufnr], onDelete: Cascade, onUpdate: NoAction, map: "FK_Montage_Auftrag")
+
+  @@id([EtID, AufNr], map: "PK__Montage__4FC23363ADB2A6B0")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model Montage_Protokoll {
+  EtID              String    @db.Char(5)
+  AufNr             Int
+  Anzahl            Int
+  Zeitstempel       DateTime? @db.Date
+  Datenbankbenutzer String?   @db.VarChar(200)
+  nderungsaktion    String?   @map("Änderungsaktion") @db.VarChar(200)
+
+  @@ignore
+}
+
+model Niederlassung {
+  NLNr        Int           @id(map: "PK__Niederla__E26A7F379C157EC8")
+  Ort         String?       @db.VarChar(50)
+  Gebiet      Gebiet[]
+  Mitarbeiter Mitarbeiter[]
+}
+
+model Plandaten {
+  Mon_ID     String    @db.VarChar(6)
+  Land_ID    String    @db.VarChar(2)
+  Produkt_ID String    @db.VarChar(4)
+  Umsatzplan Decimal?  @db.Decimal(18, 0)
+  Geografie  Geografie @relation(fields: [Land_ID], references: [Land_ID], onUpdate: NoAction, map: "FK__Plandaten__Land___345EC57D")
+  Zeit       Zeit      @relation(fields: [Mon_ID], references: [Mon_ID], onUpdate: NoAction, map: "FK__Plandaten__Mon_I__336AA144")
+  Produkt    Produkt   @relation(fields: [Produkt_ID], references: [Produkt_ID], onUpdate: NoAction, map: "FK__Plandaten__Produ__3552E9B6")
+
+  @@id([Mon_ID, Land_ID, Produkt_ID], map: "PK__Plandate__45CBAB3CC4600783")
+}
+
+model Produkt {
+  Produkt_ID          String               @id(map: "PK__Produkt__9BCE37411D3D44A6") @db.VarChar(4)
+  Markenname          String?              @db.VarChar(25)
+  Produktname         String?              @db.VarChar(40)
+  Preis               Float?               @db.Money
+  Subkategorie_ID     String?              @db.VarChar(3)
+  Produktsubkategorie Produktsubkategorie? @relation(fields: [Subkategorie_ID], references: [Subkategorie_ID], onDelete: NoAction, onUpdate: NoAction, map: "FK__Produkt__Subkate__756D6ECB")
+  Plandaten           Plandaten[]
+  Umsatzdaten         Umsatzdaten[]
+}
+
+model Produktkategorie {
+  Kategorie_ID        String                @id(map: "PK__Produktk__A5727C867F3E7D24") @db.VarChar(2)
+  Kategorie           String?               @db.VarChar(25)
+  Kategorie_Manager   String?               @db.VarChar(25)
+  Produktsubkategorie Produktsubkategorie[]
+}
+
+model Produktsubkategorie {
+  Subkategorie_ID      String            @id(map: "PK__Produkts__FCC8A1EB3490A2A6") @db.VarChar(3)
+  Subkategorie         String?           @db.VarChar(25)
+  Subkategorie_Manager String?           @db.VarChar(25)
+  Kategorie_ID         String?           @db.VarChar(2)
+  Mitarbeiter_ID       String?           @db.VarChar(2)
+  Produktkategorie     Produktkategorie? @relation(fields: [Kategorie_ID], references: [Kategorie_ID], onDelete: NoAction, onUpdate: NoAction, map: "FK__Produktsu__Kateg__681373AD")
+  Produkt              Produkt[]
+}
+
+model Rechnung {
+  KunNr      Int
+  AufNr      Int
+  RechDat    DateTime @db.Date
+  RechBetrag Float    @db.SmallMoney
+  Kunde      Kunde    @relation(fields: [KunNr], references: [KunNr], onUpdate: NoAction, map: "FK__Rechnung__KunNr__0C85DE4D")
+  Auftrag    Auftrag  @relation(fields: [AufNr], references: [Aufnr], onDelete: Cascade, onUpdate: NoAction, map: "FK_Aufnr")
+
+  @@id([KunNr, AufNr], map: "PK__Rechnung__1D31483E4589BB3D")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model Rechnung_Protokoll {
+  KunNr             Int
+  AufNr             Int
+  RechDat           DateTime  @db.Date
+  RechBetrag        Float     @db.SmallMoney
+  Zeitstempel       DateTime? @db.Date
+  Datenbankbenutzer String?   @db.VarChar(200)
+  nderungsaktion    String?   @map("Änderungsaktion") @db.VarChar(200)
+
+  @@ignore
+}
+
+model sysdiagrams {
+  name         String @db.NVarChar(128)
+  principal_id Int
+  diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B6177DB05B1") @default(autoincrement())
+  version      Int?
+  definition   Bytes?
+
+  @@unique([principal_id, name], map: "UK_principal_name")
+}
+
+model Umsatzdaten {
+  Produkt_ID      String          @db.VarChar(4)
+  Mon_ID          String          @db.VarChar(6)
+  Land_ID         String          @db.VarChar(2)
+  Mitarbeiter_ID  String          @db.VarChar(2)
+  Umsatzbetrag    Float?          @db.Money
+  Umsatzmenge     Int?
+  Geografie       Geografie       @relation(fields: [Land_ID], references: [Land_ID], onUpdate: NoAction, map: "FK__Umsatzdat__Land___13F1F5EB")
+  MitarbeiterShop MitarbeiterShop @relation(fields: [Mitarbeiter_ID], references: [Mitarbeiter_ID], onUpdate: NoAction, map: "FK__Umsatzdat__Mitar__14E61A24")
+  Zeit            Zeit            @relation(fields: [Mon_ID], references: [Mon_ID], onUpdate: NoAction, map: "FK__Umsatzdat__Mon_I__12FDD1B2")
+  Produkt         Produkt         @relation(fields: [Produkt_ID], references: [Produkt_ID], onUpdate: NoAction, map: "FK__Umsatzdat__Produ__1209AD79")
+
+  @@id([Produkt_ID, Mon_ID, Land_ID, Mitarbeiter_ID], map: "PK__Umsatzda__D448B1A5F66CBBBF")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model UmsatzTMP {
+  Produkt_ID     String @db.VarChar(4)
+  Mon_ID         String @db.VarChar(6)
+  Land_ID        String @db.VarChar(2)
+  Mitarbeiter_ID String @db.VarChar(2)
+  Umsatzbetrag   Float? @db.Money
+  Umsatzmenge    Int?
+
+  @@ignore
+}
+
+model Zeit {
+  Mon_ID      String        @id(map: "PK__Zeit__C525AB457BB5EB99") @db.VarChar(6)
+  Monatsname  String?       @db.VarChar(20)
+  Q_ID        String?       @db.VarChar(6)
+  Quartal     String?       @db.VarChar(10)
+  Jahr        String?       @db.VarChar(4)
+  Plandaten   Plandaten[]
+  Umsatzdaten Umsatzdaten[]
+}
