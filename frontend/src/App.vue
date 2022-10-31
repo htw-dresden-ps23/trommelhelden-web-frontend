@@ -1,6 +1,6 @@
 <template>
   <div class="flex max-h-full min-h-screen flex-col bg-[#ffffffe7]">
-    <header>
+    <header class="sticky top-0 z-[1000]">
       <div
         class="flex h-10 items-center bg-gradient-to-r from-blue-400 to-pink-600 shadow-2xl"
       >
@@ -85,11 +85,11 @@ const menuItems = ref([
       },
       {
         key: "2_0",
-        label: "Bearbeiten",
+        label: "Erledigen",
         command: () => {
           menuIsOpen.value = false;
         },
-        to: "/orders/edit",
+        to: "/orders/complete",
         icon: "pi pi-id-card",
       },
     ],
@@ -114,7 +114,7 @@ const menuItems = ref([
         command: () => {
           menuIsOpen.value = false;
         },
-        to: "/customer",
+        to: "/customers",
         icon: "pi pi-user",
       },
       {
@@ -123,7 +123,7 @@ const menuItems = ref([
         command: () => {
           menuIsOpen.value = false;
         },
-        to: "/produkte",
+        to: "/products",
         icon: "pi pi-tags",
       },
       {
@@ -141,7 +141,7 @@ const menuItems = ref([
           menuIsOpen.value = false;
         },
         label: "Niederlassung",
-        to: "/niederlassung",
+        to: "/branch",
         icon: "pi pi-home",
       },
     ],
