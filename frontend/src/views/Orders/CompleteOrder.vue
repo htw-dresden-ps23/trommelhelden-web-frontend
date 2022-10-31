@@ -6,7 +6,7 @@
       <h1
         class="bg-gradient-to-l from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
       >
-        Auftrag planen
+        Auftrag erledigen
       </h1>
       <Divider />
       <DataTable
@@ -64,9 +64,9 @@ import OrderService from "@/api/services/Order";
 import { IAuftrag } from "@/types";
 import { onMounted, ref } from "vue";
 import { useDialog } from "primevue/usedialog";
-import PlanOrderForm from "@/components/Order/PlanOrderForm.vue";
 import { flatten } from "flat";
 import disableScroll from "disable-scroll";
+import CompleteOrderForm from "@/components/Order/CompleteOrderForm.vue";
 
 const orderService = new OrderService();
 const orders = ref<IAuftrag[]>(new Array(20));
@@ -76,7 +76,7 @@ const rows = ref(10);
 
 const onButtonClick = (event: any, order: IAuftrag) => {
   disableScroll.on(document.body);
-  dialog.open(PlanOrderForm, {
+  dialog.open(CompleteOrderForm, {
     props: {
       header: "Auftrag: " + order.Aufnr,
       style: {
