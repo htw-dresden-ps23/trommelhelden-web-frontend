@@ -20,12 +20,13 @@ interface IRead<T> {
 export abstract class BaseService<T> implements IWrite<T>, IRead<T> {
   public readonly _axiosInstance: AxiosInstance;
   private _tableName: string;
+  static port = 4000;
   static rows = 10;
 
   constructor(tableName: string) {
     this._tableName = tableName;
     this._axiosInstance = axios.create({
-      baseURL: `http://localhost:5000/tables`,
+      baseURL: `http://localhost:${BaseService.port}`,
       timeout: 1000,
     });
   }
