@@ -7,6 +7,7 @@ export const routes = [
     // UserProfile will be rendered inside User's <router-view>
     // when /user/:id/profile is matched
     path: "/orders/create",
+    name: "createOrder",
     component: () => import("@/views/Orders/CreateOrder.vue"),
   },
   {
