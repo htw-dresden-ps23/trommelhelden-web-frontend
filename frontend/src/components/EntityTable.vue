@@ -35,7 +35,7 @@
             v-if="cols.type === 'text'"
             v-model="filterModel.value"
             class="p-column-filter"
-            :placeholder="`Search by ${cols.header}`"
+            :placeholder="`Search by s${cols.header}`"
           />
           <Calendar
             v-if="cols.type === 'date'"
@@ -49,7 +49,7 @@
             :useGrouping="false"
             :format="false"
             :placeholder="`Search by ${cols.header}`"
-            v-else
+            v-if="cols.type != 'date' && cols.type != 'text'"
           ></InputNumber>
         </template>
         <template #body="{ data }">

@@ -1,8 +1,9 @@
 <template>
   <div class="flex max-h-full min-h-screen flex-col bg-[#ffffffe7]">
+    <!-- HEADER -->
     <header class="sticky top-0 z-[1000]">
       <div
-        class="flex h-10 items-center bg-gradient-to-r from-blue-400 to-pink-600 shadow-2xl"
+        class="flex h-10 items-center bg-gradient-to-r from-blue-400 to-pink-600 shadow"
       >
         <div class="m-4 mr-auto flex">
           <Button
@@ -14,16 +15,42 @@
         </div>
       </div>
     </header>
-    <Sidebar v-model:visible="menuIsOpen" class="" style="'overflow': 'scroll'">
-      <template #header><div>Trommelhelden DB</div></template>
-      <PanelMenu class="flex-1" :model="menuItems"> </PanelMenu>
-      <div class="mt-auto">
-        <Avatar label="P" class="mr-2" size="large" />
+    <!-- SIDEMENU -->
+    <Sidebar
+      v-model:visible="menuIsOpen"
+      class="shadow-inner"
+      style="'overflow': 'scroll'"
+    >
+      <template #header>
+        <div class="flex items-center justify-center">
+          <div
+            class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text text-2xl font-extrabold text-transparent"
+          >
+            Trommelhelden DB
+          </div>
+        </div>
+      </template>
+      <PanelMenu class="" :model="menuItems"> </PanelMenu>
+      <div
+        class="mt-auto flex items-center justify-between border-t-2 bg-slate-50 p-4 shadow-xl shadow-inner"
+      >
+        <div class="flex items-center">
+          <Avatar
+            label="A"
+            class="mr-2 bg-white bg-gradient-to-r from-blue-500 to-pink-600 text-white shadow-2xl"
+            size="large"
+          />
+          <div class="text-lg">Admin</div>
+        </div>
+        <Button
+          class="p-button-rounded p-button-lg p-button-text !text-slate-500"
+          icon="pi pi-cog"
+        />
         <!-- USER -->
       </div>
     </Sidebar>
     <!-- MAIN CONTENT -->
-    <div class="container m-auto h-full">
+    <div class="container m-auto my-8 h-full">
       <router-view></router-view>
     </div>
 
@@ -33,17 +60,12 @@
 </template>
 
 <script setup lang="ts">
-import Editor from "primevue/editor";
-
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import { onMounted, ref } from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import { ref } from "vue";
+import PanelMenu from "primevue/panelmenu";
 
 const menuIsOpen = ref(false);
 const menuItems = ref([
   {
-    key: "0",
     to: "/dashboard",
     label: "Dashboard",
     command: () => {
@@ -52,8 +74,8 @@ const menuItems = ref([
     icon: "pi pi-chart-pie",
   },
   {
-    key: "1",
     label: "Auftrag",
+    key: "order",
     icon: "pi pi-fw pi-pencil",
     items: [
       {
@@ -95,9 +117,9 @@ const menuItems = ref([
     ],
   },
   {
-    key: "2",
     label: "Stammdaten",
     icon: "pi pi-database",
+    key: "masterData",
     items: [
       {
         key: "2_0",
@@ -160,6 +182,7 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
 }
 
 .p-panelmenu {
