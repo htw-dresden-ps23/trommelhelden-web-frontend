@@ -20,17 +20,10 @@ export class OrdersController {
   }
   async put(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      
-      const { id } = req.params;
-      const { query } = req;
-
-      console.log(query);
-
-      if (id) {
-        console.log("id");
-        return res.status(200);
-      }
-    } catch (err) {
+      const { data }: { data: Prisma.AuftragCreateInput } = req.body;
+      const allOrders = await prisma.auftrag.create({
+        data,});
+      } catch (err) {
       await prisma.$disconnect()
       return next(err);
     }
@@ -39,9 +32,7 @@ export class OrdersController {
     try {
       const { id } = req.params;
       const order = await prisma.auftrag.delete({
-        where: {
-
-        },
+        where: { id: Number(id), },
       });
 
       return res.json(order);
@@ -59,9 +50,7 @@ export class OrdersController {
 
       const order = await prisma.auftrag.updateMany({
         data,
-        where: {
-          
-        },
+        where: { id: Number(id), },
       });
 
       return res.json(order);

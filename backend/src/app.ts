@@ -15,7 +15,7 @@ const port = 4000;
 
 const ordersController = new OrdersController();
 app.get("/orders", ordersController.get);
-app.put("/order/:id?", ordersController.get);
+app.put("/order/:id?", ordersController.put);
 app.patch("/order/:id", ordersController.update);
 app.delete("/order/:id", ordersController.delete);
 
