@@ -16,7 +16,11 @@
         ></router-link>
       </div>
       <Divider />
-      <EntityTable :apiService="orderService" :columns="columns"></EntityTable>
+      <EntityTable
+        :apiService="orderService"
+        :columns="columns"
+        :showMaxActiveFilter="5"
+      ></EntityTable>
     </div>
   </div>
 </template>

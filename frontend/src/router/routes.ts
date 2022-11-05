@@ -1,21 +1,53 @@
 export const routes = [
+  // ----------------------------------------------------------------
+  // ORDERS
+  // ----------------------------------------------------------------
   {
     path: "/orders",
     component: () => import("@/views/Orders/OrderOverview.vue"),
   },
   {
-    // UserProfile will be rendered inside User's <router-view>
-    // when /user/:id/profile is matched
     path: "/orders/create",
     name: "createOrder",
     component: () => import("@/views/Orders/CreateOrder.vue"),
   },
   {
-    // UserProfile will be rendered inside User's <router-view>
-    // when /user/:id/profile is matched
+    path: "/orders/complete",
+    component: () => import("@/views/Orders/CompleteOrder.vue"),
+  },
+  {
     path: "/orders/plan",
     component: () => import("@/views/Orders/PlanOrder.vue"),
   },
+  {
+    path: "/order/:id",
+    component: () => import("@/views/Orders/CompleteOrder.vue"),
+  },
+  //------------------------------------------------------------------
+  //Employees
+  //------------------------------------------------------------------
+  {
+    path: "/employees",
+    component: () => import("@/views/MasterData/Employees.vue"),
+  },
+  {
+    path: "/employees/:id",
+    component: () => import("@/views/MasterData/Employees.vue"),
+  },
+  //------------------------------------------------------------------
+  //Customers
+  //------------------------------------------------------------------
+  {
+    path: "/customers",
+    component: () => import("@/views/MasterData/Customers.vue"),
+  },
+  {
+    path: "/customers/:id",
+    component: () => import("@/views/MasterData/Customers.vue"),
+  },
+  //------------------------------------------------------------------
+  //Dashboard
+  //------------------------------------------------------------------
   {
     path: "/",
     redirect: "/dashboard",
@@ -24,20 +56,11 @@ export const routes = [
     path: "/dashboard",
     component: () => import("@/views/Dashboard.vue"),
   },
-  {
-    path: "/employees",
-    component: () => import("@/views/MasterData/Employees.vue"),
-  },
-  {
-    path: "/customers",
-    component: () => import("@/views/MasterData/Customers.vue"),
-  },
+  //------------------------------------------------------------------
+  //Products
+  //------------------------------------------------------------------
   {
     path: "/products",
-    component: () => import("@/views/MasterData/Customers.vue"),
-  },
-  {
-    path: "/orders/complete",
-    component: () => import("@/views/Orders/CompleteOrder.vue"),
+    component: () => import("@/views/MasterData/Products.vue"),
   },
 ];
