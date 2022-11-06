@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: database
+    ports:
+      - 4000:4000
+    volumes:
+      - /var/opt/mssql
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Tromm3lh€ld€n
+      - MSSQL_PID=Express
