@@ -1,4 +1,6 @@
-interface Auftrag {
+import { FilterMatchModeOptions } from "primevue/api";
+
+interface IAuftrag {
   Aufnr: number;
   MitID?: string;
   KunNr: number;
@@ -8,33 +10,33 @@ interface Auftrag {
   Anfahrt?: number;
   Beschreibung?: string;
   Kunde: IKunde;
-  Mitarbeiter?: Mitarbeiter;
-  Montage: Montage[];
-  Rechnung: Rechnung[];
+  Mitarbeiter?: IMitarbeiter;
+  Montage: IMontage[];
+  Rechnung: IRechnung[];
 }
 
-interface Ersatzteil {
+interface IErsatzteil {
   EtID: string;
   EtBezeichnung: string;
   EtPreis: number;
   EtAnzLager: number;
   EtHersteller: string;
-  Montage: Montage[];
+  Montage: IMontage[];
 }
 
-interface Gebiet {
+interface IGebiet {
   GebietID: string;
   NLNr?: number;
-  Niederlassung?: Niederlassung;
+  Niederlassung?: INiederlassung;
 }
 
-interface Geografie {
+interface IGeografie {
   Land_ID: string;
   Bundesland?: string;
   Region?: string;
   Staat?: string;
-  Plandaten: Plandaten[];
-  Umsatzdaten: Umsatzdaten[];
+  Plandaten: IPlandaten[];
+  Umsatzdaten: IUmsatzdaten[];
 }
 
 interface Kunde {
@@ -43,11 +45,11 @@ interface Kunde {
   KunOrt: string;
   KunPLZ: string;
   KunStrasse: string;
-  Auftrag?: Auftrag[];
-  Rechnung?: Rechnung[];
+  Auftrag?: IAuftrag[];
+  Rechnung?: IRechnung[];
 }
 
-interface Mitarbeiter {
+interface IMitarbeiter {
   MitID: string;
   MitName: string;
   MitVorname?: string;
@@ -55,92 +57,92 @@ interface Mitarbeiter {
   MitJob: string;
   MitStundensatz?: number;
   NLNr?: number;
-  Niederlassung?: Niederlassung;
-  Auftrag: Auftrag[];
+  Niederlassung?: INiederlassung;
+  Auftrag: IAuftrag[];
 }
 
-interface MitarbeiterShop {
+interface IMitarbeiterShop {
   Mitarbeiter_ID: string;
   Name?: string;
   Manager_ID?: string;
-  MitarbeiterShop?: MitarbeiterShop;
-  other_MitarbeiterShop: MitarbeiterShop[];
-  Umsatzdaten: Umsatzdaten[];
+  MitarbeiterShop?: IMitarbeiterShop;
+  other_MitarbeiterShop: IMitarbeiterShop[];
+  Umsatzdaten: IUmsatzdaten[];
 }
 
-interface Montage {
+interface IMontage {
   EtID: string;
   AufNr: number;
   Anzahl: number;
-  Ersatzteil: Ersatzteil;
-  Auftrag: Auftrag;
+  Ersatzteil: IErsatzteil;
+  Auftrag: IAuftrag;
 }
 
-interface Niederlassung {
+interface INiederlassung {
   NLNr: number;
   Ort?: string;
-  Gebiet: Gebiet[];
-  Mitarbeiter: Mitarbeiter[];
+  Gebiet: IGebiet[];
+  Mitarbeiter: IMitarbeiter[];
 }
 
-interface Plandaten {
+interface IPlandaten {
   Mon_ID: string;
   Land_ID: string;
   Produkt_ID: string;
   Umsatzplan?: number;
-  Geografie: Geografie;
+  Geografie: IGeografie;
   Zeit: Zeit;
-  Produkt: Produkt;
+  Produkt: IProdukt;
 }
 
-interface Produkt {
+interface IProdukt {
   Produkt_ID: string;
   Markenname?: string;
   Produktname?: string;
   Preis?: number;
   Subkategorie_ID?: string;
-  Produktsubkategorie?: Produktsubkategorie;
-  Plandaten: Plandaten[];
-  Umsatzdaten: Umsatzdaten[];
+  Produktsubkategorie?: IProduktsubkategorie;
+  Plandaten: IPlandaten[];
+  Umsatzdaten: IUmsatzdaten[];
 }
 
-interface Produktkategorie {
+interface IProduktkategorie {
   Kategorie_ID: string;
   Kategorie?: string;
   Kategorie_Manager?: string;
-  Produktsubkategorie: Produktsubkategorie[];
+  Produktsubkategorie: IProduktsubkategorie[];
 }
 
-interface Produktsubkategorie {
+interface IProduktsubkategorie {
   Subkategorie_ID: string;
   Subkategorie?: string;
   Subkategorie_Manager?: string;
   Kategorie_ID?: string;
   Mitarbeiter_ID?: string;
-  Produktkategorie?: Produktkategorie;
-  Produkt: Produkt[];
+  Produktkategorie?: IProduktkategorie;
+  Produkt: IProdukt[];
 }
 
-interface Rechnung {
+interface IRechnung {
   KunNr: number;
   AufNr: number;
   RechDat: Date;
   RechBetrag: number;
   Kunde: IKunde;
-  Auftrag: Auftrag;
+  Auftrag: IAuftrag;
 }
 
-interface Umsatzdaten {
+interface IUmsatzdaten {
   Produkt_ID: string;
   Mon_ID: string;
   Land_ID: string;
   Mitarbeiter_ID: string;
   Umsatzbetrag?: number;
   Umsatzmenge?: number;
-  Geografie: Geografie;
-  MitarbeiterShop: MitarbeiterShop;
+  Geografie: IGeografie;
+  MitarbeiterShop: IMitarbeiterShop;
   Zeit: Zeit;
-  Produkt: Produkt;
+  Produkt: IProdukt;
 }
 
 interface Zeit {
@@ -149,25 +151,42 @@ interface Zeit {
   Q_ID?: string;
   Quartal?: string;
   Jahr?: string;
-  Plandaten: Plandaten[];
-  Umsatzdaten: Umsatzdaten[];
+  Plandaten: IPlandaten[];
+  Umsatzdaten: IUmsatzdaten[];
+}
+
+interface ISort {
+  [Key: string]: "asc" | "desc";
+}
+
+interface IFilter {
+  [Key: string]: IFilterValue;
+}
+
+interface IFilterValue {
+  value: string | number | Date;
+  matchMode: FilterMatchModeOptions;
 }
 
 export {
-  Auftrag,
-  Ersatzteil,
-  Gebiet,
-  Geografie,
-  Kunde,
-  Mitarbeiter,
-  MitarbeiterShop,
-  Montage,
-  Niederlassung,
-  Plandaten,
-  Produkt,
-  Produktkategorie,
-  Produktsubkategorie,
-  Rechnung,
-  Umsatzdaten,
+
+  IAuftrag,
+  IErsatzteil,
+  IGebiet,
+  IGeografie,
+  IKunde,
+  IMitarbeiter,
+  IMitarbeiterShop,
+  IMontage,
+  INiederlassung,
+  IPlandaten,
+  IProdukt,
+  IProduktkategorie,
+  IProduktsubkategorie,
+  IRechnung,
+  IUmsatzdaten,
   Zeit,
+  ISort,
+  IFilter,
+  IFilterValue,
 };

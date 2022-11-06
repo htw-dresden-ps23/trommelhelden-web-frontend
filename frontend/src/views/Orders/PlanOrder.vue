@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto mt-8">
+  <div class="mx-auto mt-8">
     <div
       class="card mx-[20%] flex flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl"
     >
@@ -16,19 +16,29 @@
         responsiveLayout="scroll"
       >
         <Column
-          v-for="cols in columns"
-          :field="cols.field"
-          :header="cols.header"
-          :key="cols.field"
-        ></Column>
+          v-for="col in columns"
+          :field="col.field"
+          :header="col.header"
+          :key="col.field"
+        >
+          <template #body="{ data }">
+            <div v-if="isLoading"><Skeleton></Skeleton></div>
+            <div v-else>{{ data ? data[col.field] : "" }}</div>
+          </template>
+        </Column>
         <Column field="edit" header="">
           <template #body="slotProps">
-            <Button
-              type="button"
-              icon="pi pi-pencil"
-              class="p-button-warning"
-              @click="onButtonClick($event, slotProps.data)"
-            ></Button> </template
+            <div v-if="isLoading">
+              <Skeleton size="3rem"></Skeleton>
+            </div>
+            <div v-else>
+              <Button
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-warning"
+                @click="onButtonClick($event, slotProps.data)"
+              ></Button>
+            </div> </template
         ></Column>
       </DataTable>
       <DynamicDialog />
@@ -38,17 +48,19 @@
 </template>
 
 <script setup lang="ts">
-import OrderService from "@/services/Order";
-import { Auftrag } from "@/types";
+import OrderService from "@/api/services/Order";
+import { IAuftrag } from "@/types";
 import { onMounted, ref } from "vue";
 import { useDialog } from "primevue/usedialog";
 import PlanOrderForm from "@/components/Order/PlanOrderForm.vue";
+import { flatten } from "flat";
 
 const orderService = new OrderService();
-const orders = ref<Auftrag[]>();
+const orders = ref<IAuftrag[]>(new Array(20));
 const dialog = useDialog();
+const isLoading = ref(false);
 
-const onButtonClick = (event: any, order: Auftrag) => {
+const onButtonClick = (event: any, order: IAuftrag) => {
   dialog.open(PlanOrderForm, {
     props: {
       header: "Product List",
@@ -68,8 +80,11 @@ const onButtonClick = (event: any, order: Auftrag) => {
 };
 
 onMounted(async () => {
-  orders.value = await orderService.list();
-  console.log(orders);
+  isLoading.value = true;
+  orders.value = await orderService.list(null, null);
+  orders.value = orders.value.map((value) => flatten(value));
+
+  isLoading.value = false;
 });
 
 const columns = [
