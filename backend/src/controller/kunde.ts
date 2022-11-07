@@ -8,7 +8,20 @@ const prisma = new PrismaClient();
 export class CustomersController {
  async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const allCustomers = await prisma.kunde.findMany();
+      const { sort, filter, page, rows } = req.body
+      console.log(req.body)
+      const allCustomers = await prisma.kunde.findMany(
+        {
+          take: rows , 
+          skip: rows * page,
+          where:{
+            ...filter
+          },
+          orderBy: [
+            ...sort
+          ]
+          }
+      );
       if(allCustomers.length > 0) {
         return res.status(200).json(allCustomers);
       }

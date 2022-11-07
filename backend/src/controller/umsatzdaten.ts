@@ -8,7 +8,20 @@ const prisma = new PrismaClient();
 export class SalesDataController {
   async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const allSalesData = await prisma.umsatzdaten.findMany();
+      const { sort, filter, page, rows } = req.body
+      console.log(req.body)
+      const allSalesData = await prisma.umsatzdaten.findMany(
+        {
+          take: rows , 
+          skip: rows * page,
+          where:{
+            ...filter
+          },
+          orderBy: [
+            ...sort
+          ]
+          }
+      );
       if(allSalesData.length > 0) {
         return res.status(200).json(allSalesData);
       }

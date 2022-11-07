@@ -8,7 +8,20 @@ const prisma = new PrismaClient();
 export class ProductsController {
   async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const allProducts = await prisma.produkt.findMany();
+      const { sort, filter, page, rows } = req.body
+      console.log(req.body)
+      const allProducts = await prisma.produkt.findMany(
+        {
+          take: rows , 
+          skip: rows * page,
+          where:{
+            ...filter
+          },
+          orderBy: [
+            ...sort
+          ]
+          }
+      );
       if(allProducts.length > 0) {
         return res.status(200).json(allProducts);
       }

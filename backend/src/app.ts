@@ -37,7 +37,7 @@ app.patch("/salesData/:id", salesDataController.update);
 app.delete("/salesData/:id", salesDataController.delete);
 
 const productsController = new ProductsController();
-app.post("/product/:id?", productsController.list);
+app.post("/products", productsController.list);
 app.patch("/product/:id", productsController.update);
 app.delete("/product/:id", productsController.delete);
 
