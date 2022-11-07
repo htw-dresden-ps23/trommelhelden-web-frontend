@@ -6,9 +6,22 @@ import { send } from "process";
 const prisma = new PrismaClient();
 
 export class OrdersController {
-  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+  async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const allOrders = await prisma.auftrag.findMany();
+      const { sort, filter, page, rows } = req.body
+      console.log(req.body)
+      const allOrders = await prisma.auftrag.findMany(
+        {
+          take: rows , 
+          skip: rows * page,
+          where:{
+            ...filter
+          },
+          orderBy: [
+            ...sort
+          ]
+          }
+      );
       if(allOrders.length > 0) {
         return res.status(200).json(allOrders);
       }
@@ -20,17 +33,10 @@ export class OrdersController {
   }
   async put(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      
-      const { id } = req.params;
-      const { query } = req;
-
-      console.log(query);
-
-      if (id) {
-        console.log("id");
-        return res.status(200);
-      }
-    } catch (err) {
+      const { data }: { data: Prisma.AuftragCreateInput } = req.body;
+      const allOrders = await prisma.auftrag.create({
+        data,});
+      } catch (err) {
       await prisma.$disconnect()
       return next(err);
     }
@@ -39,8 +45,8 @@ export class OrdersController {
     try {
       const { id } = req.params;
       const order = await prisma.auftrag.delete({
-        where: {
-
+        where: { 
+          
         },
       });
 
@@ -59,9 +65,7 @@ export class OrdersController {
 
       const order = await prisma.auftrag.updateMany({
         data,
-        where: {
-          
-        },
+        where: {  },
       });
 
       return res.json(order);

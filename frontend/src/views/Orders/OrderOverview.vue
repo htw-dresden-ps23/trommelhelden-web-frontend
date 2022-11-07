@@ -1,13 +1,26 @@
 <template>
   <div class="my-8">
     <div class="h-full rounded-xl bg-white px-6 py-8 shadow-2xl">
-      <h1
-        class="bg-gradient-to-r from-blue-400 to-pink-800 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
-      >
-        Aufträge
-      </h1>
+      <div class="flex items-center justify-between">
+        <h1
+          class="bg-gradient-to-r from-blue-400 to-pink-800 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
+        >
+          Aufträge
+        </h1>
+        <router-link to="/orders/create">
+          <Button
+            icon="pi pi-plus"
+            class="mr-2 mb-2 rounded-lg !border-none !bg-gradient-to-r from-blue-400 to-pink-800 text-center text-2xl font-medium text-white shadow-lg hover:scale-105 hover:transform"
+            label="Auftrag erstellen"
+          ></Button
+        ></router-link>
+      </div>
       <Divider />
-      <EntityTable :apiService="orderService" :columns="columns"></EntityTable>
+      <EntityTable
+        :apiService="orderService"
+        :columns="columns"
+        :showMaxActiveFilter="5"
+      ></EntityTable>
     </div>
   </div>
 </template>

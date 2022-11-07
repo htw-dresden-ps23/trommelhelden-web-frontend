@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import { createPinia } from "pinia";
 import App from "./App.vue";
 import "./index.css";
 import PrimeVue from "primevue/config";
@@ -36,7 +37,9 @@ import DialogService from "primevue/dialogservice";
 import { router } from "./router";
 
 const app = createApp(App);
+const pinia = createPinia();
 
+app.use(pinia);
 app.component("DataTable", DataTable);
 app.component("Avatar", Avatar);
 app.component("AvatarGroup", AvatarGroup);
