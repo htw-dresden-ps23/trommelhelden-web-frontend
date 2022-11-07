@@ -1,57 +1,67 @@
 <template>
   <div class="my-8">
     <div class="h-full rounded-xl bg-white px-6 py-8 shadow-2xl">
-      <h1
-        class="bg-gradient-to-r from-blue-400 to-pink-800 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
-      >
-        Aufträge
-      </h1>
-      <Divider />
-
-      <DataTable :value="values" responsiveLayout="scroll">
-        <Column
-          v-for="col in columns"
-          :key="col.field"
-          :field="col.field"
-          :header="col.header"
+      <div class="flex items-center justify-between">
+        <h1
+          class="bg-gradient-to-r from-blue-400 to-pink-800 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
         >
-          <template #body="{ data }">
-            <div v-if="isLoading"><Skeleton></Skeleton></div>
-            <div v-else>{{ data ? data[col.field] : "" }}</div>
-          </template>
-        </Column>
-      </DataTable>
+          Aufträge
+        </h1>
+        <router-link to="/orders/create">
+          <Button
+            icon="pi pi-plus"
+            class="mr-2 mb-2 rounded-lg !border-none !bg-gradient-to-r from-blue-400 to-pink-800 text-center text-2xl font-medium text-white shadow-lg hover:scale-105 hover:transform"
+            label="Auftrag erstellen"
+          ></Button
+        ></router-link>
+      </div>
+      <Divider />
+      <EntityTable
+        :apiService="orderService"
+        :columns="columns"
+        :showMaxActiveFilter="5"
+      ></EntityTable>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
 import OrderService from "@/api/services/Order";
-import { IAuftrag } from "@/types";
-import { useLoading } from "vue-loading-overlay";
-import { flatten } from "flat";
+
+import EntityTable from "@/components/EntityTable.vue";
+import { IEntityTableColumns } from "@/types";
+
 const orderService = new OrderService();
-const $loading = useLoading();
-const isLoading = ref(false);
-const values = ref<IAuftrag[]>(new Array(50));
 
-onMounted(async () => {
-  isLoading.value = true;
-
-  values.value = await orderService.list(null, null);
-  values.value = values.value.map((value) => flatten(value));
-  isLoading.value = false;
-});
-
-const columns = [
-  { field: "Aufnr", header: "Aufnr" },
-  { field: "MitID", header: "MitID" },
-  { field: "KunNr", header: "KunNr" },
-  { field: "AufDat", header: "AufDat" },
-  { field: "ErlDat", header: "ErlDat" },
-  { field: "Dauer", header: "Dauer" },
-  { field: "Anfahrt", header: "Anfahrt" },
+const columns: IEntityTableColumns[] = [
+  {
+    field: "Aufnr",
+    header: "Aufnr",
+    type: "text",
+    format: "link",
+    linkKey: "Aufnr",
+    linkRoute: "order",
+  },
+  {
+    field: "MitID",
+    header: "MitID",
+    format: "link",
+    linkKey: "MitID",
+    linkRoute: "employees",
+    color: "#e4ff7a",
+  },
+  {
+    field: "KunNr",
+    header: "KunNr",
+    format: "link",
+    linkKey: "KunNr",
+    linkRoute: "customers",
+    color: "#de8aff",
+  },
+  { field: "AufDat", header: "AufDat", type: "date" },
+  { field: "ErlDat", header: "ErlDat", type: "date" },
+  { field: "Dauer", header: "Dauer", type: "numeric" },
+  { field: "Anfahrt", header: "Anfahrt", type: "numeric" },
   { field: "Beschreibung", header: "Beschreibung" },
   { field: "Kunde.KunName", header: "Kundenname" },
 ];

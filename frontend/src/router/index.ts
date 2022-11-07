@@ -1,31 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-
-const routes = [
-  {
-    path: "/orders",
-    component: () => import("@/views/Orders/OrderOverview.vue"),
-  },
-  {
-    // UserProfile will be rendered inside User's <router-view>
-    // when /user/:id/profile is matched
-    path: "/orders/create",
-    component: () => import("@/views/Orders/CreateOrder.vue"),
-  },
-  {
-    // UserProfile will be rendered inside User's <router-view>
-    // when /user/:id/profile is matched
-    path: "/orders/plan",
-    component: () => import("@/views/Orders/PlanOrder.vue"),
-  },
-  {
-    path: "/",
-    redirect: "/dashboard",
-  },
-  {
-    path: "/dashboard",
-    component: () => import("@/views/Dashboard.vue"),
-  },
-];
+import { routes } from "./routes";
 
 export const router = createRouter({
   history: createWebHistory(),

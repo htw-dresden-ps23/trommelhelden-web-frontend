@@ -15,7 +15,7 @@
           v-model="order.Beschreibung"
           :autoResize="true"
           rows="5"
-          cols="100"
+          class="w-3/4"
         />
         <label for="order-description">Auftragsbeschreibung*</label>
       </span>
@@ -52,7 +52,12 @@
           :dismissable="false"
           :breakpoints="{ '960px': '75vw' }"
         >
-          <CustomerTable @selectRow="onSelectCustomer" />
+          <EntityTable
+            :show-rows="5"
+            @selectRow="onSelectCustomer"
+            :api-service="customerService"
+            :columns="columns"
+          />
         </OverlayPanel>
       </div>
     </div>
@@ -76,26 +81,22 @@
 </template>
 
 <script setup lang="ts">
-import { IKunde, IAuftrag } from "@/types";
+import EntityTable from "@/components/EntityTable.vue";
+import Calendar from "primevue/calendar";
+import CustomerService from "@/api/services/Customers";
+import { IKunde, IAuftrag, IEntityTableColumns } from "@/types";
 import { ref } from "vue";
 import { useToast } from "primevue/usetoast";
-import Calendar from "primevue/calendar";
-import { useLoading } from "vue-loading-overlay";
-import CustomerService from "@/api/services/Customers";
-import CustomerTable from "../../components/CustomerTable.vue";
 import { useRouter } from "vue-router";
 
-const $loading = useLoading();
 const router = useRouter();
 const toast = useToast();
-const customers = ref<IKunde[]>();
 
 const customerService = new CustomerService();
 const op = ref();
 const order = ref<IAuftrag>({} as IAuftrag);
 
 const toggle = async (event: Event) => {
-  // customers.value = await customerService.list();
   op.value.toggle(event);
 };
 
@@ -106,14 +107,55 @@ const onSelectCustomer = (customer: IKunde) => {
 };
 
 const createOrder = async () => {
-  toast.add({
-    severity: "success",
-    summary: "Order Created ",
-    detail: "",
-    life: 5000,
-  });
-  router.push("/orders");
+  try {
+    if (order.value) {
+      await customerService.create(order.value);
+      toast.add({
+        severity: "success",
+        summary: "Order Created ",
+        detail: "",
+        life: 5000,
+      });
+      router.push("/orders");
+    }
+  } catch (e) {
+    toast.add({
+      severity: "error",
+      summary: "Error while creating Order ",
+      detail: e,
+      life: 5000,
+    });
+    // order.value = {} as IAuftrag;
+  }
 };
+
+const columns: IEntityTableColumns[] = [
+  {
+    header: "Name",
+    field: "KunName",
+    type: "text",
+  },
+  {
+    header: "Kunden Nr.",
+    field: "KunNr",
+    type: "numeric",
+  },
+  {
+    header: "Ort",
+    field: "KunOrt",
+    type: "text",
+  },
+  {
+    header: "Postleitzahl",
+    field: "KunPLZ",
+    type: "text",
+  },
+  {
+    header: "Straße",
+    field: "KunStrasse",
+    type: "text",
+  },
+];
 </script>
 
 <style></style>

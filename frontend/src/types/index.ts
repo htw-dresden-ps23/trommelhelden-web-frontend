@@ -4,12 +4,12 @@ interface IAuftrag {
   Aufnr: number;
   MitID?: string;
   KunNr: number;
+  Kunde?: IKunde;
   AufDat: Date;
   ErlDat?: Date;
   Dauer?: number;
   Anfahrt?: number;
   Beschreibung?: string;
-  Kunde: IKunde;
   Mitarbeiter?: IMitarbeiter;
   Montage: IMontage[];
   Rechnung: IRechnung[];
@@ -39,12 +39,12 @@ interface IGeografie {
   Umsatzdaten: IUmsatzdaten[];
 }
 
-interface Kunde {
+interface IKunde {
   KunNr: number;
-  KunName: string;
-  KunOrt: string;
-  KunPLZ: string;
-  KunStrasse: string;
+  KunName?: string;
+  KunOrt?: string;
+  KunPLZ?: string;
+  KunStrasse?: string;
   Auftrag?: IAuftrag[];
   Rechnung?: IRechnung[];
 }
@@ -168,8 +168,17 @@ interface IFilterValue {
   matchMode: FilterMatchModeOptions;
 }
 
-export {
+interface IEntityTableColumns {
+  header: string;
+  field: string;
+  type?: "text" | "date" | "numeric";
+  format?: "link";
+  linkKey?: string;
+  linkRoute?: string;
+  color?: string;
+}
 
+export {
   IAuftrag,
   IErsatzteil,
   IGebiet,
@@ -189,4 +198,5 @@ export {
   ISort,
   IFilter,
   IFilterValue,
+  IEntityTableColumns,
 };

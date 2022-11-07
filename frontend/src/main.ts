@@ -1,4 +1,5 @@
 import { createApp } from "vue";
+import { createPinia } from "pinia";
 import App from "./App.vue";
 import "./index.css";
 import PrimeVue from "primevue/config";
@@ -7,8 +8,11 @@ import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup"; //optional for column grouping
 import Row from "primevue/row";
-import "./assets/_theme.css";
+// import "./assets/_theme.css";
+
 import "primevue/resources/primevue.min.css";
+import "primevue/resources/themes/tailwind-light/theme.css";
+
 import "primeicons/primeicons.css";
 import Sidebar from "primevue/sidebar";
 import Button from "primevue/button";
@@ -24,8 +28,6 @@ import DynamicDialog from "primevue/dynamicdialog";
 import InputNumber from "primevue/inputnumber";
 import Toast from "primevue/toast";
 import ToastService from "primevue/toastservice";
-import VueLoading from "vue-loading-overlay";
-import "vue-loading-overlay/dist/vue-loading.css";
 import Card from "primevue/card";
 import ScrollTop from "primevue/scrolltop";
 import Skeleton from "primevue/skeleton";
@@ -35,7 +37,9 @@ import DialogService from "primevue/dialogservice";
 import { router } from "./router";
 
 const app = createApp(App);
+const pinia = createPinia();
 
+app.use(pinia);
 app.component("DataTable", DataTable);
 app.component("Avatar", Avatar);
 app.component("AvatarGroup", AvatarGroup);
@@ -61,7 +65,6 @@ app.component("OverlayPanel", OverlayPanel);
 app.component("Calendar ", Calendar);
 app.component("Chip ", Chip);
 
-app.use(VueLoading);
 app.use(router);
 app.use(PrimeVue, { ripple: true });
 app.use(DialogService);
