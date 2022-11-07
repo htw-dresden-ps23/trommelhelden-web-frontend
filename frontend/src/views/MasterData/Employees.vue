@@ -49,6 +49,9 @@ const columns: IEntityTableColumns[] = [
     header: "Niederlassung",
     field: "NLNr",
     type: "text",
+    format: "link",
+    linkKey: "NLNr",
+    linkRoute: "branches",
   },
   {
     header: "Stundensatz",

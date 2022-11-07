@@ -164,8 +164,7 @@ interface IFilter {
 }
 
 interface IFilterValue {
-  value: string | number | Date;
-  matchMode: FilterMatchModeOptions;
+  [Key: string]: any;
 }
 
 interface IEntityTableColumns {

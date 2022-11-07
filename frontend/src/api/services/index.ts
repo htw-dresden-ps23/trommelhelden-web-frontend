@@ -1,5 +1,6 @@
 import { IFilter, ISort } from "@/types";
 import axios, { AxiosInstance } from "axios";
+import { timeOutErrorHandler } from "../errorHandler";
 
 interface IWrite<T> {
   create(item: T): Promise<boolean>;
@@ -27,8 +28,12 @@ export abstract class BaseService<T> implements IWrite<T>, IRead<T> {
     this._tableName = tableName;
     this._axiosInstance = axios.create({
       baseURL: `http://localhost:${BaseService.port}`,
-      timeout: 1000,
+      timeout: 10000,
     });
+    this._axiosInstance.interceptors.response.use(
+      (response) => response,
+      timeOutErrorHandler
+    );
   }
 
   async create(item: T): Promise<boolean> {
