@@ -2,7 +2,7 @@
   <div class="flex max-h-full min-h-screen flex-col bg-[#ffffffe7]">
     <Header />
     <SidebarMenu />
-    <div class="container m-auto my-8 h-full">
+    <div class="container m-auto my-8 flex h-full flex-1 justify-center">
       <router-view></router-view>
     </div>
     <Toast />

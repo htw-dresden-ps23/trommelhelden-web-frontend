@@ -60,7 +60,10 @@ export const routes = [
   //Products
   //------------------------------------------------------------------
   {
-    path: "/products",
-    component: () => import("@/views/MasterData/Products.vue"),
+    path: "/timeout",
+    component: () => import("@/views/Timeout.vue"),
   },
+  //------------------------------------------------------------------
+  //Products
+  //------------------------------------------------------------------
 ];

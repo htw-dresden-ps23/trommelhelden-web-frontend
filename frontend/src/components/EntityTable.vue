@@ -29,10 +29,13 @@
             v-for="filter in activeFilters"
             :key="filter"
             class="mr-2"
-            :label="`${filter} ${filterOptions[filter].matchMode} ${
+            :label="`${filter} ${Object.keys(filterOptions[filter])[0]} ${
               columns.find((c) => c.field === filter)?.type === 'date'
-                ? useDateFormat(filterOptions[filter].value, 'DD.MM.YYYY').value
-                : filterOptions[filter].value
+                ? useDateFormat(
+                    filterOptions[filter][Object.keys(filterOptions[filter])[0] as string] ,
+                    'DD.MM.YYYY'
+                  ).value
+                : filterOptions[filter][Object.keys(filterOptions[filter])[0]]
             }`"
             removable
             @remove="removeFilter(filter)"
@@ -219,8 +222,15 @@ const onFilter = async (event: any) => {
 
 const onSort = async (event: any) => {
   const { multiSortMeta } = event;
+  console.log(multiSortMeta);
 
-  sortOptions.value = [...multiSortMeta];
+  sortOptions.value = [
+    ...multiSortMeta.map((x: any) => {
+      let foo: any = {};
+      foo[x.field] = x.order > 0 ? "asc" : "desc";
+      return foo;
+    }),
+  ];
 
   await fetchData();
 };
