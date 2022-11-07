@@ -3,7 +3,9 @@
     <DataTable
       :value="data"
       selectionMode="single"
+      removableSort
       :paginator="true"
+      sortMode="multiple"
       :rowHover="true"
       isLoading="isLoading"
       class="p-datatable-sm"
@@ -115,7 +117,7 @@ import { useToast } from "primevue/usetoast";
 
 const isLoading = ref(false);
 const page = ref(0);
-const sortOptions = ref<ISort>({});
+const sortOptions = ref<ISort[]>([]);
 const toast = useToast();
 const filterOptions = ref<IFilter>({});
 const filters = ref();
@@ -216,12 +218,10 @@ const onFilter = async (event: any) => {
 };
 
 const onSort = async (event: any) => {
-  const { sortField, sortOrder } = event;
-  if (sortField) {
-    sortOptions.value[sortField] = sortOrder === 1 ? "asc" : "desc";
-  } else {
-    sortOptions.value = {};
-  }
+  const { multiSortMeta } = event;
+
+  sortOptions.value = [...multiSortMeta];
+
   await fetchData();
 };
 
