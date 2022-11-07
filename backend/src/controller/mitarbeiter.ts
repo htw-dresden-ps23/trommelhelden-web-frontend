@@ -6,19 +6,31 @@ import { send } from "process";
 const prisma = new PrismaClient();
 
 export class EmployeesController {
-  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+  async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const { id } = req.params;
-      const { query } = req;
-
-      console.log(query);
-
-      if (id) {
-        console.log("id");
-        return res.json();
+      const { sort, filter, page, rows } = req.body
+      console.log(req.body)
+      const allEmployees = await prisma.mitarbeiter.findMany(
+        {
+        take: rows , 
+        skip: rows * page,
+        where:{
+          ...filter
+        },
+        orderBy: [
+          ...sort
+        ]
+        }
+       
+      );
+      // console.log(allEmployees[0])
+      if(allEmployees.length > 0) {
+        return res.status(200).json(allEmployees);
       }
+      return res.status(500).send('Keine Mitarbeiter gefunden')
     } catch (err) {
-      await prisma.$disconnect()
+      console.log(err)
+       await prisma.$disconnect()
       return next(err);
     }
   }

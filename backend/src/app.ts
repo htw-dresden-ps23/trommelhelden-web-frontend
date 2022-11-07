@@ -14,30 +14,30 @@ app.use(express.json());
 const port = 4000;
 
 const ordersController = new OrdersController();
-app.get("/orders", ordersController.get);
-app.put("/order/:id?", ordersController.get);
+app.post("/orders", ordersController.list);
+app.put("/order/:id?", ordersController.put);
 app.patch("/order/:id", ordersController.update);
 app.delete("/order/:id", ordersController.delete);
 
 const customersController = new CustomersController();
-app.get("/customer/:id?", customersController.get);
-app.get("/customers", customersController.get);
+app.post("/customers", customersController.list);
+// app.put("/customers", customersController.put);
 app.patch("/customer/:id", customersController.update);
 app.delete("/customer/:id", customersController.delete);
 
 const employeesController = new EmployeesController();
-app.get("/employee/:id?", employeesController.get);
-app.get("/employees", employeesController.get);
+app.post("/employees", employeesController.list);
+// app.get("/employees", employeesController.get);
 app.patch("/employee/:id", employeesController.update);
 app.delete("/employee/:id", employeesController.delete);
 
 const salesDataController = new SalesDataController();
-app.get("/salesData/:id?", salesDataController.get);
+app.post("/sales", salesDataController.list);
 app.patch("/salesData/:id", salesDataController.update);
 app.delete("/salesData/:id", salesDataController.delete);
 
 const productsController = new ProductsController();
-app.get("/product/:id?", productsController.get);
+app.post("/products", productsController.list);
 app.patch("/product/:id", productsController.update);
 app.delete("/product/:id", productsController.delete);
 

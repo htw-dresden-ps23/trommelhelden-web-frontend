@@ -6,19 +6,28 @@ import { send } from "process";
 const prisma = new PrismaClient();
  
 export class SalesDataController {
-  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+  async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const { id } = req.params;
-      const { query } = req;
-
-      console.log(query);
-
-      if (id) {
-        console.log("id");
-        return res.json();
+      const { sort, filter, page, rows } = req.body
+      console.log(req.body)
+      const allSalesData = await prisma.umsatzdaten.findMany(
+        {
+          take: rows , 
+          skip: rows * page,
+          where:{
+            ...filter
+          },
+          orderBy: [
+            ...sort
+          ]
+          }
+      );
+      if(allSalesData.length > 0) {
+        return res.status(200).json(allSalesData);
       }
+      return res.status(500).send('Keine Umsatzdaten gefunden')
     } catch (err) {
-      await prisma.$disconnect()
+       await prisma.$disconnect()
       return next(err);
     }
   }
