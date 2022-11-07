@@ -203,10 +203,9 @@ const onFilter = async (event: any) => {
 
   Object.keys(filters).forEach((x) => {
     if (filters[x].constraints[0].value) {
-      filterOptions.value[x] = {
-        value: filters[x].constraints[0].value,
-        matchMode: filters[x].constraints[0].matchMode,
-      };
+      filterOptions.value[x] = {};
+      filterOptions.value[x][filters[x].constraints[0].matchMode] =
+        filters[x].constraints[0].value;
     } else {
       filterOptions.value.hasOwnProperty(x)
         ? delete filterOptions.value[x]
