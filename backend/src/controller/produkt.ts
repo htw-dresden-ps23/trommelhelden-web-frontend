@@ -6,19 +6,15 @@ import { send } from "process";
 const prisma = new PrismaClient();
 
 export class ProductsController {
-  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+  async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const { id } = req.params;
-      const { query } = req;
-
-      console.log(query);
-
-      if (id) {
-        console.log("id");
-        return res.json();
+      const allProducts = await prisma.produkt.findMany();
+      if(allProducts.length > 0) {
+        return res.status(200).json(allProducts);
       }
+      return res.status(500).send('Keine Produkte gefunden')
     } catch (err) {
-      await prisma.$disconnect()
+       await prisma.$disconnect()
       return next(err);
     }
   }

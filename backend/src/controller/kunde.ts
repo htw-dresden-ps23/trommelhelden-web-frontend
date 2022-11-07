@@ -6,20 +6,15 @@ import { send } from "process";
 const prisma = new PrismaClient();
 
 export class CustomersController {
-  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+ async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      console.log("req", req);
-      const { id } = req.params;
-      const { query } = req;
-
-      console.log(query);
-
-      if (id) {
-        console.log("id");
-        return res.json();
+      const allCustomers = await prisma.kunde.findMany();
+      if(allCustomers.length > 0) {
+        return res.status(200).json(allCustomers);
       }
+      return res.status(500).send('Keine Kunden gefunden')
     } catch (err) {
-      await prisma.$disconnect()
+       await prisma.$disconnect()
       return next(err);
     }
   }

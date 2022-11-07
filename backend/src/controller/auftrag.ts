@@ -6,7 +6,7 @@ import { send } from "process";
 const prisma = new PrismaClient();
 
 export class OrdersController {
-  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+  async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       const allOrders = await prisma.auftrag.findMany();
       if(allOrders.length > 0) {
@@ -32,7 +32,9 @@ export class OrdersController {
     try {
       const { id } = req.params;
       const order = await prisma.auftrag.delete({
-        where: { id: Number(id), },
+        where: { 
+          
+        },
       });
 
       return res.json(order);
@@ -50,7 +52,7 @@ export class OrdersController {
 
       const order = await prisma.auftrag.updateMany({
         data,
-        where: { id: Number(id), },
+        where: {  },
       });
 
       return res.json(order);
