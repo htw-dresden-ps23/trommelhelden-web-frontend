@@ -6,9 +6,16 @@ services:
     container_name: database
     ports:
       - 4000:4000
-    volumes:
-      - /var/opt/mssql
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Tromm3lh€ld€n
       - MSSQL_PID=Express
+    volumes:
+      - /var/opt/mssql
+volumes:
+  database_volume:
+    driver: local
+    driver_opts:
+       o: bind
+       type: none
+       device: D:/Temp/Docker/database
