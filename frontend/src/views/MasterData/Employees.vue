@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card mx-[10%] flex flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl"
+    class="card mx-[10%] flex h-fit flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl"
   >
     <h1
       class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
@@ -9,10 +9,10 @@
     </h1>
     <Divider />
     <EntityTable
-      :apiService="employeeService"
+      :api-service="employeeService"
       :columns="columns"
-      :showRows="50"
-    ></EntityTable>
+      :show-rows="50"
+    />
   </div>
 </template>
 

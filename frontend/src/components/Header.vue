@@ -5,11 +5,11 @@
     >
       <div class="m-4 mr-auto flex">
         <Button
-          @click="store.sideBarMenuIsOpen = !store.sideBarMenuIsOpen"
           icon="pi pi-align-justify"
-          iconClass="text-[#f6f6f6]"
+          icon-class="text-[#f6f6f6]"
           class="p-button-rounded p-button-text p-button-plain"
-        ></Button>
+          @click="store.sideBarMenuIsOpen = !store.sideBarMenuIsOpen"
+        />
       </div>
     </div>
   </header>

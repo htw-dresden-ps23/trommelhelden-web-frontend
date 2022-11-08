@@ -3,7 +3,7 @@
     <Header />
     <SidebarMenu />
     <div class="container m-auto my-8 flex h-full flex-1 justify-center">
-      <router-view></router-view>
+      <router-view />
     </div>
     <Toast />
     <ScrollTop />

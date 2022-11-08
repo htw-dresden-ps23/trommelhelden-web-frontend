@@ -1,4 +1,4 @@
-import { FilterMatchModeOptions } from "primevue/api";
+// import { FilterMatchModeOptions } from "primevue/api";
 
 interface IAuftrag {
   Aufnr: number;

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="card mx-[20%] flex flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl"
+    class="card mx-[20%] flex flex-1 flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl"
   >
     <h1
       class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
@@ -13,7 +13,7 @@
         <Textarea
           id="order-description"
           v-model="order.Beschreibung"
-          :autoResize="true"
+          :auto-resize="true"
           rows="5"
           class="w-3/4"
         />
@@ -26,7 +26,10 @@
     </div>
     <Divider />
     <div class="my-4 flex items-center justify-between">
-      <div v-if="order.Kunde" class="grid flex-1 grid-cols-2">
+      <div
+        v-if="order.Kunde"
+        class="grid flex-1 grid-cols-2"
+      >
         <span>Name: </span><span>{{ order.Kunde.KunName }}</span>
         <span>Kundennummer: </span><span>{{ order.Kunde.KunNr }}</span>
         <span>Ort: </span><span>{{ order.Kunde.KunOrt }}</span>
@@ -37,26 +40,26 @@
         type="button"
         icon="pi pi-search"
         :label="'Kunde wählen'"
-        @click="toggle"
         aria-haspopup="true"
         aria-controls="overlay_panel"
+        @click="toggle"
       />
 
       <div>
         <OverlayPanel
-          ref="op"
-          appendTo="body"
-          :showCloseIcon="true"
           id="overlay_panel"
+          ref="op"
+          append-to="body"
+          :show-close-icon="true"
           style="width: 900px"
           :dismissable="false"
           :breakpoints="{ '960px': '75vw' }"
         >
           <EntityTable
             :show-rows="5"
-            @selectRow="onSelectCustomer"
             :api-service="customerService"
             :columns="columns"
+            @select-row="onSelectCustomer"
           />
         </OverlayPanel>
       </div>
@@ -64,7 +67,11 @@
     <Divider />
     <div>
       <span class="p-float-label my-4">
-        <Calendar id="order-calendar" v-model="order.AufDat" :showIcon="true" />
+        <Calendar
+          id="order-calendar"
+          v-model="order.AufDat"
+          :show-icon="true"
+        />
         <label for="order-calendar">Auftragsdatum</label>
       </span>
     </div>
@@ -74,8 +81,8 @@
       icon="pi pi-check"
       label="Erstellen"
       class="ml-auto"
-      @click="createOrder"
       :disabled="!order.Beschreibung || !order.Kunde || !order.AufDat"
+      @click="createOrder"
     />
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div class="my-8">
+  <div class="my-8 h-fit">
     <div class="h-full rounded-xl bg-white px-6 py-8 shadow-2xl">
       <div class="flex items-center justify-between">
         <h1
@@ -12,15 +12,15 @@
             icon="pi pi-plus"
             class="mr-2 mb-2 rounded-lg !border-none !bg-gradient-to-r from-blue-400 to-pink-800 text-center text-2xl font-medium text-white shadow-lg hover:scale-105 hover:transform"
             label="Auftrag erstellen"
-          ></Button
-        ></router-link>
+          />
+        </router-link>
       </div>
       <Divider />
       <EntityTable
-        :apiService="orderService"
+        :api-service="orderService"
         :columns="columns"
-        :showMaxActiveFilter="5"
-      ></EntityTable>
+        :show-max-active-filter="5"
+      />
     </div>
   </div>
 </template>

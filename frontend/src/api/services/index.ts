@@ -14,7 +14,7 @@ interface IRead<T> {
     sort: ISort | null,
     filter: IFilter | null,
     page: number,
-    rows: number
+    rows: number,
   ): Promise<T[]>;
 }
 
@@ -32,7 +32,7 @@ export abstract class BaseService<T> implements IWrite<T>, IRead<T> {
     });
     this._axiosInstance.interceptors.response.use(
       (response) => response,
-      timeOutErrorHandler
+      timeOutErrorHandler,
     );
   }
 
@@ -49,8 +49,8 @@ export abstract class BaseService<T> implements IWrite<T>, IRead<T> {
   async list(
     sort: ISort | null,
     filter: IFilter | null,
-    page: number = 0,
-    rows: number = BaseService.rows
+    page = 0,
+    rows: number = BaseService.rows,
   ): Promise<T[]> {
     return (
       await this._axiosInstance.post(`/${this._tableName}`, {

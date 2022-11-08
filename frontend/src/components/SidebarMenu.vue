@@ -13,8 +13,11 @@
         </div>
       </div>
     </template>
-    <PanelMenu class="" v-model:expandedKeys="openTabs" :model="menuItems">
-    </PanelMenu>
+    <PanelMenu
+      v-model:expandedKeys="openTabs"
+      class=""
+      :model="menuItems"
+    />
     <div
       class="mt-auto flex items-center justify-between border-t-2 bg-slate-50 p-4 shadow-inner"
     >
@@ -38,7 +41,7 @@
 <script setup lang="ts">
 import { useStore } from "@/store";
 import PanelMenu from "primevue/panelmenu";
-import { ref, watch } from "vue";
+import { ref } from "vue";
 
 const store = useStore();
 

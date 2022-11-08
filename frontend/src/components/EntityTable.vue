@@ -1,27 +1,27 @@
 <template>
   <div>
     <DataTable
-      :value="data"
-      selectionMode="single"
-      removableSort
+      v-model:filters="filters"
+      :value="values"
+      selection-mode="single"
+      removable-sort
       :paginator="true"
-      sortMode="multiple"
-      :rowHover="true"
-      isLoading="isLoading"
+      sort-mode="multiple"
+      :row-hover="true"
+      is-loading="isLoading"
       class="p-datatable-sm"
+      :lazy="true"
+      :rows="rows"
+      :total-records="values ? values.length : 0"
+      filter-display="menu"
+      show-gridlines
+      current-page-report-template="Showing {first} to {last} of {totalRecords}"
+      :rows-per-page-options="[5, 10, 20, 50]"
+      responsive-layout="scroll"
       @page="onPage($event)"
       @sort="onSort($event)"
       @filter="onFilter($event)"
-      :lazy="true"
-      :rows="rows"
-      :totalRecords="data ? data.length : 0"
-      filterDisplay="menu"
-      @rowSelect="onProductSelect"
-      showGridlines
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
-      :rowsPerPageOptions="[5, 10, 20, 50]"
-      v-model:filters="filters"
-      responsiveLayout="scroll"
+      @row-select="onProductSelect"
     >
       <template #header>
         <div>
@@ -32,32 +32,34 @@
             :label="`${filter} ${Object.keys(filterOptions[filter])[0]} ${
               columns.find((c) => c.field === filter)?.type === 'date'
                 ? useDateFormat(
-                    filterOptions[filter][Object.keys(filterOptions[filter])[0] as string] ,
-                    'DD.MM.YYYY'
-                  ).value
+                  filterOptions[filter][Object.keys(filterOptions[filter])[0] as string] ,
+                  'DD.MM.YYYY'
+                ).value
                 : filterOptions[filter][Object.keys(filterOptions[filter])[0]]
             }`"
             removable
             @remove="removeFilter(filter)"
-          ></Chip>
+          />
           <Chip
             v-if="Object.keys(filterOptions).length > props.showMaxActiveFilter"
             :label="`+ ${
               Object.keys(filterOptions).length - props.showMaxActiveFilter
             } more`"
-          ></Chip>
+          />
         </div>
       </template>
       <template #empty> No records found </template>
       <Column
         v-for="cols in columns"
+        :key="cols.field"
         :field="cols.field"
         :header="cols.header"
-        :showAddButton="false"
-        :showFilterOperator="false"
-        :dataType="cols.type"
+        :show-add-button="false"
+        :show-filter-operator="false"
+        :data-type="cols.type"
         sortable
-        ><template #filter="{ filterModel }">
+      >
+        <template #filter="{ filterModel }">
           <InputText
             v-if="cols.type === 'text'"
             v-model="filterModel.value"
@@ -71,16 +73,18 @@
             :placeholder="`Search by ${cols.header}`"
           />
           <InputNumber
+            v-if="cols.type != 'date' && cols.type != 'text'"
             v-model="filterModel.value"
             class="p-column-filter"
-            :useGrouping="false"
+            :use-grouping="false"
             :format="false"
             :placeholder="`Search by ${cols.header}`"
-            v-if="cols.type != 'date' && cols.type != 'text'"
-          ></InputNumber>
+          />
         </template>
         <template #body="{ data }">
-          <div v-if="isLoading"><Skeleton></Skeleton></div>
+          <div v-if="isLoading">
+            <Skeleton />
+          </div>
           <div v-else>
             <div v-if="data && cols.type === 'date'">
               {{ useDateFormat(data[cols.field], "DD.MM.YYYY").value }}
@@ -88,18 +92,19 @@
             <div v-if="data && cols.format === 'link'">
               <router-link
                 :to="`/${cols.linkRoute}/${data[cols.linkKey as string]}`"
-                ><Chip
+              >
+                <Chip
                   :style="`${
                     cols.color ? 'background-color:' + cols.color + ';' : ''
                   }`"
                 >
                   {{ data[cols.field] }}
-                </Chip></router-link
-              >
+                </Chip>
+              </router-link>
             </div>
             <div
-              class="truncate"
               v-if="data && cols.format !== 'link' && cols.type !== 'date'"
+              class="truncate"
             >
               {{ data ? data[cols.field] : "" }}
             </div>
@@ -150,7 +155,7 @@ const activeFilters = computed(() => {
   return Object.keys(filterOptions.value).slice(-props.showMaxActiveFilter);
 });
 
-const data = ref(new Array(props.showRows));
+const values = ref(new Array(props.showRows));
 const rows = ref(props.showRows);
 
 onMounted(async () => {
@@ -212,7 +217,7 @@ const onFilter = async (event: any) => {
       filterOptions.value[x][filters[x].constraints[0].matchMode] =
         filters[x].constraints[0].value;
     } else {
-      filterOptions.value.hasOwnProperty(x)
+      Object.prototype.hasOwnProperty.call(filterOptions.value, x)
         ? delete filterOptions.value[x]
         : null;
     }
@@ -226,7 +231,7 @@ const onSort = async (event: any) => {
 
   sortOptions.value = [
     ...multiSortMeta.map((x: any) => {
-      let foo: any = {};
+      const foo: any = {};
       foo[x.field] = x.order > 0 ? "asc" : "desc";
       return foo;
     }),
@@ -243,11 +248,11 @@ const fetchData = async () => {
   try {
     isLoading.value = true;
 
-    data.value = await props.apiService.list(
+    values.value = await props.apiService.list(
       sortOptions.value,
       filterOptions.value,
       page.value,
-      rows.value
+      rows.value,
     );
     isLoading.value = false;
   } catch (e) {
@@ -257,7 +262,7 @@ const fetchData = async () => {
       detail: e,
       life: 5000,
     });
-    data.value = [];
+    values.value = [];
   }
   isLoading.value = false;
 };

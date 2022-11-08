@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto mt-8">
+  <div class="mx-auto mt-8 flex-1">
     <div
       class="card mx-[20%] flex flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl"
     >
@@ -11,35 +11,42 @@
       <Divider />
       <DataTable
         :value="orders"
-        showGridlines
-        :rowHover="true"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
-        :rowsPerPageOptions="[5, 10, 20, 50]"
+        show-gridlines
+        :row-hover="true"
+        current-page-report-template="Showing {first} to {last} of {totalRecords}"
+        :rows-per-page-options="[5, 10, 20, 50]"
         :paginator="true"
         :rows="rows"
-        :totalRecords="orders ? orders.length : 0"
-        responsiveLayout="scroll"
+        :total-records="orders ? orders.length : 0"
+        responsive-layout="scroll"
       >
         <Column
           v-for="col in columns"
+          :key="col.field"
           :field="col.field"
           :header="col.header"
-          :key="col.field"
         >
           <template #body="{ data }">
-            <div v-if="isLoading"><Skeleton></Skeleton></div>
+            <div v-if="isLoading">
+              <Skeleton />
+            </div>
             <div v-else>
               <div v-if="data && col.type === 'date'">
                 {{ useDateFormat(data[col.field], "DD.MM.YYYY").value }}
               </div>
-              <div v-else>{{ data ? data[col.field] : "" }}</div>
+              <div v-else>
+                {{ data ? data[col.field] : "" }}
+              </div>
             </div>
           </template>
         </Column>
-        <Column field="edit" header="">
+        <Column
+          field="edit"
+          header=""
+        >
           <template #body="slotProps">
             <div v-if="isLoading">
-              <Skeleton size="3rem"></Skeleton>
+              <Skeleton size="3rem" />
             </div>
             <div v-else>
               <Button
@@ -47,12 +54,17 @@
                 icon="pi pi-pencil"
                 class="p-button-warning"
                 @click="onButtonClick($event, slotProps.data)"
-              ></Button>
-            </div> </template
-        ></Column>
+              />
+            </div>
+          </template>
+        </Column>
       </DataTable>
-      <DynamicDialog :draggable="false" contentClass="test" id="test" />
-      <div></div>
+      <DynamicDialog
+        id="test"
+        :draggable="false"
+        content-class="test"
+      />
+      <div />
     </div>
   </div>
 </template>
@@ -99,7 +111,7 @@ const onButtonClick = (event: any, order: IAuftrag) => {
 
 onMounted(async () => {
   isLoading.value = true;
-  orders.value = await orderService.list(null, null);
+  orders.value = await orderService.list({}, {});
   orders.value = orders.value.map((value) => flatten(value));
 
   isLoading.value = false;
