@@ -2,20 +2,18 @@ version: "3.9"
 
 services:
   database:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    build: ./database
     container_name: database
     ports:
-      - 4000:4000
+      - 1433:1433
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Tromm3lh€ld€n
       - MSSQL_PID=Express
     volumes:
-      - /var/opt/mssql
-volumes:
-  database_volume:
-    driver: local
-    driver_opts:
-       o: bind
-       type: none
-       device: D:/Temp/Docker/database
+      - ./database:/var/opt/mssql
+      
+    
+      #hier Backend und Frontend einpflegen
+      #depends_on:
+      # - database
