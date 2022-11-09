@@ -70,6 +70,7 @@
             v-if="cols.type === 'date'"
             v-model="filterModel.value"
             class="p-column-filter"
+            date-format="dd.mm.yy"
             :placeholder="`Search by ${cols.header}`"
           />
           <InputNumber
@@ -111,6 +112,23 @@
           </div>
         </template>
       </Column>
+      <Column
+        v-if="props.allowEdit"
+        field="edit"
+      >
+        <template #body="slotProps">
+          <div v-if="isLoading">
+            <Skeleton size="3rem" />
+          </div>
+          <div v-else>
+            <Button
+              type="button"
+              icon="pi pi-pencil"
+              class="p-button-warning"
+              @click="onEditButton($event, slotProps.data)"
+            />
+          </div> </template
+      ></Column>
     </DataTable>
   </div>
 </template>
@@ -122,6 +140,7 @@ import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { useDateFormat } from "@vueuse/core";
 import { IFilter, ISort, IEntityTableColumns } from "@/types";
 import { useToast } from "primevue/usetoast";
+import { convertFilterOperator } from "@/util/FilterOperator";
 
 const isLoading = ref(false);
 const page = ref(0);
@@ -130,7 +149,7 @@ const toast = useToast();
 const filterOptions = ref<IFilter>({});
 const filters = ref();
 
-const emit = defineEmits(["selectRow"]);
+const emit = defineEmits(["selectRow", "editRow"]);
 
 const props = defineProps({
   columns: {
@@ -148,6 +167,10 @@ const props = defineProps({
   showMaxActiveFilter: {
     type: Number,
     default: 3,
+  },
+  allowEdit: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -208,14 +231,24 @@ const onPage = async (event: any) => {
   await fetchData();
 };
 
+const onEditButton = (event: any, data: any) => {
+  emit("editRow", data);
+};
+
 const onFilter = async (event: any) => {
   const { filters } = event;
 
   Object.keys(filters).forEach((x) => {
+    console.log(filters[x].constraints[0].value);
+
     if (filters[x].constraints[0].value) {
       filterOptions.value[x] = {};
-      filterOptions.value[x][filters[x].constraints[0].matchMode] =
-        filters[x].constraints[0].value;
+      if (filters[x].constraints[0].value instanceof Date) {
+        filters[x].constraints[0].value.setUTCHours(0, 0, 0, 0);
+      }
+      filterOptions.value[x][
+        convertFilterOperator(filters[x].constraints[0].matchMode)
+      ] = filters[x].constraints[0].value;
     } else {
       Object.prototype.hasOwnProperty.call(filterOptions.value, x)
         ? delete filterOptions.value[x]

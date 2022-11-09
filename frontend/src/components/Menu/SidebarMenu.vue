@@ -118,7 +118,7 @@ const menuItems = ref([
         command: () => {
           onOpenTab("masterData");
         },
-        to: "/employees",
+        to: "/masterdata/employees",
         icon: "pi pi-id-card",
       },
       {
@@ -127,7 +127,7 @@ const menuItems = ref([
         command: () => {
           onOpenTab("masterData");
         },
-        to: "/customers",
+        to: "/masterdata/customers",
         icon: "pi pi-user",
       },
       {
@@ -136,7 +136,7 @@ const menuItems = ref([
         command: () => {
           onOpenTab("masterData");
         },
-        to: "/products",
+        to: "/masterdata/products",
         icon: "pi pi-tags",
       },
       {
@@ -145,7 +145,7 @@ const menuItems = ref([
           onOpenTab("masterData");
         },
         label: "Ersatzteile",
-        to: "/spareparts",
+        to: "/masterdata/spareparts",
         icon: "pi pi-tag",
       },
       {
@@ -154,7 +154,7 @@ const menuItems = ref([
           onOpenTab("masterData");
         },
         label: "Niederlassung",
-        to: "/branch",
+        to: "/masterdata/branches",
         icon: "pi pi-home",
       },
     ],

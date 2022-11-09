@@ -19,32 +19,6 @@ export const routes = [
     path: "/orders/plan",
     component: () => import("@/views/Orders/PlanOrder.vue"),
   },
-  {
-    path: "/order/:id",
-    component: () => import("@/views/Orders/CompleteOrder.vue"),
-  },
-  //------------------------------------------------------------------
-  //Employees
-  //------------------------------------------------------------------
-  {
-    path: "/employees",
-    component: () => import("@/views/MasterData/Employees.vue"),
-  },
-  {
-    path: "/employees/:id",
-    component: () => import("@/views/MasterData/Employees.vue"),
-  },
-  //------------------------------------------------------------------
-  //Customers
-  //------------------------------------------------------------------
-  {
-    path: "/customers",
-    component: () => import("@/views/MasterData/Customers.vue"),
-  },
-  {
-    path: "/customers/:id",
-    component: () => import("@/views/MasterData/Customers.vue"),
-  },
   //------------------------------------------------------------------
   //Dashboard
   //------------------------------------------------------------------
@@ -57,13 +31,25 @@ export const routes = [
     component: () => import("@/views/Dashboard.vue"),
   },
   //------------------------------------------------------------------
-  //Products
+  //Timeout
   //------------------------------------------------------------------
   {
     path: "/timeout",
     component: () => import("@/views/Timeout.vue"),
   },
   //------------------------------------------------------------------
+  //404
+  //------------------------------------------------------------------
+  {
+    path: "/404",
+    component: () => import("@/views/404.vue"),
+  },
+  //------------------------------------------------------------------
   //Products
   //------------------------------------------------------------------
+
+  {
+    path: "/masterdata/:entity/:id?",
+    component: () => import("@/views/MasterData.vue"),
+  },
 ];
