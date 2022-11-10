@@ -4,13 +4,13 @@ import { Runtype } from "runtypes";
 import { send } from "process";
 
 const prisma = new PrismaClient();
-
-export class CustomersController {
- async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-    try {
+ 
+export class SalesDataController {
+  async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+  
       const { sort, filter, page, rows } = req.body
-      console.log(req.body)
-      const allCustomers = await prisma.kunde.findMany(
+    
+      const allSalesData = await prisma.umsatzdaten.findMany(
         {
           take: rows , 
           skip: rows * page,
@@ -22,25 +22,34 @@ export class CustomersController {
           ]
           }
       );
-      if(allCustomers.length > 0) {
-        return res.status(200).json(allCustomers);
-      }
-      return res.status(500).send('Keine Kunden gefunden')
+        return res.status(200).json(allSalesData); 
+  }
+  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+      const { id } = req.params;
+
+      const salesData = await prisma.umsatzdaten.findUnique({
+        where: {
+          
+        },
+      });
+
+      return res.json(salesData);
     } catch (err) {
-       await prisma.$disconnect()
+      await prisma.$disconnect()
       return next(err);
     }
   }
   async delete(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       const { id } = req.params;
-      const customer = await prisma.kunde.delete({
+      const salesData = await prisma.umsatzdaten.delete({
         where: {
 
         },
       });
 
-      return res.json(customer);
+      return res.json(salesData);
     } catch (err) {
       await prisma.$disconnect()
       return next(err);
@@ -51,15 +60,16 @@ export class CustomersController {
       const { id } = req.params;
       console.log(req.body);
 
-      const { data }: { data: Prisma.KundeUpdateInput } = req.body;
+      const { data }: { data: Prisma.AuftragUpdateInput } = req.body;
 
-      const customer = await prisma.kunde.updateMany({
+      const salesData = await prisma.umsatzdaten.updateMany({
         data,
         where: {
+          
         },
       });
 
-      return res.json(customer);
+      return res.json(salesData);
     } catch (err) {
       await prisma.$disconnect()
       return next(err);
