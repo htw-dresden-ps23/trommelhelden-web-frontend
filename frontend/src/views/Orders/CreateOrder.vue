@@ -88,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-import EntityTable from "@/components/EntityTable.vue";
+import EntityTable from "@/components/Entity/EntityTable.vue";
 import Calendar from "primevue/calendar";
 import CustomerService from "@/api/services/Customers";
 import { IKunde, IAuftrag, IEntityTableColumns } from "@/types";

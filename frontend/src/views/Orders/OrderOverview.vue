@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import OrderService from "@/api/services/Order";
 
-import EntityTable from "@/components/EntityTable.vue";
+import EntityTable from "@/components/Entity/EntityTable.vue";
 import { IEntityTableColumns } from "@/types";
 
 const orderService = new OrderService();
@@ -37,32 +37,37 @@ const columns: IEntityTableColumns[] = [
   {
     field: "Aufnr",
     header: "Aufnr",
-    type: "text",
-    format: "link",
-    linkKey: "Aufnr",
-    linkRoute: "order",
+    type: "numeric",
+    create: false,
+    update: false,
   },
   {
     field: "MitID",
     header: "MitID",
+    type: "numeric",
+    create: false,
+    update: false,
     format: "link",
     linkKey: "MitID",
-    linkRoute: "employees",
+    linkRoute: "masterdata/employees",
     color: "#e4ff7a",
   },
   {
     field: "KunNr",
     header: "KunNr",
+    type: "numeric",
+    create: false,
+    update: false,
     format: "link",
     linkKey: "KunNr",
-    linkRoute: "customers",
+    linkRoute: "masterdata/customers",
     color: "#de8aff",
   },
   { field: "AufDat", header: "AufDat", type: "date" },
   { field: "ErlDat", header: "ErlDat", type: "date" },
   { field: "Dauer", header: "Dauer", type: "numeric" },
   { field: "Anfahrt", header: "Anfahrt", type: "numeric" },
-  { field: "Beschreibung", header: "Beschreibung" },
+  { field: "Beschreibung", header: "Beschreibung", type: "text" },
   { field: "Kunde.KunName", header: "Kundenname" },
 ];
 </script>

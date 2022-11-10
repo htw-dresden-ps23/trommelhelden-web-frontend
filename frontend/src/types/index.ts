@@ -170,12 +170,58 @@ interface IFilterValue {
 interface IEntityTableColumns {
   header: string;
   field: string;
-  type?: "text" | "date" | "numeric";
+  type?: "text" | "date" | "numeric" | "relation";
   format?: "link";
   linkKey?: string;
   linkRoute?: string;
   color?: string;
+  create?: boolean;
+  update?: boolean;
 }
+
+interface IMasterData {
+  name: string;
+  label: string;
+  resourceName: string;
+  fields: IMasterDataField[];
+  primaryKey: string;
+}
+
+interface IMasterDataField {
+  name: string;
+  label: string;
+  type: "text" | "date" | "numeric" | "relation";
+  relation?: IMasterDataFieldRelation;
+  format?: IMasterDataFieldFormat;
+  allowUpdate: boolean;
+  allowCreate: boolean;
+}
+interface IMasterDataFieldRelation {
+  name: string;
+  label: string;
+  resourceName: string;
+}
+interface IMasterDataFieldFormat {
+  color: string;
+}
+
+type TGenericService =
+  | IAuftrag
+  | IErsatzteil
+  | IGebiet
+  | IGeografie
+  | IKunde
+  | IMitarbeiter
+  | IMitarbeiterShop
+  | IMontage
+  | INiederlassung
+  | IPlandaten
+  | IProdukt
+  | IProduktkategorie
+  | IProduktsubkategorie
+  | IRechnung
+  | IUmsatzdaten
+  | Zeit;
 
 export {
   IAuftrag,
@@ -198,4 +244,7 @@ export {
   IFilter,
   IFilterValue,
   IEntityTableColumns,
+  IMasterData,
+  TGenericService,
+  IMasterDataField,
 };
