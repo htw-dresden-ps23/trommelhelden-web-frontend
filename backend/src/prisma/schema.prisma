@@ -6,6 +6,11 @@ generator dbml {
   provider = "prisma-dbml-generator"
 }
 
+generator jsonSchema {
+  provider = "prisma-json-schema-generator"
+  output = "../JsonSchema"
+}
+
 datasource db {
   provider = "sqlserver"
   url      = env("DATABASE_URL")
