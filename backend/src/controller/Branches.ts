@@ -80,4 +80,17 @@ export class BranchesController {
       return res.status(200);
 
   }
+  async create(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    const { data } = req.body;
+    if (!data) {
+      return res.sendStatus(400);
+    }
+      const {NLNr} = await prisma.niederlassung.create({
+        ...data 
+      });
+    
+
+      return res.status(200).json(NLNr);
+
+  }
 }

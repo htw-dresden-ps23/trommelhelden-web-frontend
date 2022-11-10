@@ -46,6 +46,7 @@ app.delete("/product/:id", productsController.delete);
 
 const branchesController = new BranchesController()
 app.get("/branches/:id", branchesController.get);
+app.post("/branches", branchesController.create);
 app.post("/branches", branchesController.list);
 app.patch("/branches/:id", branchesController.update);
 app.delete("/branches/:id", branchesController.delete);
