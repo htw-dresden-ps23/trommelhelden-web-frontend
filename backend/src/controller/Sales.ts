@@ -4,13 +4,13 @@ import { Runtype } from "runtypes";
 import { send } from "process";
 
 const prisma = new PrismaClient();
-
-export class OrdersController {
+ 
+export class SalesDataController {
   async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-    try {
+  
       const { sort, filter, page, rows } = req.body
-      console.log(req.body)
-      const allOrders = await prisma.auftrag.findMany(
+    
+      const allSalesData = await prisma.umsatzdaten.findMany(
         {
           take: rows , 
           skip: rows * page,
@@ -22,21 +22,20 @@ export class OrdersController {
           ]
           }
       );
-      if(allOrders.length > 0) {
-        return res.status(200).json(allOrders);
-      }
-      return res.status(500).send('Keine Aufträge gefunden')
-    } catch (err) {
-      await prisma.$disconnect()
-      return next(err);
-    }
+        return res.status(200).json(allSalesData); 
   }
-  async put(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const { data }: { data: Prisma.AuftragCreateInput } = req.body;
-      const allOrders = await prisma.auftrag.create({
-        data,});
-      } catch (err) {
+      const { id } = req.params;
+
+      const salesData = await prisma.umsatzdaten.findUnique({
+        where: {
+          
+        },
+      });
+
+      return res.json(salesData);
+    } catch (err) {
       await prisma.$disconnect()
       return next(err);
     }
@@ -44,13 +43,13 @@ export class OrdersController {
   async delete(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       const { id } = req.params;
-      const order = await prisma.auftrag.delete({
-        where: { 
-          
+      const salesData = await prisma.umsatzdaten.delete({
+        where: {
+
         },
       });
 
-      return res.json(order);
+      return res.json(salesData);
     } catch (err) {
       await prisma.$disconnect()
       return next(err);
@@ -63,12 +62,14 @@ export class OrdersController {
 
       const { data }: { data: Prisma.AuftragUpdateInput } = req.body;
 
-      const order = await prisma.auftrag.updateMany({
+      const salesData = await prisma.umsatzdaten.updateMany({
         data,
-        where: {  },
+        where: {
+          
+        },
       });
 
-      return res.json(order);
+      return res.json(salesData);
     } catch (err) {
       await prisma.$disconnect()
       return next(err);

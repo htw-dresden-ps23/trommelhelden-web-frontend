@@ -1,48 +1,59 @@
 import express, { Request, Response } from "express";
-import { listTables } from "./controller/index";
-import { OrdersController } from "./controller/auftrag";
-import { CustomersController } from "./controller/kunde";
-import { EmployeesController } from "./controller/mitarbeiter";
-import { SalesDataController } from "./controller/umsatzdaten";
-import { ProductsController } from "./controller/produkt";
+import { OrdersController } from "./controller/Orders";
+import { CustomersController } from "./controller/Customers";
+import { EmployeesController } from "./controller/Employees";
+import { ProductsController } from "./controller/Spareparts";
+import { BranchesController } from "./controller/Branches";
 import cors from "cors";
 import { prismaErrorMiddleware } from "./middleware";
+require('express-async-errors');
+
+import morgan from "morgan"
+
+
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(morgan('dev'))
+
 const port = 4000;
 
+
 const ordersController = new OrdersController();
+app.get("/orders/:id", ordersController.get);
 app.post("/orders", ordersController.list);
-app.put("/order/:id?", ordersController.put);
 app.patch("/order/:id", ordersController.update);
 app.delete("/order/:id", ordersController.delete);
 
 const customersController = new CustomersController();
+app.get("/customers/:id", customersController.get);
 app.post("/customers", customersController.list);
-// app.put("/customers", customersController.put);
 app.patch("/customer/:id", customersController.update);
 app.delete("/customer/:id", customersController.delete);
 
 const employeesController = new EmployeesController();
+app.get("/employees/:id", employeesController.get);
 app.post("/employees", employeesController.list);
-// app.get("/employees", employeesController.get);
 app.patch("/employee/:id", employeesController.update);
 app.delete("/employee/:id", employeesController.delete);
 
-const salesDataController = new SalesDataController();
-app.post("/sales", salesDataController.list);
-app.patch("/salesData/:id", salesDataController.update);
-app.delete("/salesData/:id", salesDataController.delete);
 
 const productsController = new ProductsController();
 app.post("/products", productsController.list);
 app.patch("/product/:id", productsController.update);
 app.delete("/product/:id", productsController.delete);
 
+const branchesController = new BranchesController()
+app.get("/branches/:id", branchesController.get);
+app.post("/branches", branchesController.create);
+app.post("/branches", branchesController.list);
+app.patch("/branches/:id", branchesController.update);
+app.delete("/branches/:id", branchesController.delete);
 
 app.use(prismaErrorMiddleware);
+
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

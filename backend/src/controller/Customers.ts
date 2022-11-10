@@ -7,9 +7,8 @@ const prisma = new PrismaClient();
 
 export class CustomersController {
  async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-    try {
+
       const { sort, filter, page, rows } = req.body
-      console.log(req.body)
       const allCustomers = await prisma.kunde.findMany(
         {
           take: rows , 
@@ -22,47 +21,55 @@ export class CustomersController {
           ]
           }
       );
-      if(allCustomers.length > 0) {
-        return res.status(200).json(allCustomers);
-      }
-      return res.status(500).send('Keine Kunden gefunden')
-    } catch (err) {
-       await prisma.$disconnect()
-      return next(err);
-    }
+      return res.status(200).json(allCustomers);
+ 
+  }
+  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+      const { id } = req.params;
+ 
+      const customer = await prisma.kunde.findUnique({
+        where: {
+          KunNr: Number(id)
+        },
+      });
+
+      return res.json(customer);
   }
   async delete(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-    try {
-      const { id } = req.params;
-      const customer = await prisma.kunde.delete({
-        where: {
+    const { id } = req.params;
+    const { ids } = req.body;
 
-        },
+    if (id) {
+      await prisma.kunde.delete({
+where: {
+  KunNr: Number(id)
+},
       });
-
-      return res.json(customer);
-    } catch (err) {
-      await prisma.$disconnect()
-      return next(err);
-    }
+} 
+if (ids) {
+      await prisma.kunde.deleteMany({
+where: {
+  KunNr: {
+          in:(ids.map((x:string)=>Number(x)))
+        }
+},
+});
+}
+return res.status(200);
   }
   async update(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-    try {
+ 
       const { id } = req.params;
-      console.log(req.body);
-
       const { data }: { data: Prisma.KundeUpdateInput } = req.body;
 
-      const customer = await prisma.kunde.updateMany({
+      await prisma.kunde.updateMany({
         data,
         where: {
+          KunNr: Number(id)
         },
       });
 
-      return res.json(customer);
-    } catch (err) {
-      await prisma.$disconnect()
-      return next(err);
-    }
+      return res.status(200);
+
   }
 }
