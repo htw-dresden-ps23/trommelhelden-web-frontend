@@ -2,7 +2,7 @@ import { IUmsatzdaten } from "@/types";
 import { BaseService } from ".";
 
 export default class SalesService extends BaseService<IUmsatzdaten> {
-  static tableName: string = "sales";
+  static tableName = "sales";
   constructor() {
     super(SalesService.tableName);
   }

@@ -1,5 +1,8 @@
 <template>
-  <div id="co" ref="el">
+  <div
+    id="co"
+    ref="el"
+  >
     <Divider />
     <div>Beschreibung:</div>
     <div>{{ order?.Beschreibung }}</div>
@@ -12,7 +15,7 @@
     </div>
 
     <Divider />
-    <div></div>
+    <div />
     <Button
       type="submit"
       icon="pi pi-check"
@@ -35,5 +38,7 @@ onMounted(() => {
   order.value = dialogRef.value.data.order;
 });
 
-const planOrder = async () => {};
+const planOrder = async () => {
+  // TODO implement
+};
 </script>

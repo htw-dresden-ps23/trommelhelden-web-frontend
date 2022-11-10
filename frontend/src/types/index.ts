@@ -1,4 +1,4 @@
-import { FilterMatchModeOptions } from "primevue/api";
+// import { FilterMatchModeOptions } from "primevue/api";
 
 interface IAuftrag {
   Aufnr: number;
@@ -170,12 +170,38 @@ interface IFilterValue {
 interface IEntityTableColumns {
   header: string;
   field: string;
-  type?: "text" | "date" | "numeric";
+  type?: "text" | "date" | "numeric" | "relation";
   format?: "link";
   linkKey?: string;
   linkRoute?: string;
   color?: string;
+  create?: boolean;
+  update?: boolean;
 }
+
+interface IMasterData {
+  name: string;
+  id: string;
+  columns: IEntityTableColumns[];
+}
+
+type TGenericService =
+  | IAuftrag
+  | IErsatzteil
+  | IGebiet
+  | IGeografie
+  | IKunde
+  | IMitarbeiter
+  | IMitarbeiterShop
+  | IMontage
+  | INiederlassung
+  | IPlandaten
+  | IProdukt
+  | IProduktkategorie
+  | IProduktsubkategorie
+  | IRechnung
+  | IUmsatzdaten
+  | Zeit;
 
 export {
   IAuftrag,
@@ -198,4 +224,6 @@ export {
   IFilter,
   IFilterValue,
   IEntityTableColumns,
+  IMasterData,
+  TGenericService,
 };

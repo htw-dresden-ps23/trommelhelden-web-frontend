@@ -1,4 +1,4 @@
-# Trommelhelden Webfrontend
+# trommelhelden-web-frontend
 
 ## Start Backend Dev Server
 
@@ -24,3 +24,15 @@ run `cd backend && npx prisma studio --schema=./src/prisma/schema.prisma`
 ### DB Schema
 
 ![Trommelhelden Schema](db_schema.png)
+
+# Docker_dev
+Server: 141.56.2.45
+
+.Start des Dockercontainers 
+
+Voraussetzung: Docker installiert, bei Windows evtl. WSL2
+
+PowerShell im Dockerverzeichnis öffnen
+
+docker build -t database .
+docker compose up 

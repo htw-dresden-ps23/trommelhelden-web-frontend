@@ -1,12 +1,7 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnPaste": true,
-  "editor.formatOnSave": true,
-  "editor.formatOnSaveMode": "file",
-  "tailwindCSS.includeLanguages": {
-    "plaintext": "html"
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
   },
-  "editor.quickSuggestions": {
-    "strings": true
-  }
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

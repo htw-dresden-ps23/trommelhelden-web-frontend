@@ -2,8 +2,8 @@
   <div class="flex max-h-full min-h-screen flex-col bg-[#ffffffe7]">
     <Header />
     <SidebarMenu />
-    <div class="container m-auto my-8 h-full">
-      <router-view></router-view>
+    <div class="container m-auto my-8 flex h-full flex-1 justify-center">
+      <router-view :key="$route.fullPath" />
     </div>
     <Toast />
     <ScrollTop />
@@ -11,8 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import Header from "@/components/Header.vue";
-import SidebarMenu from "./components/SidebarMenu.vue";
+import Header from "@/components/Menu/Header.vue";
+import SidebarMenu from "./components/Menu/SidebarMenu.vue";
 </script>
 
 <style>
