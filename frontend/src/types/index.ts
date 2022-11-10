@@ -181,8 +181,28 @@ interface IEntityTableColumns {
 
 interface IMasterData {
   name: string;
-  id: string;
-  columns: IEntityTableColumns[];
+  label: string;
+  resourceName: string;
+  fields: IMasterDataField[];
+  primaryKey: string;
+}
+
+interface IMasterDataField {
+  name: string;
+  label: string;
+  type: "text" | "date" | "numeric" | "relation";
+  relation?: IMasterDataFieldRelation;
+  format?: IMasterDataFieldFormat;
+  allowUpdate: boolean;
+  allowCreate: boolean;
+}
+interface IMasterDataFieldRelation {
+  name: string;
+  label: string;
+  resourceName: string;
+}
+interface IMasterDataFieldFormat {
+  color: string;
 }
 
 type TGenericService =
@@ -226,4 +246,5 @@ export {
   IEntityTableColumns,
   IMasterData,
   TGenericService,
+  IMasterDataField,
 };

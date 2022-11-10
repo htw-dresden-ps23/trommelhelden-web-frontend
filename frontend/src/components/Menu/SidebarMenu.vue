@@ -130,15 +130,7 @@ const menuItems = ref([
         to: "/masterdata/customers",
         icon: "pi pi-user",
       },
-      {
-        key: "2_2",
-        label: "Produkte",
-        command: () => {
-          onOpenTab("masterData");
-        },
-        to: "/masterdata/products",
-        icon: "pi pi-tags",
-      },
+
       {
         key: "2_2",
         command: () => {
@@ -146,7 +138,7 @@ const menuItems = ref([
         },
         label: "Ersatzteile",
         to: "/masterdata/spareparts",
-        icon: "pi pi-tag",
+        icon: "pi pi-tags",
       },
       {
         key: "2_2",

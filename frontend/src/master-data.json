@@ -1,0 +1,150 @@
+{
+  "name": "MasterData",
+  "entities": [
+    {
+      "name": "customers",
+      "label": "Kunden",
+      "resourceName": "customers",
+      "primaryKey": "KunNr",
+      "fields": [
+        {
+          "label": "Name",
+          "name": "KunName",
+          "type": "text",
+          "allowUpdate": true
+        },
+        {
+          "label": "Kunden Nr.",
+          "name": "KunNr",
+          "type": "numeric",
+          "allowUpdate": false
+        },
+        {
+          "label": "Ort",
+          "name": "KunOrt",
+          "type": "text",
+          "allowUpdate": true
+        },
+        {
+          "label": "Postleitzahl",
+          "name": "KunPLZ",
+          "type": "text",
+          "allowUpdate": true
+        },
+        {
+          "label": "Straße",
+          "name": "KunStrasse",
+          "type": "text",
+          "allowUpdate": true
+        }
+      ]
+    },
+    {
+      "name": "employees",
+      "label": "Mitarbeiter",
+      "resourceName": "employees",
+      "primaryKey": "MitID",
+      "fields": [
+        {
+          "label": "ID",
+          "name": "MitID",
+          "type": "text",
+          "allowUpdate": false
+        },
+        {
+          "label": "Vorname",
+          "name": "MitVorname",
+          "type": "text",
+          "allowUpdate": true
+        },
+        {
+          "label": "Nachname",
+          "name": "MitName",
+          "type": "text",
+          "allowUpdate": true
+        },
+        {
+          "label": "Stelle",
+          "name": "MitJob",
+          "type": "text",
+          "allowUpdate": true
+        },
+        {
+          "label": "Niederlassung",
+          "name": "NLNr",
+          "type": "relation",
+          "allowUpdate": true,
+          "relation": {
+            "resourceName": "branches",
+            "label": "Niederlassung",
+            "name": "branches"
+          }
+        },
+        {
+          "label": "Stundensatz",
+          "name": "MitStundensatz",
+          "type": "numeric",
+          "allowUpdate": true
+        }
+      ]
+    },
+    {
+      "name": "sprareparts",
+      "label": "Ersatzteile",
+      "primaryKey": "EtID",
+      "resourceName": "sprareparts",
+      "fields": [
+        {
+          "label": "ID",
+          "name": "EtID",
+          "type": "numeric",
+          "allowUpdate": false
+        },
+        {
+          "label": "Bezeichnung",
+          "name": "EtBezeichnung",
+          "type": "text",
+          "allowUpdate": true
+        },
+        {
+          "label": "Preis",
+          "name": "EtPreis",
+          "type": "numeric",
+          "allowUpdate": true
+        },
+        {
+          "label": "Anzahl auf Lager",
+          "name": "EtAnzLager",
+          "type": "numeric",
+          "allowUpdate": true
+        },
+        {
+          "label": "Hersteller",
+          "name": "EtHersteller",
+          "type": "text",
+          "allowUpdate": true
+        }
+      ]
+    },
+    {
+      "name": "branches",
+      "label": "Niederlassung",
+      "resourceName": "branches",
+      "primaryKey": "NLNr",
+      "fields": [
+        {
+          "label": "Nr",
+          "name": "NLNr",
+          "type": "numeric",
+          "allowUpdate": false
+        },
+        {
+          "label": "Ort",
+          "name": "Ort",
+          "type": "text",
+          "allowUpdate": true
+        }
+      ]
+    }
+  ]
+}

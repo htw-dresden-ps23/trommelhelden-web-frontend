@@ -30,7 +30,7 @@
             :key="filter"
             class="mr-2"
             :label="`${filter} ${Object.keys(filterOptions[filter])[0]} ${
-              columns.find((c) => c.field === filter)?.type === 'date'
+              columns.find((c) => c.name === filter)?.type === 'date'
                 ? useDateFormat(
                   filterOptions[filter][Object.keys(filterOptions[filter])[0] as string] ,
                   'DD.MM.YYYY'
@@ -50,10 +50,10 @@
       </template>
       <template #empty> No records found </template>
       <Column
-        v-for="cols in columns"
-        :key="cols.field"
-        :field="cols.field"
-        :header="cols.header"
+        v-for="cols in props.columns"
+        :key="cols.name"
+        :field="cols.name"
+        :header="cols.label"
         :show-add-button="false"
         :show-filter-operator="false"
         :data-type="cols.type"
@@ -64,14 +64,14 @@
             v-if="cols.type === 'text'"
             v-model="filterModel.value"
             class="p-column-filter"
-            :placeholder="`Search by s${cols.header}`"
+            :placeholder="`Search by s${cols.label}`"
           />
           <Calendar
             v-if="cols.type === 'date'"
             v-model="filterModel.value"
             class="p-column-filter"
             date-format="dd.mm.yy"
-            :placeholder="`Search by ${cols.header}`"
+            :placeholder="`Search by ${cols.label}`"
           />
           <InputNumber
             v-if="cols.type != 'date' && cols.type != 'text'"
@@ -79,7 +79,7 @@
             class="p-column-filter"
             :use-grouping="false"
             :format="false"
-            :placeholder="`Search by ${cols.header}`"
+            :placeholder="`Search by ${cols.label}`"
           />
         </template>
         <template #body="{ data }">
@@ -87,45 +87,40 @@
             <Skeleton />
           </div>
           <div v-else>
-            <div v-if="data && cols.type === 'date'">
-              {{ useDateFormat(data[cols.field], "DD.MM.YYYY").value }}
-            </div>
-            <div v-if="data && cols.format === 'link'">
-              <router-link
-                :to="`/${cols.linkRoute}/${data[cols.linkKey as string]}`"
-              >
-                <Chip
-                  :style="`${
-                    cols.color ? 'background-color:' + cols.color + ';' : ''
-                  }`"
-                >
-                  {{ data[cols.field] }}
-                </Chip>
-              </router-link>
-            </div>
             <div
-              v-if="data && cols.format !== 'link' && cols.type !== 'date'"
+              v-if="data && cols.type !== 'date'"
               class="truncate"
             >
-              {{ data ? data[cols.field] : "" }}
+              {{ data ? data[cols.name] : "" }}
             </div>
           </div>
         </template>
       </Column>
       <Column
-        v-if="props.allowEdit"
+        v-if="props.allowEdit || props.allowDelete"
         field="edit"
       >
         <template #body="slotProps">
           <div v-if="isLoading">
             <Skeleton size="3rem" />
           </div>
-          <div v-else>
+          <div
+            v-else
+            class="flex justify-around"
+          >
             <Button
+              v-if="props.allowEdit"
               type="button"
               icon="pi pi-pencil"
               class="p-button-warning"
               @click="onEditButton($event, slotProps.data)"
+            />
+            <Button
+              v-if="props.allowDelete"
+              type="button"
+              icon="pi pi-trash"
+              class="p-button-danger"
+              @click="onDelete($event, slotProps.data)"
             />
           </div> </template
       ></Column>
@@ -138,9 +133,17 @@ import Calendar from "primevue/calendar";
 import { computed, onMounted, PropType, ref } from "vue";
 import { FilterMatchMode, FilterOperator } from "primevue/api";
 import { useDateFormat } from "@vueuse/core";
-import { IFilter, ISort, IEntityTableColumns } from "@/types";
+import { IFilter, ISort, TGenericService, IMasterDataField } from "@/types";
 import { useToast } from "primevue/usetoast";
 import { convertFilterOperator } from "@/util/FilterOperator";
+import GenericService from "@/api/services/Generic";
+import Button from "primevue/button";
+import Column from "primevue/column";
+import DataTable from "primevue/datatable";
+import InputNumber from "primevue/inputnumber";
+import InputText from "primevue/inputtext";
+import Skeleton from "primevue/skeleton";
+import { router } from "@/router";
 
 const isLoading = ref(false);
 const page = ref(0);
@@ -149,15 +152,15 @@ const toast = useToast();
 const filterOptions = ref<IFilter>({});
 const filters = ref();
 
-const emit = defineEmits(["selectRow", "editRow"]);
+const emit = defineEmits(["selectRow"]);
 
 const props = defineProps({
   columns: {
-    type: Object as PropType<IEntityTableColumns[]>,
+    type: Object as PropType<IMasterDataField[]>,
     required: true,
   },
-  apiService: {
-    type: Object,
+  resourceName: {
+    type: String,
     required: true,
   },
   showRows: {
@@ -172,14 +175,30 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  allowDelete: {
+    type: Boolean,
+    default: false,
+  },
+  primaryKey: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
 });
+
+const service = new GenericService<TGenericService>(
+  props.resourceName as string,
+);
+
+const values = ref(new Array(props.showRows));
+const rows = ref(props.showRows);
 
 const activeFilters = computed(() => {
   return Object.keys(filterOptions.value).slice(-props.showMaxActiveFilter);
 });
-
-const values = ref(new Array(props.showRows));
-const rows = ref(props.showRows);
 
 onMounted(async () => {
   await fetchData();
@@ -191,26 +210,26 @@ const createFilters = (columns: any) => {
 
   columns.forEach((col: any) => {
     if (col.type === "text") {
-      ret[col.field] = {
+      ret[col.name] = {
         operator: FilterOperator.AND,
         constraints: [{ matchMode: FilterMatchMode.CONTAINS, value: null }],
       };
     }
     if (col.type === "numeric") {
-      ret[col.field] = {
+      ret[col.name] = {
         operator: FilterOperator.AND,
         constraints: [{ matchMode: FilterMatchMode.EQUALS, value: null }],
       };
     }
     if (col.type === "date") {
-      ret[col.field] = {
+      ret[col.name] = {
         operator: FilterOperator.AND,
         constraints: [{ matchMode: FilterMatchMode.DATE_IS, value: null }],
       };
     }
 
     if (!Object.hasOwn(col, "type")) {
-      ret[col.field] = {
+      ret[col.name] = {
         operator: FilterOperator.AND,
         constraints: [{ matchMode: FilterMatchMode.CONTAINS, value: null }],
       };
@@ -232,7 +251,25 @@ const onPage = async (event: any) => {
 };
 
 const onEditButton = (event: any, data: any) => {
-  emit("editRow", data);
+  console.log(data);
+  console.log(props.primaryKey);
+  router.push({
+    name: "Single" + props.name,
+    params: { id: data[props.primaryKey] },
+  });
+};
+
+const onDelete = async ($event: Event, data: any) => {
+  await service.delete(data[props.primaryKey]);
+  await fetchData();
+  toast.add({
+    severity: "success",
+    summary: "Success",
+    detail: `Data deleted successfully Value with ${props.primaryKey}: ${
+      data[props.primaryKey]
+    }`,
+    life: 3000,
+  });
 };
 
 const onFilter = async (event: any) => {
@@ -281,7 +318,7 @@ const fetchData = async () => {
   try {
     isLoading.value = true;
 
-    values.value = await props.apiService.list(
+    values.value = await service.list(
       sortOptions.value,
       filterOptions.value,
       page.value,

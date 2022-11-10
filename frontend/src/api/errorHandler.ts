@@ -8,7 +8,7 @@ export const timeOutErrorHandler = (error: AxiosError) => {
     return Promise.reject(error);
   }
   if (error.response?.status === 404) {
-    // router.push("/404");
+    router.push("/404");
     return Promise.reject(error);
   }
 

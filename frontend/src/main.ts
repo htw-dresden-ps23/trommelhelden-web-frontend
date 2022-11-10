@@ -1,12 +1,12 @@
-import { createApp } from "vue";
 import { createPinia } from "pinia";
+import PrimeVue from "primevue/config";
+import { createApp } from "vue";
 import App from "./App.vue";
 import "./index.css";
-import PrimeVue from "primevue/config";
 
-import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup"; //optional for column grouping
+import DataTable from "primevue/datatable";
 import Row from "primevue/row";
 // import "./assets/_theme.css";
 
@@ -14,27 +14,29 @@ import "primevue/resources/primevue.min.css";
 import "primevue/resources/themes/tailwind-light/theme.css";
 
 import "primeicons/primeicons.css";
-import Sidebar from "primevue/sidebar";
-import Button from "primevue/button";
-import PanelMenu from "primevue/panelmenu";
 import Avatar from "primevue/avatar";
 import AvatarGroup from "primevue/avatargroup";
-import Textarea from "primevue/textarea";
-import Divider from "primevue/divider";
+import Button from "primevue/button";
 import Calendar from "primevue/calendar";
+import Card from "primevue/card";
 import Chip from "primevue/chip";
-import InputText from "primevue/inputtext";
+import Divider from "primevue/divider";
 import DynamicDialog from "primevue/dynamicdialog";
 import InputNumber from "primevue/inputnumber";
+import InputText from "primevue/inputtext";
+import PanelMenu from "primevue/panelmenu";
+import ScrollTop from "primevue/scrolltop";
+import Sidebar from "primevue/sidebar";
+import Skeleton from "primevue/skeleton";
+import Textarea from "primevue/textarea";
 import Toast from "primevue/toast";
 import ToastService from "primevue/toastservice";
-import Card from "primevue/card";
-import ScrollTop from "primevue/scrolltop";
-import Skeleton from "primevue/skeleton";
 
-import OverlayPanel from "primevue/overlaypanel";
 import DialogService from "primevue/dialogservice";
+import OverlayPanel from "primevue/overlaypanel";
 import { router } from "./router";
+
+console.log(router.getRoutes());
 
 const app = createApp(App);
 const pinia = createPinia();
