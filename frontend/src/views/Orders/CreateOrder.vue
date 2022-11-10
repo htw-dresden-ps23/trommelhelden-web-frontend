@@ -57,7 +57,8 @@
         >
           <EntityTable
             :show-rows="5"
-            :api-service="customerService"
+            :primary-key="'KunNr'"
+            :resource-name="'customers'"
             :columns="columns"
             @select-row="onSelectCustomer"
           />
@@ -136,30 +137,30 @@ const createOrder = async () => {
   }
 };
 
-const columns: IEntityTableColumns[] = [
+const columns = [
   {
-    header: "Name",
-    field: "KunName",
+    label: "Name",
+    name: "KunName",
     type: "text",
   },
   {
-    header: "Kunden Nr.",
-    field: "KunNr",
+    helabelader: "Kunden Nr.",
+    name: "KunNr",
     type: "numeric",
   },
   {
-    header: "Ort",
-    field: "KunOrt",
+    label: "Ort",
+    name: "KunOrt",
     type: "text",
   },
   {
-    header: "Postleitzahl",
-    field: "KunPLZ",
+    label: "Postleitzahl",
+    name: "KunPLZ",
     type: "text",
   },
   {
-    header: "Straße",
-    field: "KunStrasse",
+    label: "Straße",
+    name: "KunStrasse",
     type: "text",
   },
 ];

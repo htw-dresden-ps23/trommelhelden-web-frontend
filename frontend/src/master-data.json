@@ -89,10 +89,10 @@
       ]
     },
     {
-      "name": "sprareparts",
+      "name": "spareparts",
       "label": "Ersatzteile",
       "primaryKey": "EtID",
-      "resourceName": "sprareparts",
+      "resourceName": "spareparts",
       "fields": [
         {
           "label": "ID",
