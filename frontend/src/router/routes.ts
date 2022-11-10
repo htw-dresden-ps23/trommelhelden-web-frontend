@@ -42,14 +42,15 @@ export const routes = [
   //------------------------------------------------------------------
   {
     path: "/404",
+    name: "404",
     component: () => import("@/views/404.vue"),
   },
   //------------------------------------------------------------------
-  //Products
+  //Masterdata
   //------------------------------------------------------------------
 
-  {
-    path: "/masterdata/:entity/:id?",
-    component: () => import("@/views/MasterData.vue"),
-  },
+  // {
+  //   path: "/masterdata/:entity/:id?",
+  //   component: () => import("@/views/MasterData.vue"),
+  // },
 ];

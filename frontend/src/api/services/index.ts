@@ -11,7 +11,7 @@ interface IWrite<T> {
 interface IRead<T> {
   get(id: string): Promise<T>;
   list(
-    sort: ISort | null,
+    sort: ISort[] | null,
     filter: IFilter | null,
     page: number,
     rows: number,
@@ -37,17 +37,24 @@ export abstract class BaseService<T> implements IWrite<T>, IRead<T> {
   }
 
   async create(item: T): Promise<boolean> {
-    return (await this._axiosInstance.put(`/${this._tableName}`, item)).data;
+    return (
+      await this._axiosInstance.put(`/${this._tableName}`, {
+        data: { ...item },
+      })
+    ).data;
   }
   async update(id: string, item: T): Promise<boolean> {
-    return (await this._axiosInstance.patch(`/${this._tableName}/${id}`, item))
-      .data;
+    return (
+      await this._axiosInstance.patch(`/${this._tableName}/${id}`, {
+        data: { ...item },
+      })
+    ).data;
   }
   async delete(id: string): Promise<boolean> {
     return (await this._axiosInstance.delete(`/${this._tableName}/${id}`)).data;
   }
   async list(
-    sort: ISort | null,
+    sort: ISort[] | null,
     filter: IFilter | null,
     page = 0,
     rows: number = BaseService.rows,

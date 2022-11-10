@@ -36,9 +36,10 @@ app.patch("/employees/:id", employeesController.update);
 app.delete("/employees/:id", employeesController.delete);
 
 const productsController = new ProductsController();
-app.post("/products", productsController.list);
-app.patch("/product/:id", productsController.update);
-app.delete("/product/:id", productsController.delete);
+app.get("/spareparts/:id", productsController.get);
+app.post("/spareparts", productsController.list);
+app.patch("/spareparts/:id", productsController.update);
+app.delete("/spareparts/:id", productsController.delete);
 
 const branchesController = new BranchesController();
 app.get("/branches/:id", branchesController.get);
