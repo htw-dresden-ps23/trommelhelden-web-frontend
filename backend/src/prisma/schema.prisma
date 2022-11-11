@@ -97,7 +97,7 @@ model Geografie {
 }
 
 model Kunde {
-  KunNr      Int        @id(map: "PK__Kunde__B067D81D772B141B")
+  KunNr      Int        @id(map: "PK__Kunde__B067D81D772B141B") @default(autoincrement())
   KunName    String     @db.VarChar(20)
   KunOrt     String     @db.VarChar(20)
   KunPLZ     String     @db.Char(5)
@@ -150,7 +150,7 @@ model Montage_Protokoll {
 }
 
 model Niederlassung {
-  NLNr        Int           @id(map: "PK__Niederla__E26A7F379C157EC8")
+  NLNr        Int           @id(map: "PK__Niederla__E26A7F379C157EC8") @default(autoincrement())
   Ort         String?       @db.VarChar(50)
   Gebiet      Gebiet[]
   Mitarbeiter Mitarbeiter[]

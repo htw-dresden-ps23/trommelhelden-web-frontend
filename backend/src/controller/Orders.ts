@@ -80,4 +80,19 @@ export class OrdersController {
 
     return res.sendStatus(200);
   }
+  async create(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    const { data } = req.body;
+    if (!data) {
+      return res.sendStatus(400);
+    }
+    const { Aufnr } = await prisma.auftrag.create({
+      data,
+    });
+
+    return res.status(200).json(Aufnr);
+  }
 }

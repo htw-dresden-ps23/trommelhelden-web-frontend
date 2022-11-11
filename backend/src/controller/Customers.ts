@@ -82,4 +82,19 @@ export class CustomersController {
 
     return res.sendStatus(200);
   }
+  async create(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    const { data } = req.body;
+    if (!data) {
+      return res.sendStatus(400);
+    }
+    const { KunNr } = await prisma.kunde.create({
+      data,
+    });
+
+    return res.status(200).json(KunNr);
+  }
 }
