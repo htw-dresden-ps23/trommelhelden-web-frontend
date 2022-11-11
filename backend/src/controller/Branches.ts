@@ -93,7 +93,7 @@ export class BranchesController {
       return res.sendStatus(400);
     }
     const { NLNr } = await prisma.niederlassung.create({
-      ...data,
+      data,
     });
 
     return res.status(200).json(NLNr);

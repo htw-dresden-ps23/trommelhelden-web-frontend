@@ -5,7 +5,7 @@ import { Runtype } from "runtypes";
 
 const prisma = new PrismaClient();
 
-export class ProductsController {
+export class SparepartsController {
   async list(
     req: Request,
     res: Response,
@@ -80,5 +80,20 @@ export class ProductsController {
     });
 
     return res.sendStatus(200);
+  }
+  async create(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    const { data } = req.body;
+    if (!data) {
+      return res.sendStatus(400);
+    }
+    const { EtID } = await prisma.ersatzteil.create({
+      data,
+    });
+
+    return res.status(200).json(EtID);
   }
 }
