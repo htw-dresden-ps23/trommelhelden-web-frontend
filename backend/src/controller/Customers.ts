@@ -12,15 +12,28 @@ export class CustomersController {
     next: NextFunction
   ): Promise<Response | void> {
     const { sort, filter, page, rows } = req.body;
+    const { getCount } = req.query;
+    let count;
+
+    if (getCount) {
+      count = await prisma.kunde.count({
+        where: {
+          ...filter,
+        },
+      });
+    }
+
     const allCustomers = await prisma.kunde.findMany({
       take: rows,
-      skip: rows * page,
+      skip: page,
       where: {
         ...filter,
       },
+
       orderBy: [...sort],
     });
-    return res.status(200).json(allCustomers);
+
+    return res.status(200).json({ data: allCustomers, count });
   }
   async get(
     req: Request,

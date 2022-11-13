@@ -3,7 +3,7 @@
 //// ------------------------------------------------------
 
 Table Auftrag {
-  Aufnr Int [pk]
+  Aufnr Int [pk, increment]
   MitID String
   KunNr Int [not null]
   AufDat DateTime [not null]

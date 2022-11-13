@@ -12,16 +12,25 @@ export class SparepartsController {
     next: NextFunction
   ): Promise<Response | void> {
     const { sort, filter, page, rows } = req.body;
+    const { getCount } = req.query;
+    let count;
 
+    if (getCount) {
+      count = await prisma.kunde.count({
+        where: {
+          ...filter,
+        },
+      });
+    }
     const allSpareparts = await prisma.ersatzteil.findMany({
       take: rows,
-      skip: rows * page,
+      skip: page,
       where: {
         ...filter,
       },
       orderBy: [...sort],
     });
-    return res.status(200).json(allSpareparts);
+    return res.status(200).json({ data: allSpareparts, count });
   }
   async get(
     req: Request,

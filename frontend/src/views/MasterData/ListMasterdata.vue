@@ -27,6 +27,7 @@
       :allow-delete="true"
       @edit-row="onEditRow"
     />
+    <ConfirmDialog></ConfirmDialog>
   </div>
 </template>
 
