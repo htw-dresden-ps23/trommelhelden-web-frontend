@@ -2,8 +2,6 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import { send } from "process";
 import { Runtype } from "runtypes";
-import { assert, Describe, object } from "superstruct";
-
 const prisma = new PrismaClient();
 
 export class BranchesController {

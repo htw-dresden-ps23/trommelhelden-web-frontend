@@ -2,6 +2,7 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import { send } from "process";
 import { Runtype } from "runtypes";
+import { uuid } from "uuidv4";
 
 const prisma = new PrismaClient();
 
@@ -90,8 +91,11 @@ export class EmployeesController {
     if (!data) {
       return res.sendStatus(400);
     }
+
+    console.log(uuid().slice(0, 3));
+
     const { MitID } = await prisma.mitarbeiter.create({
-      data,
+      data: { ...data, MitID: uuid().slice(0, 3) },
     });
 
     return res.status(200).json(MitID);

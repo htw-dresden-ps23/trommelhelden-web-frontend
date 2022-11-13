@@ -91,7 +91,19 @@
               v-if="data && cols.type !== 'date'"
               class="truncate"
             >
-              {{ data ? data[cols.name] : "" }}
+              {{ data[cols.name] }}
+            </div>
+            <div
+              v-else
+              class=""
+            >
+              {{
+                data
+                  ? useDateFormat(data[cols.name], "DD.MM.YYYY", {
+                      locales: "de-DE",
+                    }).value
+                  : ""
+              }}
             </div>
           </div>
         </template>

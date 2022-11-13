@@ -1,9 +1,12 @@
 <template>
-  <div class="h-full w-fit rounded-xl bg-white py-8 px-[10%] shadow-2xl">
+  <div
+    v-if="!isLoading"
+    class="h-full w-fit rounded-xl bg-white py-8 px-[10%] shadow-2xl"
+  >
     <h1
       class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
     >
-      {{ props.label }} | ID: {{ data[primaryKey] }}
+      {{ props.label }} | {{ data[primaryKey] }}
     </h1>
     <div
       class="col-span-1 grid grid-cols-1 justify-items-center gap-x-4 gap-y-6 py-8"
@@ -27,8 +30,18 @@
           class="w-full"
           :placeholder="field.name"
         ></InputNumber>
+        <Calendar
+          v-if="field.type === 'date'"
+          v-model="data[field.name]"
+          date-format="dd.mm.yy"
+        ></Calendar>
         <div v-if="field.type === 'relation'">
-          <EntityDropdown :table-name="field.tableName" />
+          <EntityDropdown
+            v-model="data[field.name]"
+            :resource-name="field.relation.resourceName"
+            :label-key="field.relation.labelKey"
+            :value-key="field.relation.valueKey"
+          />
         </div>
       </span>
     </div>
@@ -45,16 +58,27 @@
         @click="onUpdate"
       />
     </div>
+    <ConfirmDialog></ConfirmDialog>
   </div>
 </template>
 
 <script setup lang="ts">
+import ConfirmDialog from "primevue/confirmdialog";
+
+import EntityDropdown from "@/components/Entity/EntityDropdown.vue";
+import Calendar from "primevue/calendar";
+import { useConfirm } from "primevue/useconfirm";
+
 import GenericService from "@/api/services/Generic";
 import { router } from "@/router";
 import { TGenericService } from "@/types";
 import { useToast } from "primevue/usetoast";
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
+
+const confirm = useConfirm();
+
+const isLoading = ref(false);
 const data: any = ref({});
 const route = useRoute();
 const toast = useToast();
@@ -71,7 +95,9 @@ const service = new GenericService<TGenericService>(
 );
 
 onMounted(async () => {
+  isLoading.value = true;
   data.value = await service.get(route.params.id as string);
+  isLoading.value = false;
 });
 
 const onUpdate = async () => {
@@ -85,14 +111,21 @@ const onUpdate = async () => {
 };
 
 const onDelete = async () => {
-  await service.delete(route.params.id as string);
-  toast.add({
-    severity: "success",
-    summary: "Success",
-    detail: `Successfully deleted ${props.label} with ${props.primaryKey} ${route.params.id}`,
-    life: 5000,
+  confirm.require({
+    message: `Are you sure you want to delete the item?`,
+    header: "Confirmation",
+    icon: "pi pi-exclamation-triangle",
+    accept: async () => {
+      await service.delete(route.params.id as string);
+      toast.add({
+        severity: "success",
+        summary: "Success",
+        detail: `Successfully deleted ${props.label} with ${props.primaryKey} ${route.params.id}`,
+        life: 5000,
+      });
+      router.push({ name: props.name });
+    },
   });
-  router.push({ name: props.name });
 };
 </script>
 

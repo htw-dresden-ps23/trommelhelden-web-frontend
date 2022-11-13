@@ -6,6 +6,7 @@ import "./index.css";
 
 import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup"; //optional for column grouping
+import ConfirmationService from "primevue/confirmationservice";
 import DataTable from "primevue/datatable";
 import Row from "primevue/row";
 // import "./assets/_theme.css";
@@ -15,6 +16,8 @@ import "primevue/resources/themes/tailwind-light/theme.css";
 
 import "primeicons/primeicons.css";
 import Avatar from "primevue/avatar";
+import Dropdown from "primevue/dropdown";
+
 import AvatarGroup from "primevue/avatargroup";
 import Button from "primevue/button";
 import Calendar from "primevue/calendar";
@@ -48,9 +51,8 @@ app.component("AvatarGroup", AvatarGroup);
 app.component("Divider", Divider);
 app.component("ScrollTop", ScrollTop);
 app.component("Skeleton", Skeleton);
-
+app.component("Dropdown", Dropdown);
 app.component("Button", Button);
-
 app.component("Sidebar", Sidebar);
 app.component("PanelMenu", PanelMenu);
 app.component("InputText", InputText);
@@ -67,6 +69,7 @@ app.component("OverlayPanel", OverlayPanel);
 app.component("Calendar ", Calendar);
 app.component("Chip ", Chip);
 
+app.use(ConfirmationService);
 app.use(router);
 app.use(PrimeVue, { ripple: true });
 app.use(DialogService);
