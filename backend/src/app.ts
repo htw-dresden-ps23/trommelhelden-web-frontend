@@ -21,7 +21,7 @@ const ordersController = new OrdersController();
 app.get("/orders/:id", ordersController.get);
 app.post("/orders", ordersController.list);
 app.put("/orders", ordersController.create);
-app.patch("/order/:id", ordersController.update);
+app.patch("/orders/:id", ordersController.update);
 app.delete("/order/:id", ordersController.delete);
 
 const customersController = new CustomersController();

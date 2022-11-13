@@ -17,33 +17,32 @@
       </div>
       <Divider />
       <EntityTable
-        :api-service="orderService"
+        name="Aufträge"
+        primary-key="Aufnr"
+        :show-rows="50"
         :columns="columns"
-        :show-max-active-filter="5"
+        resource-name="orders"
+        :allow-edit="false"
+        :allow-delete="false"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import OrderService from "@/api/services/Order";
-
 import EntityTable from "@/components/Entity/EntityTable.vue";
-import { IEntityTableColumns } from "@/types";
 
-const orderService = new OrderService();
-
-const columns: IEntityTableColumns[] = [
+const columns = [
   {
-    field: "Aufnr",
-    header: "Aufnr",
+    name: "Aufnr",
+    label: "Aufnr",
     type: "numeric",
     create: false,
     update: false,
   },
   {
-    field: "MitID",
-    header: "MitID",
+    name: "MitID",
+    label: "MitID",
     type: "numeric",
     create: false,
     update: false,
@@ -53,8 +52,8 @@ const columns: IEntityTableColumns[] = [
     color: "#e4ff7a",
   },
   {
-    field: "KunNr",
-    header: "KunNr",
+    name: "KunNr",
+    label: "KunNr",
     type: "numeric",
     create: false,
     update: false,
@@ -63,12 +62,12 @@ const columns: IEntityTableColumns[] = [
     linkRoute: "masterdata/customers",
     color: "#de8aff",
   },
-  { field: "AufDat", header: "AufDat", type: "date" },
-  { field: "ErlDat", header: "ErlDat", type: "date" },
-  { field: "Dauer", header: "Dauer", type: "numeric" },
-  { field: "Anfahrt", header: "Anfahrt", type: "numeric" },
-  { field: "Beschreibung", header: "Beschreibung", type: "text" },
-  { field: "Kunde.KunName", header: "Kundenname" },
+  { name: "AufDat", label: "AufDat", type: "date" },
+  { name: "ErlDat", label: "ErlDat", type: "date" },
+  { name: "Dauer", label: "Dauer", type: "numeric" },
+  { name: "Anfahrt", label: "Anfahrt", type: "numeric" },
+  { name: "Beschreibung", label: "Beschreibung", type: "text" },
+  { name: "Kunde.KunName", label: "Kundenname" },
 ];
 </script>
 

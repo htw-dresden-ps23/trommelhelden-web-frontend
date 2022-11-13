@@ -17,7 +17,7 @@ datasource db {
 }
 
 model Auftrag {
-  Aufnr        Int          @id(map: "PK__Auftrag__D56A0E13A096AE56")
+  Aufnr        Int          @id(map: "PK__Auftrag__D56A0E13A096AE56") @default(autoincrement())
   MitID        String?      @db.Char(3)
   KunNr        Int
   AufDat       DateTime     @default(dbgenerated("CONVERT([date],getdate())"), map: "df_Auftragsdatum") @db.Date

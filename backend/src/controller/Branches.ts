@@ -11,16 +11,26 @@ export class BranchesController {
     next: NextFunction
   ): Promise<Response | void> {
     const { sort, filter, page, rows } = req.body;
+    const { getCount } = req.query;
+    let count;
+
+    if (getCount) {
+      count = await prisma.niederlassung.count({
+        where: {
+          ...filter,
+        },
+      });
+    }
 
     const alleBranches = await prisma.niederlassung.findMany({
       take: rows,
-      skip: rows * page,
+      skip: page,
       where: {
         ...filter,
       },
       orderBy: [...sort],
     });
-    return res.status(200).json(alleBranches);
+    return res.status(200).json({ data: alleBranches, count });
   }
   async get(
     req: Request,

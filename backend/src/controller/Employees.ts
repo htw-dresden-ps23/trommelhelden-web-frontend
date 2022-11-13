@@ -13,16 +13,25 @@ export class EmployeesController {
     next: NextFunction
   ): Promise<Response | void> {
     const { sort, filter, page, rows } = req.body;
+    const { getCount } = req.query;
+    let count;
 
+    if (getCount) {
+      count = await prisma.mitarbeiter.count({
+        where: {
+          ...filter,
+        },
+      });
+    }
     const allEmployees = await prisma.mitarbeiter.findMany({
       take: rows,
-      skip: rows * page,
+      skip: page,
       where: {
         ...filter,
       },
       orderBy: [...sort],
     });
-    return res.status(200).json(allEmployees);
+    return res.status(200).json({ data: allEmployees, count });
   }
   async get(
     req: Request,

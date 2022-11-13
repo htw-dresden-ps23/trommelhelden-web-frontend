@@ -58,14 +58,46 @@ export abstract class BaseService<T> implements IWrite<T>, IRead<T> {
     filter: IFilter | null,
     page = 0,
     rows: number = BaseService.rows,
+    optParams?: any,
   ): Promise<T[]> {
     return (
-      await this._axiosInstance.post(`/${this._tableName}`, {
-        sort,
-        filter,
-        page,
-        rows,
-      })
+      await this._axiosInstance.post(
+        `/${this._tableName}`,
+        {
+          sort,
+          filter,
+          page,
+          rows,
+        },
+        {
+          params: optParams,
+        },
+      )
+    ).data.data;
+  }
+  async listAndCount(
+    sort: ISort[] | null,
+    filter: IFilter | null,
+    page = 0,
+    rows: number = BaseService.rows,
+    optParams?: any,
+  ): Promise<T[]> {
+    return (
+      await this._axiosInstance.post(
+        `/${this._tableName}`,
+        {
+          sort,
+          filter,
+          page,
+          rows,
+        },
+        {
+          params: {
+            ...optParams,
+            getCount: true,
+          },
+        },
+      )
     ).data;
   }
   async get(id: string): Promise<T> {

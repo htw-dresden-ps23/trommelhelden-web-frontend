@@ -9,19 +9,19 @@
       sort-mode="multiple"
       :row-hover="true"
       is-loading="isLoading"
-      class="p-datatable-sm"
+      class="p-datatable-sm p-datatable-customers"
       :lazy="true"
       :rows="rows"
-      :total-records="values ? values.length : 0"
+      :total-records="totalCount"
       filter-display="menu"
-      show-gridlines
-      current-page-report-template="Showing {first} to {last} of {totalRecords}"
-      :rows-per-page-options="[5, 10, 20, 50]"
+      paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
+      :rows-per-page-options="[5, 10, 25, 50]"
+      current-page-report-template="Showing {first} to {last} of {totalRecords} entries"
       responsive-layout="scroll"
       @page="onPage($event)"
       @sort="onSort($event)"
       @filter="onFilter($event)"
-      @row-select="onProductSelect"
+      @rowSelect="onRowSelect($event)"
     >
       <template #header>
         <div>
@@ -156,7 +156,9 @@ import InputNumber from "primevue/inputnumber";
 import InputText from "primevue/inputtext";
 import Skeleton from "primevue/skeleton";
 import { router } from "@/router";
+import { flatten } from "flat";
 
+const totalCount = ref(0);
 const isLoading = ref(false);
 const page = ref(0);
 const sortOptions = ref<ISort[]>([]);
@@ -164,7 +166,11 @@ const toast = useToast();
 const filterOptions = ref<IFilter>({});
 const filters = ref();
 
-const emit = defineEmits(["selectRow"]);
+const emit = defineEmits(["editRow", "onRowSelect"]);
+
+const onRowSelect = (event) => {
+  emit("onRowSelect", event.data);
+};
 
 const props = defineProps({
   columns: {
@@ -199,6 +205,16 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  optParams: {
+    type: Object,
+    required: false,
+    default: null,
+  },
+  emitEditOnly: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
 });
 
 const service = new GenericService<TGenericService>(
@@ -213,7 +229,7 @@ const activeFilters = computed(() => {
 });
 
 onMounted(async () => {
-  await fetchData();
+  await fetchData(true);
   createFilters(props.columns);
 });
 
@@ -254,15 +270,18 @@ const createFilters = (columns: any) => {
 const removeFilter = (filterKey: string) => {
   delete filterOptions.value[filterKey];
   filters.value[filterKey].constraints[0].value = null;
-  fetchData();
+  fetchData(true);
 };
 
 const onPage = async (event: any) => {
   page.value = event.first;
-  await fetchData();
+  await fetchData(false);
 };
 
 const onEditButton = (event: any, data: any) => {
+  if (props.emitEditOnly) {
+    return emit("editRow", data);
+  }
   console.log(data);
   console.log(props.primaryKey);
   router.push({
@@ -273,7 +292,7 @@ const onEditButton = (event: any, data: any) => {
 
 const onDelete = async ($event: Event, data: any) => {
   await service.delete(data[props.primaryKey]);
-  await fetchData();
+  await fetchData(true);
   toast.add({
     severity: "success",
     summary: "Success",
@@ -304,7 +323,7 @@ const onFilter = async (event: any) => {
         : null;
     }
   });
-  await fetchData();
+  await fetchData(false);
 };
 
 const onSort = async (event: any) => {
@@ -319,23 +338,38 @@ const onSort = async (event: any) => {
     }),
   ];
 
-  await fetchData();
+  await fetchData(false);
 };
 
 const onProductSelect = (event: any) => {
   emit("selectRow", event.data);
 };
 
-const fetchData = async () => {
+const fetchData = async (isInitial: boolean) => {
   try {
     isLoading.value = true;
+    if (isInitial) {
+      const { data, count } = await service.listAndCount(
+        sortOptions.value,
+        filterOptions.value,
+        page.value,
+        rows.value,
+        props.optParams,
+      );
+      values.value = data.map((x) => flatten(x));
+      totalCount.value = count;
+    } else {
+      values.value = (
+        await service.list(
+          sortOptions.value,
+          filterOptions.value,
+          page.value,
+          rows.value,
+          props.optParams,
+        )
+      ).map((x) => flatten(x));
+    }
 
-    values.value = await service.list(
-      sortOptions.value,
-      filterOptions.value,
-      page.value,
-      rows.value,
-    );
     isLoading.value = false;
   } catch (e) {
     toast.add({

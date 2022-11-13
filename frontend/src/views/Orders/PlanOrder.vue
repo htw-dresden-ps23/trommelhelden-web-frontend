@@ -9,56 +9,19 @@
         Auftrag planen
       </h1>
       <Divider />
-      <DataTable
-        :value="orders"
-        show-gridlines
-        :row-hover="true"
-        current-page-report-template="Showing {first} to {last} of {totalRecords}"
-        :rows-per-page-options="[5, 10, 20, 50]"
-        :paginator="true"
-        :rows="rows"
-        :total-records="orders ? orders.length : 0"
-        responsive-layout="scroll"
-      >
-        <Column
-          v-for="col in columns"
-          :key="col.field"
-          :field="col.field"
-          :header="col.header"
-        >
-          <template #body="{ data }">
-            <div v-if="isLoading">
-              <Skeleton />
-            </div>
-            <div v-else>
-              <div v-if="data && col.type === 'date'">
-                {{ useDateFormat(data[col.field], "DD.MM.YYYY").value }}
-              </div>
-              <div v-else>
-                {{ data ? data[col.field] : "" }}
-              </div>
-            </div>
-          </template>
-        </Column>
-        <Column
-          field="edit"
-          header=""
-        >
-          <template #body="slotProps">
-            <div v-if="isLoading">
-              <Skeleton size="3rem" />
-            </div>
-            <div v-else>
-              <Button
-                type="button"
-                icon="pi pi-pencil"
-                class="p-button-warning"
-                @click="onButtonClick($event, slotProps.data)"
-              />
-            </div>
-          </template>
-        </Column>
-      </DataTable>
+      <EntityTable
+        :key="reRender"
+        name="Aufträge"
+        primary-key="Aufnr"
+        :show-rows="50"
+        :columns="columns"
+        resource-name="orders"
+        :allow-edit="true"
+        :allow-delete="false"
+        :opt-params="{ status: 'created' }"
+        :emit-edit-only="true"
+        @edit-row="onButtonClick"
+      />
       <DynamicDialog
         id="test"
         :draggable="false"
@@ -69,23 +32,21 @@
 </template>
 
 <script setup lang="ts">
-import { useDateFormat } from "@vueuse/core";
+import EntityTable from "@/components/Entity/EntityTable.vue";
 
-import OrderService from "@/api/services/Order";
 import { IAuftrag } from "@/types";
 import { onMounted, ref } from "vue";
 import { useDialog } from "primevue/usedialog";
 import PlanOrderForm from "@/components/Order/PlanOrderForm.vue";
-import { flatten } from "flat";
 import disableScroll from "disable-scroll";
 
-const orderService = new OrderService();
-const orders = ref<IAuftrag[]>(new Array(20));
+const reRender = ref(0);
 const dialog = useDialog();
 const isLoading = ref(false);
-const rows = ref(10);
 
-const onButtonClick = (event: any, order: IAuftrag) => {
+const onButtonClick = (order: IAuftrag) => {
+  console.log(order);
+
   disableScroll.on(document.body);
   dialog.open(PlanOrderForm, {
     props: {
@@ -104,37 +65,36 @@ const onButtonClick = (event: any, order: IAuftrag) => {
     },
     onClose: () => {
       disableScroll.off();
+      reRender.value++;
     },
   });
 };
 
 onMounted(async () => {
   isLoading.value = true;
-  orders.value = await orderService.list({}, {});
-  orders.value = orders.value.map((value) => flatten(value));
 
   isLoading.value = false;
 });
 
 const columns = [
   {
-    field: "Aufnr",
-    header: "Auftragsnummer",
+    name: "Aufnr",
+    label: "Auftragsnummer",
     type: "text",
   },
   {
-    field: "KunNr",
-    header: "Kundennummer",
+    name: "KunNr",
+    label: "Kundennummer",
     type: "text",
   },
   {
-    field: "Kunde.KunName",
-    header: "Kunde",
+    name: "Kunde.KunName",
+    label: "Kunde",
     type: "text",
   },
   {
-    field: "AufDat",
-    header: "Auftragsdatum",
+    name: "AufDat",
+    label: "Auftragsdatum",
     type: "date",
   },
 ];
