@@ -3,7 +3,7 @@
 //// ------------------------------------------------------
 
 Table Auftrag {
-  Aufnr Int [pk]
+  Aufnr Int [pk, increment]
   MitID String
   KunNr Int [not null]
   AufDat DateTime [not null]
@@ -52,7 +52,7 @@ Table Geografie {
 }
 
 Table Kunde {
-  KunNr Int [pk]
+  KunNr Int [pk, increment]
   KunName String [not null]
   KunOrt String [not null]
   KunPLZ String [not null]
@@ -95,7 +95,7 @@ Table Montage {
 }
 
 Table Niederlassung {
-  NLNr Int [pk]
+  NLNr Int [pk, increment]
   Ort String
   Gebiet Gebiet [not null]
   Mitarbeiter Mitarbeiter [not null]

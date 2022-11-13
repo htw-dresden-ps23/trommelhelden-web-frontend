@@ -64,6 +64,12 @@
           "allowUpdate": true
         },
         {
+          "label": "Geburtsdatum",
+          "name": "MitGebDat",
+          "type": "date",
+          "allowUpdate": true
+        },
+        {
           "label": "Stelle",
           "name": "MitJob",
           "type": "text",
@@ -77,7 +83,9 @@
           "relation": {
             "resourceName": "branches",
             "label": "Niederlassung",
-            "name": "branches"
+            "name": "branches",
+            "labelKey": "Ort",
+            "valueKey": "NLNr"
           }
         },
         {
@@ -97,8 +105,8 @@
         {
           "label": "ID",
           "name": "EtID",
-          "type": "numeric",
-          "allowUpdate": false
+          "type": "text",
+          "allowUpdate": true
         },
         {
           "label": "Bezeichnung",

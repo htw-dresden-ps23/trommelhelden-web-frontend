@@ -3,7 +3,7 @@
     <h1
       class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
     >
-      {{ props.label }} | ID: {{ data[primaryKey] }}
+      {{ props.label }} erstellen
     </h1>
     <div
       class="col-span-1 grid grid-cols-1 justify-items-center gap-x-4 gap-y-6 py-8"
@@ -27,8 +27,17 @@
           class="w-full"
           :placeholder="field.name"
         ></InputNumber>
+        <Calendar
+          v-if="field.type === 'date'"
+          v-model="data[field.name]"
+        ></Calendar>
         <div v-if="field.type === 'relation'">
-          <EntityDropdown :table-name="field.tableName" />
+          <EntityDropdown
+            v-model="data[field.name]"
+            :resource-name="field.relation.resourceName"
+            :label-key="field.relation.labelKey"
+            :value-key="field.relation.valueKey"
+          />
         </div>
       </span>
     </div>
@@ -43,6 +52,8 @@
 </template>
 
 <script setup lang="ts">
+import Calendar from "primevue/calendar";
+import EntityDropdown from "@/components/Entity/EntityDropdown.vue";
 import GenericService from "@/api/services/Generic";
 import { router } from "@/router";
 import { TGenericService } from "@/types";

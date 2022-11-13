@@ -96,11 +96,13 @@ import { IKunde, IAuftrag, IEntityTableColumns } from "@/types";
 import { ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
+import OrderService from "@/api/services/Order";
 
 const router = useRouter();
 const toast = useToast();
 
 const customerService = new CustomerService();
+const orderService = new OrderService();
 const op = ref();
 const order = ref<IAuftrag>({} as IAuftrag);
 
@@ -111,13 +113,14 @@ const toggle = async (event: Event) => {
 const onSelectCustomer = (customer: IKunde) => {
   console.log();
   order.value.Kunde = customer;
+  order.value.KunNr = customer.KunNr;
   op.value.hide();
 };
 
 const createOrder = async () => {
   try {
     if (order.value) {
-      await customerService.create(order.value);
+      await orderService.create(order.value);
       toast.add({
         severity: "success",
         summary: "Order Created ",

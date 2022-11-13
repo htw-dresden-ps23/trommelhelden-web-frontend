@@ -5,23 +5,32 @@ import { Runtype } from "runtypes";
 
 const prisma = new PrismaClient();
 
-export class ProductsController {
+export class SparepartsController {
   async list(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<Response | void> {
     const { sort, filter, page, rows } = req.body;
+    const { getCount } = req.query;
+    let count;
 
+    if (getCount) {
+      count = await prisma.kunde.count({
+        where: {
+          ...filter,
+        },
+      });
+    }
     const allSpareparts = await prisma.ersatzteil.findMany({
       take: rows,
-      skip: rows * page,
+      skip: page,
       where: {
         ...filter,
       },
       orderBy: [...sort],
     });
-    return res.status(200).json(allSpareparts);
+    return res.status(200).json({ data: allSpareparts, count });
   }
   async get(
     req: Request,
@@ -80,5 +89,20 @@ export class ProductsController {
     });
 
     return res.sendStatus(200);
+  }
+  async create(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    const { data } = req.body;
+    if (!data) {
+      return res.sendStatus(400);
+    }
+    const { EtID } = await prisma.ersatzteil.create({
+      data,
+    });
+
+    return res.status(200).json(EtID);
   }
 }

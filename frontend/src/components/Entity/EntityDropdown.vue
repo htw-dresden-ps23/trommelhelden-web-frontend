@@ -1,10 +1,12 @@
 <template>
   <div>
     <Dropdown
-      v-model="selectedItem2"
+      v-model="selectedValue"
+      :loading="isLoading"
       :options="values"
       :filter="true"
-      option-value="value"
+      :option-value="props.valueKey"
+      :option-label="props.labelKey"
       :virtual-scroller-options="{
         lazy: true,
         onLazyLoad: onLazyLoad,
@@ -14,16 +16,19 @@
         delay: 250,
       }"
       placeholder="Select Item"
+      @change="
+        (event) => {
+          $emit('update:modelValue', event.value);
+          selectedValue = event.value;
+        }
+      "
     >
       <template #loader="{ options }">
         <div
           class="align-items-center flex p-2"
           style="height: 38px"
         >
-          <Skeleton
-            :width="options.even ? '60%' : '50%'"
-            height="1rem"
-          />
+          <Skeleton height="1rem" />
         </div>
       </template>
     </Dropdown>
@@ -32,34 +37,73 @@
 
 <script setup lang="ts">
 import GenericService from "@/api/services/Generic";
-import { onMounted, ref } from "vue";
+import { IFilter, ISort } from "@/types";
+import { computed, onMounted, ref } from "vue";
 
+const selectedValue = ref();
 const pageSize = ref(50);
 const loading = ref(false);
+const isLoading = ref(false);
 const values = ref();
 const props = defineProps({
-  tableName: {
+  resourceName: {
     type: String,
     required: true,
   },
-  selectedValue: {
-    type: Object,
+  labelKey: {
+    type: String,
+    required: true,
+  },
+  valueKey: {
+    type: String,
+    required: true,
+  },
+  modelValue: {
+    type: Number,
     required: false,
     default: null,
   },
 });
 
-const genericService = new GenericService(props.tableName);
+const genericService = new GenericService(props.resourceName);
 
 onMounted(async () => {
-  values.value = await genericService.list(null, null, 0, pageSize.value);
+  isLoading.value = true;
+  values.value = await genericService.list(
+    [],
+    {} as IFilter,
+    0,
+    pageSize.value,
+  );
+
+  if (!props.modelValue) {
+    isLoading.value = false;
+    return;
+  }
+
+  let foo: any = await genericService.get(String(props.modelValue));
+  selectedValue.value = props.modelValue;
+  if (
+    !values.value.find((value) => {
+      return value[props.valueKey] === foo[props.valueKey];
+    })
+  ) {
+    values.value.push(foo);
+  }
+
+  isLoading.value = false;
 });
 
 const onLazyLoad = async (event) => {
   console.log(event);
-
+  const { first, last } = event;
   loading.value = true;
-  values.value = await genericService.list();
+  values.value = await genericService.list(
+    [],
+    {} as IFilter,
+    first,
+    pageSize.value,
+  );
   loading.value = false;
 };
 </script>

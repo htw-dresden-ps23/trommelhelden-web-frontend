@@ -12,16 +12,51 @@ export class OrdersController {
     next: NextFunction
   ): Promise<Response | void> {
     const { sort, filter, page, rows } = req.body;
+    const { getCount, status } = req.query;
 
-    const allOrders = await prisma.auftrag.findMany({
+    let query: any = {
       take: rows,
-      skip: rows * page,
+      skip: page,
       where: {
         ...filter,
       },
+      include: {
+        Kunde: true,
+        Mitarbeiter: true,
+      },
       orderBy: [...sort],
-    });
-    return res.status(200).json(allOrders);
+    };
+
+    switch (status) {
+      case "created":
+        query.where = {
+          ...filter,
+          MitID: null,
+          Dauer: null,
+          Anfahrt: null,
+        };
+        break;
+      case "planned":
+        query.where = {
+          ...filter,
+          Dauer: null,
+          Anfahrt: null,
+        };
+        break;
+    }
+    let count;
+
+    if (getCount) {
+      count = await prisma.auftrag.count({
+        where: {
+          ...filter,
+          ...query.where,
+        },
+      });
+    }
+
+    const allOrders = await prisma.auftrag.findMany(query);
+    return res.status(200).json({ data: allOrders, count });
   }
   async get(
     req: Request,
@@ -71,6 +106,8 @@ export class OrdersController {
     const { id } = req.params;
     const { data }: { data: Prisma.AuftragUpdateInput } = req.body;
 
+    console.log(id);
+
     const order = await prisma.auftrag.updateMany({
       data,
       where: {
@@ -79,5 +116,26 @@ export class OrdersController {
     });
 
     return res.sendStatus(200);
+  }
+  async create(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    const { data } = req.body;
+    if (!data) {
+      return res.sendStatus(400);
+    }
+    const { Kunde, ...y } = data;
+
+    const { Aufnr } = await prisma.auftrag.create({
+      data: {
+        ...y,
+
+        KunNr: Number(Kunde.KunNr),
+      },
+    });
+
+    return res.status(200).json(Aufnr);
   }
 }
