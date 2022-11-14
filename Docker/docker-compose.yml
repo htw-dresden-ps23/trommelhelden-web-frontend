@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   database:
-    build: ./database
+    context: ./database
     container_name: database
     ports:
       - 1433:1433
