@@ -97,11 +97,17 @@ const service = new GenericService<TGenericService>(
 onMounted(async () => {
   isLoading.value = true;
   data.value = await service.get(route.params.id as string);
+  if (data.value === null) {
+    router.push({ name: "404" });
+  }
   isLoading.value = false;
 });
 
 const onUpdate = async () => {
+  delete data.value[props.primaryKey];
+
   await service.update(route.params.id as string, data.value);
+  router.push({ name: props.name });
   toast.add({
     severity: "success",
     summary: "Success",

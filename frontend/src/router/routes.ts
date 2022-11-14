@@ -45,6 +45,11 @@ export const routes = [
     name: "404",
     component: () => import("@/views/404.vue"),
   },
+  {
+    path: "/invoices",
+    name: "Invoices",
+    component: () => import("@/views/Invoices.vue"),
+  },
   //------------------------------------------------------------------
   //Masterdata
   //------------------------------------------------------------------
