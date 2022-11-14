@@ -43,7 +43,7 @@ const columns = [
   {
     name: "MitID",
     label: "MitID",
-    type: "numeric",
+    type: "text",
     create: false,
     update: false,
     format: "link",
@@ -67,7 +67,7 @@ const columns = [
   { name: "Dauer", label: "Dauer", type: "numeric" },
   { name: "Anfahrt", label: "Anfahrt", type: "numeric" },
   { name: "Beschreibung", label: "Beschreibung", type: "text" },
-  { name: "Kunde.KunName", label: "Kundenname" },
+  { name: "Kunde.KunName", label: "Kundenname", type: "text" },
 ];
 </script>
 

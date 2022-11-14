@@ -23,7 +23,10 @@
       @filter="onFilter($event)"
       @rowSelect="onRowSelect($event)"
     >
-      <template #header>
+      <template
+        v-if="activeFilters.length"
+        #header
+      >
         <div>
           <Chip
             v-for="filter in activeFilters"
@@ -98,7 +101,7 @@
               class=""
             >
               {{
-                data
+                data && data[cols.name]
                   ? useDateFormat(data[cols.name], "DD.MM.YYYY", {
                       locales: "de-DE",
                     }).value
@@ -137,9 +140,12 @@
           </div> </template
       ></Column>
     </DataTable>
+    <ConfirmDialog></ConfirmDialog>
   </div>
 </template>
 <script setup lang="ts">
+import ConfirmDialog from "primevue/confirmdialog";
+
 import Chip from "primevue/chip";
 import Calendar from "primevue/calendar";
 import { computed, onMounted, PropType, ref } from "vue";
@@ -157,7 +163,9 @@ import InputText from "primevue/inputtext";
 import Skeleton from "primevue/skeleton";
 import { router } from "@/router";
 import { flatten } from "flat";
+import { useConfirm } from "primevue/useconfirm";
 
+const confirm = useConfirm();
 const totalCount = ref(0);
 const isLoading = ref(false);
 const page = ref(0);
@@ -291,15 +299,22 @@ const onEditButton = (event: any, data: any) => {
 };
 
 const onDelete = async ($event: Event, data: any) => {
-  await service.delete(data[props.primaryKey]);
-  await fetchData(true);
-  toast.add({
-    severity: "success",
-    summary: "Success",
-    detail: `Data deleted successfully Value with ${props.primaryKey}: ${
-      data[props.primaryKey]
-    }`,
-    life: 3000,
+  confirm.require({
+    message: `Are you sure you want to delete the item?`,
+    header: "Confirmation",
+    icon: "pi pi-exclamation-triangle",
+    accept: async () => {
+      await service.delete(data[props.primaryKey]);
+      await fetchData(true);
+      toast.add({
+        severity: "success",
+        summary: "Success",
+        detail: `Data deleted successfully Value with ${props.primaryKey}: ${
+          data[props.primaryKey]
+        }`,
+        life: 3000,
+      });
+    },
   });
 };
 

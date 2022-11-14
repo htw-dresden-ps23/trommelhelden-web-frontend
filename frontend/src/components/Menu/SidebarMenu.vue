@@ -61,7 +61,17 @@ const menuItems = ref([
     command: () => {
       store.sideBarMenuIsOpen = false;
     },
-    icon: "pi pi-chart-pie",
+    icon: "pi pi-chart-bar",
+  },
+
+  {
+    to: "/invoices",
+    label: "Rechnungen",
+    key: "invoices",
+    command: () => {
+      store.sideBarMenuIsOpen = false;
+    },
+    icon: "pi pi-book",
   },
 
   {

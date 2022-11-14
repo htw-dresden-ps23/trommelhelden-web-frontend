@@ -1,7 +1,7 @@
 <template>
   <div class="mx-auto mt-8 flex-1">
     <div
-      class="card mx-[20%] flex flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl"
+      class="card flex flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl"
     >
       <h1
         class="bg-gradient-to-l from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
@@ -89,6 +89,21 @@ const columns = [
     name: "AufDat",
     label: "Auftragsdatum",
     type: "date",
+  },
+  {
+    name: "ErlDat",
+    label: "Erledigungsdatum",
+    type: "date",
+  },
+  {
+    name: "Mitarbeiter.MitID",
+    label: "Mitarbeiter ID",
+    type: "text",
+  },
+  {
+    name: "Mitarbeiter.MitName",
+    label: "Mitarbeiter ID",
+    type: "text",
   },
 ];
 </script>

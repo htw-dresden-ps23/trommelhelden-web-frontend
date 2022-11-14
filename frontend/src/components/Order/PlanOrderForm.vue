@@ -81,9 +81,10 @@ import EntityTable from "@/components/Entity/EntityTable.vue";
 import { IAuftrag, IEntityTableColumns, IMitarbeiter } from "@/types";
 import OrderService from "@/api/services/Order";
 import { useToast } from "primevue/usetoast";
+import { unflatten } from "flat";
 
 const dialogRef: any = inject("dialogRef");
-const employee = ref<IMitarbeiter>();
+const employee = ref<IMitarbeiter>({} as IMitarbeiter);
 const orderService = new OrderService();
 
 console.log(useDateFormat(new Date(), "DD.MM.YYYY").value);
@@ -144,10 +145,14 @@ const onSelectEmployee = (employeeP: IMitarbeiter) => {
 const planOrder = async () => {
   // TODO IMPLEMENT
   try {
-    let { Aufnr, ...x }: any = order.value;
+    let { Aufnr, MitID, Kunde, Mitarbeiter, ...x }: any = unflatten(
+      order.value,
+    );
+    console.log(x);
 
     await orderService.update(String(Aufnr), {
       ...x,
+      MitID,
     });
     toast.add({
       severity: "success",

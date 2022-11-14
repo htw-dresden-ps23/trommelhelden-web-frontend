@@ -9,6 +9,7 @@ import { prismaErrorMiddleware } from "./middleware";
 require("express-async-errors");
 
 import morgan from "morgan";
+import { InvoicesController } from "./controller/Invoices";
 
 const app = express();
 app.use(cors());
@@ -51,6 +52,12 @@ app.put("/branches", branchesController.create);
 app.post("/branches", branchesController.list);
 app.patch("/branches/:id", branchesController.update);
 app.delete("/branches/:id", branchesController.delete);
+
+const invoicesController = new InvoicesController();
+app.get("/invoices", invoicesController.get);
+app.put("/invoices", invoicesController.create);
+app.post("/invoices", invoicesController.list);
+app.patch("/invoices", invoicesController.update);
 
 app.use(prismaErrorMiddleware);
 

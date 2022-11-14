@@ -60,7 +60,8 @@
             :primary-key="'KunNr'"
             :resource-name="'customers'"
             :columns="columns"
-            @select-row="onSelectCustomer"
+            :name="'Kunden'"
+            @on-row-select="onSelectCustomer"
           />
         </OverlayPanel>
       </div>
@@ -111,7 +112,7 @@ const toggle = async (event: Event) => {
 };
 
 const onSelectCustomer = (customer: IKunde) => {
-  console.log();
+  console.log(2);
   order.value.Kunde = customer;
   order.value.KunNr = customer.KunNr;
   op.value.hide();
