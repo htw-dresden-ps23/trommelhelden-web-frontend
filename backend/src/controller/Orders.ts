@@ -39,6 +39,13 @@ export class OrdersController {
       case "planned":
         query.where = {
           ...filter,
+          MitID: {
+            not: null,
+          },
+          ErlDat: {
+            not: null,
+          },
+
           Dauer: null,
           Anfahrt: null,
         };

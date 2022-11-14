@@ -15,7 +15,10 @@
     </div>
     <Divider />
 
-    <div class="grid grid-cols-2">
+    <div
+      v-if="employee"
+      class="grid grid-cols-2"
+    >
       <span>Name : </span> <span>{{ employee.MitName }}</span>
       <span>Mitarbeiter Vorname :</span>
       <span>{{ employee.MitVorname }}</span>
@@ -54,6 +57,7 @@ import { IAuftrag, IMitarbeiter } from "@/types";
 import EmployeesService from "@/api/services/Employees";
 import OrderService from "@/api/services/Order";
 import { useToast } from "primevue/usetoast";
+import { unflatten } from "flat";
 
 const dialogRef: any = inject("dialogRef");
 
@@ -64,13 +68,18 @@ const employeesSevice = new EmployeesService();
 const order = ref<IAuftrag>({} as IAuftrag);
 
 onMounted(async () => {
-  order.value = dialogRef.value.data.order;
+  console.log(order.value);
+
+  order.value = unflatten(dialogRef.value.data.order);
+  console.log(order.value);
+
   employee.value = await employeesSevice.get(order?.value?.MitID as string);
 });
 
 const planOrder = async () => {
   try {
-    let { Aufnr, ...x }: any = order.value;
+    let { Aufnr, MitID, Kunde, Mitarbeiter, ...x }: any = order.value;
+    console.log(x);
 
     await orderService.update(String(Aufnr), {
       ...x,
@@ -78,7 +87,7 @@ const planOrder = async () => {
     toast.add({
       severity: "success",
       summary: "Auftrag geplant",
-      detail: "Der Auftrag wurde erfolgreich geplant",
+      detail: "Der Auftrag wurde erfolgreich erledigt",
       life: 3000,
     });
     dialogRef.value.close();

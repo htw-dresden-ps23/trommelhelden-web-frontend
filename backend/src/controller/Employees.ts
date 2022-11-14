@@ -101,10 +101,8 @@ export class EmployeesController {
       return res.sendStatus(400);
     }
 
-    console.log(uuid().slice(0, 3));
-
     const { MitID } = await prisma.mitarbeiter.create({
-      data: { ...data, MitID: uuid().slice(0, 3) },
+      data: { ...data },
     });
 
     return res.status(200).json(MitID);
