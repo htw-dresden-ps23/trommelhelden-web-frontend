@@ -35,7 +35,7 @@
         style="width: 1000px"
         :auto-z-index="false"
         :dismissable="false"
-        class="z-[2102]"
+        class="-mt-40 -ml-40 z-[2102]"
         :breakpoints="{ '960px': '75vw' }"
       >
         <EntityTable
