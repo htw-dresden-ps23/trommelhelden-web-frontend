@@ -57,6 +57,12 @@
         icon="pi pi-refresh"
         @click="onUpdate"
       />
+      <Button
+        style="background-color: #61a5fa"
+        label="Zurück"
+        icon="pi pi-backward"
+        @click="$router.go(-1)"
+      />
     </div>
     <ConfirmDialog></ConfirmDialog>
   </div>
