@@ -53,23 +53,28 @@ const columns = [
   {
     label: "KunNr",
     name: "KunNr",
+    linkKey: "KunNr",
+    create: false,
+    update: false,
+    format: "link",
+    linkRoute: "masterdata/customers",
     type: "numeric",
   },
   {
-    label: "Kunde.KunName",
-    name: "Kunde",
-    type: "relation",
+    label: "Kundenname",
+    name: "Kunde.KunNr",
+    type: "text",
   },
   {
     label: "AufNr",
     name: "AufNr",
     type: "numeric",
   },
-  {
-    label: "Auftrag",
-    name: "Auftrag",
-    type: "relation",
-  },
+  // {
+  //   label: "Auftrag",
+  //   name: "Auftrag",
+  //   type: "relation",
+  // },
 ];
 
 

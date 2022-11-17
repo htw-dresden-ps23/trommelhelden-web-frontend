@@ -66,11 +66,11 @@ export default defineComponent({
         const data = ref([30, 40, 60, 70, 5]);
 
         const chartData = computed(() => ({
-            labels: ['Mitarbeiter', 'Nîmes', 'Toulon', 'Perpignan', 'Autre'],
+            labels: ['Mitarbeiter', 'Test', 'Dresden', 'Zahl', 'Uwe'],
             datasets: [
                 {
                     data: data.value,
-                    backgroundColor: ['#77CEFF', '#0079AF', '#123E6B', '#97B0C4', '#A5C8ED'],
+                    backgroundColor: ['#77CEFF', '#2ab7d9', '#669ef3', '#9c68bb', '#d82a7a'],
                 },
             ],
         }));
