@@ -73,7 +73,7 @@ const columns = [
   // {
   //   label: "Auftrag",
   //   name: "Auftrag",
-  //   type: "relation",
+  //   type: "text",
   // },
 ];
 

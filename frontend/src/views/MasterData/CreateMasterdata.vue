@@ -45,7 +45,14 @@
       <Button
         label="Erstellen"
         icon="pi pi-plus"
+        :disabled="data[props.primaryKey] == null "
         @click="onCreate"
+      />
+      <Button
+        style="background-color: #d92979"
+        label="Zurück"
+        icon="pi pi-backward"
+        @click="$router.go(-1)"
       />
     </div>
   </div>

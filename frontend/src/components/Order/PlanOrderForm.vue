@@ -68,6 +68,7 @@
       type="submit"
       icon="pi pi-check"
       label="Auftrag planen"
+      :disabled="!order.ErlDat"
       class="w-full"
       @click="planOrder"
     />

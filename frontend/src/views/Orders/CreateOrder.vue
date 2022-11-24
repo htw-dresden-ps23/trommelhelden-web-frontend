@@ -78,14 +78,22 @@
       </span>
     </div>
     <Divider />
-    <Button
-      type="submit"
-      icon="pi pi-check"
-      label="Erstellen"
-      class="ml-auto"
-      :disabled="!order.Beschreibung || !order.Kunde || !order.AufDat"
-      @click="createOrder"
-    />
+    <div class="flex justify-between">
+      <Button
+          type="submit"
+          icon="pi pi-check"
+          label="Erstellen"
+          class="ml-auto"
+          :disabled="!order.Beschreibung || !order.Kunde || !order.AufDat"
+          @click="createOrder"
+        />
+      <Button
+          style="background-color: #d92979"
+          label="Zurück"
+          icon="pi pi-backward"
+          @click="$router.go(-1)"
+        />
+    </div>
   </div>
 </template>
 
