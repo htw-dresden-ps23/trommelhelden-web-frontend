@@ -36,19 +36,6 @@
             "null"
           ]
         },
-        "Kunde": {
-          "$ref": "#/definitions/Kunde"
-        },
-        "Mitarbeiter": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Mitarbeiter"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
         "Montage": {
           "type": "array",
           "items": {
@@ -60,50 +47,18 @@
           "items": {
             "$ref": "#/definitions/Rechnung"
           }
-        }
-      }
-    },
-    "BelegeTMP": {
-      "type": "object",
-      "properties": {
-        "Beleg_ID": {
-          "type": "integer"
         },
-        "BON_ID": {
-          "type": [
-            "string",
-            "null"
-          ]
+        "Kunde": {
+          "$ref": "#/definitions/Kunde"
         },
-        "Fil_ID": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Datum": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        },
-        "ProduktID": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Preis": {
-          "type": [
-            "number",
-            "null"
-          ]
-        },
-        "Anzahl": {
-          "type": [
-            "integer",
-            "null"
+        "Mitarbeiter": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Mitarbeiter"
+            },
+            {
+              "type": "null"
+            }
           ]
         }
       }
@@ -152,44 +107,6 @@
         }
       }
     },
-    "Geografie": {
-      "type": "object",
-      "properties": {
-        "Land_ID": {
-          "type": "string"
-        },
-        "Bundesland": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Region": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Staat": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Plandaten": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Plandaten"
-          }
-        },
-        "Umsatzdaten": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Umsatzdaten"
-          }
-        }
-      }
-    },
     "Kunde": {
       "type": "object",
       "properties": {
@@ -208,16 +125,16 @@
         "KunStrasse": {
           "type": "string"
         },
-        "Auftrag": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Auftrag"
-          }
-        },
         "Rechnung": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/Rechnung"
+          }
+        },
+        "Auftrag": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Auftrag"
           }
         }
       }
@@ -269,42 +186,6 @@
         }
       }
     },
-    "MitarbeiterShop": {
-      "type": "object",
-      "properties": {
-        "Mitarbeiter_ID": {
-          "type": "string"
-        },
-        "Name": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "MitarbeiterShop": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/MitarbeiterShop"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "other_MitarbeiterShop": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/MitarbeiterShop"
-          }
-        },
-        "Umsatzdaten": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Umsatzdaten"
-          }
-        }
-      }
-    },
     "Montage": {
       "type": "object",
       "properties": {
@@ -345,142 +226,6 @@
         }
       }
     },
-    "Plandaten": {
-      "type": "object",
-      "properties": {
-        "Umsatzplan": {
-          "type": [
-            "number",
-            "null"
-          ]
-        },
-        "Geografie": {
-          "$ref": "#/definitions/Geografie"
-        },
-        "Zeit": {
-          "$ref": "#/definitions/Zeit"
-        },
-        "Produkt": {
-          "$ref": "#/definitions/Produkt"
-        }
-      }
-    },
-    "Produkt": {
-      "type": "object",
-      "properties": {
-        "Produkt_ID": {
-          "type": "string"
-        },
-        "Markenname": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Produktname": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Preis": {
-          "type": [
-            "number",
-            "null"
-          ]
-        },
-        "Produktsubkategorie": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Produktsubkategorie"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Plandaten": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Plandaten"
-          }
-        },
-        "Umsatzdaten": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Umsatzdaten"
-          }
-        }
-      }
-    },
-    "Produktkategorie": {
-      "type": "object",
-      "properties": {
-        "Kategorie_ID": {
-          "type": "string"
-        },
-        "Kategorie": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Kategorie_Manager": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Produktsubkategorie": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Produktsubkategorie"
-          }
-        }
-      }
-    },
-    "Produktsubkategorie": {
-      "type": "object",
-      "properties": {
-        "Subkategorie_ID": {
-          "type": "string"
-        },
-        "Subkategorie": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Subkategorie_Manager": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Mitarbeiter_ID": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Produktkategorie": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Produktkategorie"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "Produkt": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Produkt"
-          }
-        }
-      }
-    },
     "Rechnung": {
       "type": "object",
       "properties": {
@@ -498,105 +243,6 @@
           "$ref": "#/definitions/Auftrag"
         }
       }
-    },
-    "sysdiagrams": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "principal_id": {
-          "type": "integer"
-        },
-        "diagram_id": {
-          "type": "integer"
-        },
-        "version": {
-          "type": [
-            "integer",
-            "null"
-          ]
-        },
-        "definition": {
-          "type": [
-            "string",
-            "null"
-          ]
-        }
-      }
-    },
-    "Umsatzdaten": {
-      "type": "object",
-      "properties": {
-        "Umsatzbetrag": {
-          "type": [
-            "number",
-            "null"
-          ]
-        },
-        "Umsatzmenge": {
-          "type": [
-            "integer",
-            "null"
-          ]
-        },
-        "Geografie": {
-          "$ref": "#/definitions/Geografie"
-        },
-        "MitarbeiterShop": {
-          "$ref": "#/definitions/MitarbeiterShop"
-        },
-        "Zeit": {
-          "$ref": "#/definitions/Zeit"
-        },
-        "Produkt": {
-          "$ref": "#/definitions/Produkt"
-        }
-      }
-    },
-    "Zeit": {
-      "type": "object",
-      "properties": {
-        "Mon_ID": {
-          "type": "string"
-        },
-        "Monatsname": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Q_ID": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Quartal": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Jahr": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "Plandaten": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Plandaten"
-          }
-        },
-        "Umsatzdaten": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Umsatzdaten"
-          }
-        }
-      }
     }
   },
   "type": "object",
@@ -604,17 +250,11 @@
     "auftrag": {
       "$ref": "#/definitions/Auftrag"
     },
-    "belegeTMP": {
-      "$ref": "#/definitions/BelegeTMP"
-    },
     "ersatzteil": {
       "$ref": "#/definitions/Ersatzteil"
     },
     "gebiet": {
       "$ref": "#/definitions/Gebiet"
-    },
-    "geografie": {
-      "$ref": "#/definitions/Geografie"
     },
     "kunde": {
       "$ref": "#/definitions/Kunde"
@@ -622,38 +262,14 @@
     "mitarbeiter": {
       "$ref": "#/definitions/Mitarbeiter"
     },
-    "mitarbeiterShop": {
-      "$ref": "#/definitions/MitarbeiterShop"
-    },
     "montage": {
       "$ref": "#/definitions/Montage"
     },
     "niederlassung": {
       "$ref": "#/definitions/Niederlassung"
     },
-    "plandaten": {
-      "$ref": "#/definitions/Plandaten"
-    },
-    "produkt": {
-      "$ref": "#/definitions/Produkt"
-    },
-    "produktkategorie": {
-      "$ref": "#/definitions/Produktkategorie"
-    },
-    "produktsubkategorie": {
-      "$ref": "#/definitions/Produktsubkategorie"
-    },
     "rechnung": {
       "$ref": "#/definitions/Rechnung"
-    },
-    "sysdiagrams": {
-      "$ref": "#/definitions/sysdiagrams"
-    },
-    "umsatzdaten": {
-      "$ref": "#/definitions/Umsatzdaten"
-    },
-    "zeit": {
-      "$ref": "#/definitions/Zeit"
     }
   }
 }

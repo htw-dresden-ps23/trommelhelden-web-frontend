@@ -11,20 +11,10 @@ Table Auftrag {
   Dauer Decimal
   Anfahrt Int
   Beschreibung String
-  Kunde Kunde [not null]
-  Mitarbeiter Mitarbeiter
   Montage Montage [not null]
   Rechnung Rechnung [not null]
-}
-
-Table BelegeTMP {
-  Beleg_ID Int [pk, increment]
-  BON_ID String
-  Fil_ID String
-  Datum DateTime
-  ProduktID String
-  Preis Float
-  Anzahl Int
+  Kunde Kunde [not null]
+  Mitarbeiter Mitarbeiter
 }
 
 Table Ersatzteil {
@@ -42,23 +32,14 @@ Table Gebiet {
   Niederlassung Niederlassung
 }
 
-Table Geografie {
-  Land_ID String [pk]
-  Bundesland String
-  Region String
-  Staat String
-  Plandaten Plandaten [not null]
-  Umsatzdaten Umsatzdaten [not null]
-}
-
 Table Kunde {
   KunNr Int [pk, increment]
   KunName String [not null]
   KunOrt String [not null]
   KunPLZ String [not null]
   KunStrasse String [not null]
-  Auftrag Auftrag [not null]
   Rechnung Rechnung [not null]
+  Auftrag Auftrag [not null]
 }
 
 Table Mitarbeiter {
@@ -71,15 +52,6 @@ Table Mitarbeiter {
   NLNr Int
   Niederlassung Niederlassung
   Auftrag Auftrag [not null]
-}
-
-Table MitarbeiterShop {
-  Mitarbeiter_ID String [pk]
-  Name String
-  Manager_ID String
-  MitarbeiterShop MitarbeiterShop
-  other_MitarbeiterShop MitarbeiterShop [not null]
-  Umsatzdaten Umsatzdaten [not null]
 }
 
 Table Montage {
@@ -101,48 +73,6 @@ Table Niederlassung {
   Mitarbeiter Mitarbeiter [not null]
 }
 
-Table Plandaten {
-  Mon_ID String [not null]
-  Land_ID String [not null]
-  Produkt_ID String [not null]
-  Umsatzplan Decimal
-  Geografie Geografie [not null]
-  Zeit Zeit [not null]
-  Produkt Produkt [not null]
-
-  indexes {
-    (Mon_ID, Land_ID, Produkt_ID) [pk]
-  }
-}
-
-Table Produkt {
-  Produkt_ID String [pk]
-  Markenname String
-  Produktname String
-  Preis Float
-  Subkategorie_ID String
-  Produktsubkategorie Produktsubkategorie
-  Plandaten Plandaten [not null]
-  Umsatzdaten Umsatzdaten [not null]
-}
-
-Table Produktkategorie {
-  Kategorie_ID String [pk]
-  Kategorie String
-  Kategorie_Manager String
-  Produktsubkategorie Produktsubkategorie [not null]
-}
-
-Table Produktsubkategorie {
-  Subkategorie_ID String [pk]
-  Subkategorie String
-  Subkategorie_Manager String
-  Kategorie_ID String
-  Mitarbeiter_ID String
-  Produktkategorie Produktkategorie
-  Produkt Produkt [not null]
-}
-
 Table Rechnung {
   KunNr Int [not null]
   AufNr Int [not null]
@@ -156,45 +86,6 @@ Table Rechnung {
   }
 }
 
-Table sysdiagrams {
-  name String [not null]
-  principal_id Int [not null]
-  diagram_id Int [pk, increment]
-  version Int
-  definition Bytes
-
-  indexes {
-    (principal_id, name) [unique]
-  }
-}
-
-Table Umsatzdaten {
-  Produkt_ID String [not null]
-  Mon_ID String [not null]
-  Land_ID String [not null]
-  Mitarbeiter_ID String [not null]
-  Umsatzbetrag Float
-  Umsatzmenge Int
-  Geografie Geografie [not null]
-  MitarbeiterShop MitarbeiterShop [not null]
-  Zeit Zeit [not null]
-  Produkt Produkt [not null]
-
-  indexes {
-    (Produkt_ID, Mon_ID, Land_ID, Mitarbeiter_ID) [pk]
-  }
-}
-
-Table Zeit {
-  Mon_ID String [pk]
-  Monatsname String
-  Q_ID String
-  Quartal String
-  Jahr String
-  Plandaten Plandaten [not null]
-  Umsatzdaten Umsatzdaten [not null]
-}
-
 Ref: Auftrag.KunNr > Kunde.KunNr
 
 Ref: Auftrag.MitID > Mitarbeiter.MitID [delete: No Action]
@@ -203,30 +94,10 @@ Ref: Gebiet.NLNr > Niederlassung.NLNr [delete: No Action]
 
 Ref: Mitarbeiter.NLNr > Niederlassung.NLNr [delete: No Action]
 
-Ref: MitarbeiterShop.Manager_ID - MitarbeiterShop.Mitarbeiter_ID [delete: No Action]
-
 Ref: Montage.EtID > Ersatzteil.EtID
 
 Ref: Montage.AufNr > Auftrag.Aufnr [delete: Cascade]
 
-Ref: Plandaten.Land_ID > Geografie.Land_ID
-
-Ref: Plandaten.Mon_ID > Zeit.Mon_ID
-
-Ref: Plandaten.Produkt_ID > Produkt.Produkt_ID
-
-Ref: Produkt.Subkategorie_ID > Produktsubkategorie.Subkategorie_ID [delete: No Action]
-
-Ref: Produktsubkategorie.Kategorie_ID > Produktkategorie.Kategorie_ID [delete: No Action]
-
 Ref: Rechnung.KunNr > Kunde.KunNr
 
 Ref: Rechnung.AufNr > Auftrag.Aufnr [delete: Cascade]
-
-Ref: Umsatzdaten.Land_ID > Geografie.Land_ID
-
-Ref: Umsatzdaten.Mitarbeiter_ID > MitarbeiterShop.Mitarbeiter_ID
-
-Ref: Umsatzdaten.Mon_ID > Zeit.Mon_ID
-
-Ref: Umsatzdaten.Produkt_ID > Produkt.Produkt_ID

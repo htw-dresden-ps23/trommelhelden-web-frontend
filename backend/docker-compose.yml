@@ -1,11 +1,12 @@
-version: '3.3'
+version: "3.3"
 services:
-    db:
-      build:
-        context: ./Docker
-        dockerfile: db.Dockerfile
-      environment:
-        - ACCEPT_EULA=Y
-        - MSSQL_SA_PASSWORD=Trommelhelden1
-      ports:
-        - '1433:1433'
+  db:
+    container_name: db
+    build:
+      context: ./Docker
+      dockerfile: db.Dockerfile
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Trommelhelden1
+    ports:
+      - "1433:1433"
