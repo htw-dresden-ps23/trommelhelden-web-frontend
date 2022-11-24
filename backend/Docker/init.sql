@@ -2,7 +2,7 @@
 
 USE master;
 go
-IF (db_id('myDB') is null)
+
   CREATE DATABASE trommelhelden;
 go  
 USE trommelhelden;
