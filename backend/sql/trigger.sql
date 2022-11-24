@@ -1,10 +1,19 @@
-CREATE TRIGGER create_invoice
+use trommelhelden
+GO
+
+
+CREATE OR ALTER TRIGGER create_invoice
 ON auftrag
 FOR UPDATE
 AS
     IF ( Update(anfahrt)
-    AND Update(dauer) )
+    AND Update(dauer) AND
+    (SELECT COUNT(*)
+    FROM inserted i
+    WHERE i.Erldat IS NOT NULL AND i.Dauer is NOT NULL AND i.Anfahrt is NOT NULL)
+> 0)
       BEGIN
+    print 'LOL';
     --  ERSATZTEILE
     DECLARE @sum_parts FLOAT
     DECLARE @sum_arrival FLOAT
@@ -59,3 +68,5 @@ AS
             CURRENT_TIMESTAMP,
             @sum )
 END; 
+
+UPDATE Auftrag SET Anfahrt = 10, Dauer = 10 WHERE Aufnr = 3007
