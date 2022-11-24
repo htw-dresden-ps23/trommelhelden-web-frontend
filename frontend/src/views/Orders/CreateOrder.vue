@@ -51,7 +51,7 @@
           ref="op"
           append-to="body"
           :show-close-icon="true"
-          style="width: 900px"
+          style="margin-top: -28rem;"
           :dismissable="false"
           :breakpoints="{ '960px': '75vw' }"
         >
