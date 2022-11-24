@@ -7,6 +7,15 @@
         "Aufnr": {
           "type": "integer"
         },
+        "MitID": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "KunNr": {
+          "type": "integer"
+        },
         "AufDat": {
           "type": "string",
           "format": "date-time"
@@ -47,19 +56,6 @@
           "items": {
             "$ref": "#/definitions/Rechnung"
           }
-        },
-        "Kunde": {
-          "$ref": "#/definitions/Kunde"
-        },
-        "Mitarbeiter": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Mitarbeiter"
-            },
-            {
-              "type": "null"
-            }
-          ]
         }
       }
     },
@@ -130,12 +126,6 @@
           "items": {
             "$ref": "#/definitions/Rechnung"
           }
-        },
-        "Auftrag": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Auftrag"
-          }
         }
       }
     },
@@ -177,12 +167,6 @@
               "type": "null"
             }
           ]
-        },
-        "Auftrag": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/Auftrag"
-          }
         }
       }
     },

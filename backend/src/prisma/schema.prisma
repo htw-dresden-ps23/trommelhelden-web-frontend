@@ -57,7 +57,7 @@ model Kunde {
 }
 
 model Mitarbeiter {
-  MitID          String         @id(map: "PK__Mitarbei__7D0DA808DCFA5965") @db.Char(3)
+  MitID          String         @id(map: "PK__Mitarbei__7D0DA8080DFC1AF1") @db.Char(3)
   MitName        String         @db.VarChar(20)
   MitVorname     String?        @db.VarChar(20)
   MitGebDat      DateTime       @db.Date
@@ -75,7 +75,7 @@ model Montage {
   Ersatzteil Ersatzteil @relation(fields: [EtID], references: [EtID], onUpdate: NoAction, map: "FK__Montage__EtID__32E0915F")
   Auftrag    Auftrag    @relation(fields: [AufNr], references: [Aufnr], onDelete: Cascade, onUpdate: NoAction, map: "FK_Montage_Auftrag")
 
-  @@id([EtID, AufNr], map: "PK__Montage__4FC2336346BB1AB3")
+  @@id([EtID, AufNr], map: "PK__Montage__4FC233631208F963")
 }
 
 model Niederlassung {
@@ -93,5 +93,5 @@ model Rechnung {
   Kunde      Kunde    @relation(fields: [KunNr], references: [KunNr], onUpdate: NoAction, map: "FK__Rechnung__KunNr__0C85DE4D")
   Auftrag    Auftrag  @relation(fields: [AufNr], references: [Aufnr], onDelete: Cascade, onUpdate: NoAction, map: "FK_Aufnr")
 
-  @@id([KunNr, AufNr], map: "PK__Rechnung__1D31483ED6C10F81")
+  @@id([KunNr, AufNr], map: "PK__Rechnung__1D31483EC113249C")
 }
