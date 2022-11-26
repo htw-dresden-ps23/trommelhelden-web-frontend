@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "docker start db & nodemon src/app.ts",
-    "init": " npm ci && docker compose up -d && sleep 2m && npm run prisma:pull && npm run prisma:generate && nodemon src/app.ts",
+    "init": " npm i && docker compose up -d && print 'waiting till data is inserted into db ...' && sleep 2m  && npm run prisma:generate && nodemon src/app.ts",
     "prisma:generate": "npx prisma generate --schema=./src/prisma/schema.prisma",
     "prisma:pull": "npx prisma db pull --schema=./src/prisma/schema.prisma"
   },
