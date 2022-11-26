@@ -50,6 +50,11 @@ export const routes = [
     name: "Invoices",
     component: () => import("@/views/Invoices.vue"),
   },
+  {
+    path: "/settings",
+    name: "Settings",
+    component: () => import("@/views/Settings.vue"),
+  },
   //------------------------------------------------------------------
   //Masterdata
   //------------------------------------------------------------------

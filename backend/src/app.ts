@@ -10,6 +10,7 @@ require("express-async-errors");
 
 import morgan from "morgan";
 import { InvoicesController } from "./controller/Invoices";
+import { SettingsController } from "./controller/Settings";
 
 const app = express();
 app.use(cors());
@@ -59,6 +60,9 @@ app.put("/invoices", invoicesController.create);
 app.post("/invoices", invoicesController.list);
 app.patch("/invoices", invoicesController.update);
 
+const settingsController = new SettingsController();
+app.post("/settings", settingsController.list);
+app.patch("/settings", settingsController.updateSettings);
 app.use(prismaErrorMiddleware);
 
 app.listen(port, () => {

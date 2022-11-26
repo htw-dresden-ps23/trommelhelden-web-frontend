@@ -29,10 +29,13 @@
         />
         <div class="text-lg">Admin</div>
       </div>
-      <Button
-        class="p-button-rounded p-button-lg p-button-text !text-slate-500"
-        icon="pi pi-cog"
-      />
+      <router-link :to="{ name: 'Settings' }">
+        <Button
+          class="p-button-rounded p-button-lg p-button-text !text-slate-500"
+          icon="pi pi-cog"
+          @click="store.sideBarMenuIsOpen = false"
+        />
+      </router-link>
       <!-- USER -->
     </div>
   </Sidebar>
