@@ -12,7 +12,15 @@
 
 <script setup lang="ts">
 import Header from "@/components/Menu/Header.vue";
+import { onMounted } from "vue";
 import SidebarMenu from "./components/Menu/SidebarMenu.vue";
+import { useStore } from "./store";
+
+const store = useStore();
+
+onMounted(async () => {
+  await store.startUp();
+});
 </script>
 
 <style>
