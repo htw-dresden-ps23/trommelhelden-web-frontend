@@ -89,17 +89,8 @@
           <div v-if="isLoading">
             <Skeleton />
           </div>
-          <div v-else>
-            <div
-              v-if="data && cols.type !== 'date'"
-              class="truncate"
-            >
-              {{ data[cols.name] }}
-            </div>
-            <div
-              v-else
-              class=""
-            >
+          <div v-else-if="!isLoading && data">
+            <div v-if="cols.type === 'date'">
               {{
                 data && data[cols.name]
                   ? useDateFormat(data[cols.name], "DD.MM.YYYY", {
@@ -107,6 +98,22 @@
                     }).value
                   : ""
               }}
+            </div>
+            <div v-if="cols.type === 'money'">{{ data[cols.name] }} €</div>
+            <div v-if="cols.type === 'numeric'">
+              {{ data[cols.name] }}
+            </div>
+            <div v-if="cols.type === 'relation'">
+              <RouterLink
+                :to="`/${cols.relation?.resourceName}/${data[cols.relation?.primaryKey as string]}`"
+                ><Chip>{{ data[cols.name] }}</Chip></RouterLink
+              >
+            </div>
+            <div
+              v-if="cols.type === 'text'"
+              class="truncate"
+            >
+              {{ data[cols.name] }}
             </div>
           </div>
         </template>

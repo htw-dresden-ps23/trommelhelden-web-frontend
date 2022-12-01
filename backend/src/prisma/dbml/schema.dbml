@@ -13,6 +13,8 @@ Table Auftrag {
   Beschreibung String
   Montage Montage [not null]
   Rechnung Rechnung [not null]
+  Kunde Kunde [not null]
+  Mitarbeiter Mitarbeiter
 }
 
 Table Ersatzteil {
@@ -37,6 +39,7 @@ Table Kunde {
   KunPLZ String [not null]
   KunStrasse String [not null]
   Rechnung Rechnung [not null]
+  Auftrag Auftrag [not null]
 }
 
 Table Mitarbeiter {
@@ -48,6 +51,7 @@ Table Mitarbeiter {
   MitStundensatz Float
   NLNr Int
   Niederlassung Niederlassung
+  Auftrag Auftrag [not null]
 }
 
 Table Montage {
@@ -81,6 +85,10 @@ Table Rechnung {
     (KunNr, AufNr) [pk]
   }
 }
+
+Ref: Auftrag.KunNr > Kunde.KunNr
+
+Ref: Auftrag.MitID > Mitarbeiter.MitID [delete: No Action]
 
 Ref: Gebiet.NLNr > Niederlassung.NLNr [delete: No Action]
 

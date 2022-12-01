@@ -27,6 +27,14 @@ export class InvoicesController {
       where: {
         ...filter,
       },
+      include: {
+        Kunde: true,
+        Auftrag: {
+          include: {
+            Mitarbeiter: true,
+          },
+        },
+      },
       orderBy: [...sort],
     });
     return res.status(200).json({ data: allInvoices, count });
@@ -38,11 +46,23 @@ export class InvoicesController {
   ): Promise<Response | void> {
     const { KunNr, AufNr } = req.query;
 
+    console.log(KunNr, AufNr);
+
     const invoice = await prisma.rechnung.findUnique({
       where: {
         KunNr_AufNr: {
           AufNr: Number(AufNr),
           KunNr: Number(KunNr),
+        },
+      },
+      include: {
+        Auftrag: {
+          include: {
+            Rechnung: true,
+            Mitarbeiter: true,
+            Kunde: true,
+            Montage: true,
+          },
         },
       },
     });

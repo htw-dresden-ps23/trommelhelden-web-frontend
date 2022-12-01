@@ -48,7 +48,12 @@ export const routes = [
   {
     path: "/invoices",
     name: "Invoices",
-    component: () => import("@/views/Invoices.vue"),
+    component: () => import("@/views/Invoices/ListInvoices.vue"),
+  },
+  {
+    path: "/invoices/:AufNr/:KunNr",
+    name: "Invoice",
+    component: () => import("@/views/Invoices/SingeInvoice.vue"),
   },
   {
     path: "/settings",

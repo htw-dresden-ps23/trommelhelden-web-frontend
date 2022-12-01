@@ -9,6 +9,7 @@ import { prismaErrorMiddleware } from "./middleware";
 require("express-async-errors");
 
 import morgan from "morgan";
+import { BusinessDataController } from "./controller/BusinessData";
 import { InvoicesController } from "./controller/Invoices";
 import { SettingsController } from "./controller/Settings";
 
@@ -63,6 +64,14 @@ app.patch("/invoices", invoicesController.update);
 const settingsController = new SettingsController();
 app.post("/settings", settingsController.list);
 app.patch("/settings", settingsController.updateSettings);
+
+const businessDataController = new BusinessDataController();
+
+app.post("/buisness-data/invoices", businessDataController.getInvoices);
+app.post("/buisness-data/assembly", businessDataController.getAssembly);
+app.post("/buisness-data/customers", businessDataController.getCustomers);
+app.post("/buisness-data/orders", businessDataController.getOrders);
+
 app.use(prismaErrorMiddleware);
 
 app.listen(port, () => {
