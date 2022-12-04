@@ -28,10 +28,16 @@ export class InvoicesController {
         ...filter,
       },
       include: {
-        Kunde: true,
         Auftrag: {
           include: {
+            Rechnung: true,
             Mitarbeiter: true,
+            Kunde: true,
+            Montage:  {
+              include: {
+                Ersatzteil:true
+              },
+            },
           },
         },
       },

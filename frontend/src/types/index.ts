@@ -11,7 +11,7 @@ interface IAuftrag {
   Anfahrt?: number;
   Beschreibung?: string;
   Mitarbeiter?: IMitarbeiter;
-  Montage: IMontage[];
+  Montage?: IMontage;
   Rechnung: IRechnung[];
 }
 
