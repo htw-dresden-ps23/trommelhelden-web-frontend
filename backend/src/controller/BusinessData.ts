@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, Rechnung } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import { send } from "process";
 import { Runtype } from "runtypes";
@@ -26,12 +26,14 @@ export class BusinessDataController {
               RechBetrag: true,
             },
             _max: {
+              //Math.max()
               RechBetrag: true,
             },
             _count: {
               RechBetrag: true,
             },
             _min: {
+              //Math.min()
               RechBetrag: true,
             },
             where: {
@@ -42,7 +44,26 @@ export class BusinessDataController {
 
         break;
       case "backend": {
-        const data = await prisma.rechnung.findMany();
+        const rechnungen: Rechnung[] = await prisma.rechnung.findMany();
+        let avg,
+          max,
+          count,
+          min,
+          sum: number = 0;
+        let array: any = [];
+        rechnungen.forEach((rechnung) => {
+          sum += rechnung.RechBetrag;
+          array.push(rechnung.RechBetrag);
+        });
+        count = rechnungen.length;
+        avg = sum / count;
+        console.log(array);
+        max = Math.max(...array);
+        min = Math.min(...array);
+
+        data = [avg, max, count, min, sum];
+        console.log(data);
+        break;
 
         // BERECHNEN IM BACKEND
       }

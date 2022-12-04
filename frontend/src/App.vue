@@ -16,6 +16,8 @@ import { onMounted } from "vue";
 import SidebarMenu from "./components/Menu/SidebarMenu.vue";
 import { useStore } from "./store";
 
+const value = 0;
+
 const store = useStore();
 
 onMounted(async () => {

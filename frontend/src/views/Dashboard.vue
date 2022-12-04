@@ -1,92 +1,58 @@
 <template>
- <BarChart v-bind="barChartProps" style="padding-right:10rem"/>
- <DoughnutChart :chartData="chartData"  style="padding-right:10rem"/>
- <LineChart :chartData="chartData"/>
+  <div></div>
+    <Chart 
+    v-for="chart in charts"
+      :key="chart.name"
+      class="m-2 p-2 flex "
+    ></Chart>
+  </div>
+</template>
 
-<!-- 
- <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 mb-6">
-        <CardBoxWidget
-          trend="12%"
-          trend-type="up"
-          color="text-emerald-500"
-          :icon="mdiAccountMultiple"
-          :number="512"
-          label="Clients"
-        />
-        <CardBoxWidget
-          trend="12%"
-          trend-type="down"
-          color="text-blue-500"
-          :icon="mdiCartOutline"
-          :number="7770"
-          prefix="$"
-          label="Sales"
-        />
-        <CardBoxWidget
-          trend="Overflow"
-          trend-type="alert"
-          color="text-red-500"
-          :icon="mdiChartTimelineVariant"
-          :number="256"
-          suffix="%"
-          label="Performance"
-        />
-      </div>
-
-  -->
-
- </template>
-  
 <script lang="ts">
 
-// import {
-//   mdiAccountMultiple,
-//   mdiCartOutline,
-//   mdiChartTimelineVariant,
-//   mdiMonitorCellphone,
-//   mdiReload,
-//   mdiGithub,
-//   mdiChartPie,
-// } from "@mdi/js";
+import Chart from "@/components/Chart.vue";
+import OrderService from "@/api/services/Order";
+import { IAuftrag } from "@/types";
+import { onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
 
+const ordersService = new OrderService();
+const orders = ref<IAuftrag>();
+const route = useRoute();
 
+const {
+  KunNr,
+  AufNr,
+}: {
+  KunNr: string;
+  AufNr: string;
+} = route.params as any;
 
+onMounted(async () => {
+    orders.value = await ordersService.getOrder(AufNr, KunNr);
+})
 
-import { ref, computed, defineComponent } from 'vue';
-import { Chart, registerables } from 'chart.js';
-import { BarChart, useBarChart, DoughnutChart, LineChart } from 'vue-chart-3';
-
-
-Chart.register(...registerables);
-
-export default defineComponent({
-    name: 'DashboardTH',
-    components: { DoughnutChart, BarChart, LineChart },
-    setup() {
-        const data = ref([30, 40, 60, 70, 5]);
-
-        const chartData = computed(() => ({
-            labels: ['Mitarbeiter', 'Test', 'Dresden', 'Zahl', 'Uwe'],
-            datasets: [
-                {
-                    data: data.value,
-                    backgroundColor: ['#77CEFF', '#2ab7d9', '#669ef3', '#9c68bb', '#d82a7a'],
-                },
-            ],
-        }));
-
-
-        const bubbleChartData = computed(() => ({
-            labels: ['Paris', 'Nîmes', 'Toulon', 'Perpignan', 'Autre'],
-            
-        }));
-
-        const { barChartProps, barChartRef } = useBarChart({
-            chartData,
-        });
-
-
-        return { barChartProps, barChartRef, chartData,bubbleChartData };
+const charts = [
+  {
+    name: "Bar Chart",
+    data: {
+      labels: ["January", "February", "March", "April", "May", "June", "July"],
+      datasets: [
+        {
+          label: "Data One",
+          data: orders.value,
+          backgroundColor: "rgba(255, 99, 132, 0.2)",
+          borderColor: "rgba(255, 99, 132, 1)",
+          borderWidth: 1,
+        },
+      ],
     },
-});
+  },
+];
 </script>
+
+
+<style>
+
+
+</style>
