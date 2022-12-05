@@ -1,67 +1,69 @@
 <template>
-   <div class="box-border text-2xl w-full main-app">
-            <div class="main-header">
-              <h1
-                class="bg-gradient-to-r from-blue-400 to-pink-800 bg-clip-text py-4 text-4xl font-extrabold text-transparent">
-                Rechnung {{ invoice?.AufNr }}|{{ invoice?.KunNr }}
-              </h1>
-              <div   class="addr">AN: {{invoice?.Auftrag.Mitarbeiter?.MitName }}
-                {{ invoice?.Auftrag.Mitarbeiter?.MitVorname }} <br> {{invoice?.Auftrag.Kunde?.KunStrasse}}, {{invoice?.Auftrag.Kunde?.KunPLZ}}, {{invoice?.Auftrag.Kunde?.KunOrt}} </div>
-            </div>
-            <div class=" big-top-margin">
-              <div class="main-content">
-                <div class="customer"><span class="order_column_header">Kunde:</span>{{invoice?.Auftrag.Kunde?.KunName}} <br>  #{{invoice?.Auftrag.Kunde?.KunNr}}</div>
-                <div class="inv"><span class="order_column_header">Auftrag Nr:</span><span>#{{invoice?.Auftrag.Aufnr }}</span>
-                </div>
-                <div class="due"><span class="order_column_header">Auftragsdatum:</span><span>{{
-                    useDateFormat(invoice?.Auftrag.AufDat, "DD.MM.YYYY", {
-                      locales: "de-DE",
-                    }).value
-                }}</span>
-                </div>
-                <div class="amount"><span class="order_column_header">Gesamtbetrag
-                    (EUR)</span><span class="big-font bold-font gradient-bg-1">{{
-                        invoice?.Auftrag.Rechnung[0].RechBetrag
-                    }}€</span>
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="main-content-tab">
-                <table aria-colcount="4" class="inv-table">
-                  <thead class="dark-bg-1">
-                    <tr>
-                      <th>Montage</th>
-                      <th>Price</th>
-                      <th>Menge</th>
-                      <th>Netto Betrag</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="">
-                      <td>Montage{{invoice?.Auftrag.Montage?.EtID}}</td>
-                      <td>0 €</td>
-                      <td>Menge{{invoice?.Auftrag.Montage?.Anzahl}} St.</td>
-                      <td>0 €</td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div>
-                 <span class="definition"> Beschreibung: {{invoice?.Auftrag.Beschreibung}}</span>
-                </div>
-                <div class="summary">
-                  <div><span>Netto </span><span>
-                      {{ ((invoice?.Auftrag.Rechnung[0].RechBetrag * 1) / 1.19).toFixed(2) }}€</span></div>
-                  <div><span>MwSt. </span><span>
-                      {{ (invoice?.Auftrag.Rechnung[0].RechBetrag * 0.19).toFixed(2) }}€</span></div>
-                  <div class=" sum"><span>Gesamt (EUR)</span><span> {{ invoice?.Auftrag.Rechnung[0].RechBetrag
-                  }}€</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        <div>
+  <div class="box-border text-2xl w-full main-app">
+    <div class="main-header">
+      <h1 class="bg-gradient-to-r from-blue-400 to-pink-800 bg-clip-text py-4 text-4xl font-extrabold text-transparent">
+        Rechnung {{ invoice?.AufNr }}|{{ invoice?.KunNr }}
+      </h1>
+      <div class="addr">AN: {{ invoice?.Auftrag.Mitarbeiter?.MitName }}
+        {{ invoice?.Auftrag.Mitarbeiter?.MitVorname }} <br> {{ invoice?.Auftrag.Kunde?.KunStrasse }},
+        {{ invoice?.Auftrag.Kunde?.KunPLZ }}, {{ invoice?.Auftrag.Kunde?.KunOrt }} </div>
+    </div>
+    <div class=" big-top-margin">
+      <div class="main-content">
+        <div class="customer"><span class="order_column_header">Kunde:</span>{{ invoice?.Auftrag.Kunde?.KunName }} <br>
+          #{{ invoice?.Auftrag.Kunde?.KunNr }}</div>
+        <div class="inv"><span class="order_column_header">Auftrag Nr:</span><span>#{{ invoice?.Auftrag.Aufnr }}</span>
         </div>
+        <div class="due"><span class="order_column_header">Auftragsdatum:</span><span>{{
+            useDateFormat(invoice?.Auftrag.AufDat, "DD.MM.YYYY", {
+              locales: "de-DE",
+            }).value
+        }}</span>
+        </div>
+        <div class="amount"><span class="order_column_header">Gesamtbetrag
+            (EUR)</span><span class="big-font bold-font gradient-bg-1">{{
+                invoice?.Auftrag.Rechnung[0].RechBetrag
+            }}€</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="main-content-tab">
+        <table aria-colcount="4" class="inv-table">
+          <thead class="dark-bg-1">
+            <tr>
+              <th>Montage</th>
+              <th>Price</th>
+              <th>Menge</th>
+              <th>Netto Betrag</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="">
+              <td>Montage{{ invoice?.Auftrag.Montage?.EtID }}</td>
+              <td>0 €</td>
+              <td>Menge{{ invoice?.Auftrag.Montage?.Anzahl }} St.</td>
+              <td>0 €</td>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <span class="definition"> Beschreibung: {{ invoice?.Auftrag.Beschreibung }}</span>
+        </div>
+        <div class="summary">
+          <div><span>Netto </span><span>
+              {{ ((invoice?.Auftrag.Rechnung[0].RechBetrag * 1) / 1.19).toFixed(2) }}€</span></div>
+          <div><span>MwSt. </span><span>
+              {{ (invoice?.Auftrag.Rechnung[0].RechBetrag * 0.19).toFixed(2) }}€</span></div>
+          <div class=" sum"><span>Gesamt (EUR)</span><span> {{ invoice?.Auftrag.Rechnung[0].RechBetrag
+          }}€</span></div>
+        </div>
+        <Button label="Drücken" icon="pi pi-print"  @click="printWindow()"  />
+      </div>
+    </div>
+  </div>
+  <div>
+  </div>
   <!-- <Card>
     <template #content> 
         <h1
@@ -159,6 +161,11 @@ onMounted(async () => {
   invoice.value = await invoiceService.getInvoice(AufNr, KunNr);
   console.log(invoice.value);
 });
+
+function printWindow() {
+  window.print();
+}
+
 </script>
 
 <style scoped>
@@ -322,7 +329,7 @@ a {
   margin-top: 2rem;
 }
 
-.definition{
+.definition {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -330,5 +337,20 @@ a {
   color: #868686;
   text-align: left;
   margin-bottom: 100px;
+}
+
+@media print {
+Button, button{
+display:none;
+}
+.main-app{
+  box-shadow: none;
+}
+.order_column_header, .addr, .bold-font, h1, .sum{
+  color: black;
+}
+body{
+  margin-top: -9rem;
+}
 }
 </style>
