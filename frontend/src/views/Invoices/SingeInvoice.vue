@@ -32,18 +32,24 @@
         <table aria-colcount="4" class="inv-table">
           <thead class="dark-bg-1">
             <tr>
-              <th>Montage</th>
-              <th>Price</th>
-              <th>Menge</th>
-              <th>Netto Betrag</th>
+              <th>Bezeichnung</th>
+              <th>Einzelpreis</th>
+              <th>Menge Einh.</th>
+              <th>Betrag</th>
             </tr>
           </thead>
           <tbody>
             <tr class="">
-              <td>Montage{{ invoice?.Auftrag.Montage?.EtID }}</td>
-              <td>0 €</td>
-              <td>Menge{{ invoice?.Auftrag.Montage?.Anzahl }} St.</td>
-              <td>0 €</td>
+              <td>{{invoice?.Auftrag.Mitarbeiter?.MitJob }}</td>
+              <td>{{invoice?.Auftrag.Mitarbeiter?.MitStundensatz}} €</td>
+              <td>{{ invoice?.Auftrag.Dauer}} (h.)</td>
+              <td>{{ 1* (invoice?.Auftrag.Dauer) * (invoice?.Auftrag.Mitarbeiter?.MitStundensatz)}} €</td>
+            </tr>
+            <tr>
+              <td>An- und Abfahrt <br> Fahrkosten</td>
+              <td>2,50  €</td>
+              <td>{{ invoice?.Auftrag.Anfahrt}} (km.)</td>
+              <td>{{( 1* (invoice?.Auftrag.Anfahrt) * 2.50)}} €</td>
             </tr>
           </tbody>
         </table>
