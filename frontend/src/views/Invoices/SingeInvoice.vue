@@ -46,7 +46,7 @@
               <td>{{ 1* (invoice?.Auftrag.Dauer) * (invoice?.Auftrag.Mitarbeiter?.MitStundensatz)}} €</td>
             </tr>
             <tr>
-              <td>An- und Abfahrt <br> Fahrkosten</td>
+              <td>Fahrkosten</td>
               <td>2,50  €</td>
               <td>{{ invoice?.Auftrag.Anfahrt}} (km.)</td>
               <td>{{( 1* (invoice?.Auftrag.Anfahrt) * 2.50)}} €</td>
@@ -203,7 +203,6 @@ a {
 } */
 
 .main-app {
-  margin: 2rem auto;
   border: 1px solid #eee;
   border-radius: 10px;
   padding: 4rem 5rem;
