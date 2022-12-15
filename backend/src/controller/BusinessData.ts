@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient, Rechnung } from "@prisma/client";
+import { Prisma, PrismaClient, Rechnung , Auftrag, Montage} from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import { send } from "process";
 import { Runtype } from "runtypes";
@@ -61,7 +61,26 @@ export class BusinessDataController {
         max = Math.max(...array);
         min = Math.min(...array);
 
-        data = [avg, max, count, min, sum];
+        data = {
+         
+            _avg: {
+              RechBetrag: avg,
+            },
+            _sum: {
+              RechBetrag: sum,
+            },
+            _max: {
+              //Math.max()
+              RechBetrag: max,
+            },
+            _count: {
+              RechBetrag: count,
+            },
+            _min: {
+              //Math.min()
+              RechBetrag: min,
+            }
+        };
         console.log(data);
         break;
 
@@ -115,10 +134,62 @@ export class BusinessDataController {
         }
 
         break;
-      case "backend": {
-        const data = await prisma.rechnung.findMany();
-        break;
-        // BERECHNEN IM BACKEND
+        case "backend": {
+          const auftraege: Auftrag[] = await prisma.auftrag.findMany();
+          let avgAnfahrt, avgDauer,
+            maxDauer, maxAnfahrt,
+            countAnfahrt, countDauer,
+            minDauer, minAnfahrt,
+            sumAnfahrt: any | number = 0   , sumDauer: any | number = 0;
+          let arrayAnfahrt: any = [];
+          let arrayDauer: any = [];
+          auftraege.forEach((auftrag) => {
+            if (auftrag.Anfahrt !== 0 && auftrag.Anfahrt !== null && auftrag.Anfahrt !== undefined|| auftrag.Dauer !== null && auftrag.Dauer !== undefined){
+              sumAnfahrt += auftrag.Anfahrt;
+              // auftrag.Dauer = Math.round(auftrag.Dauer)
+              sumDauer += auftrag.Dauer;
+              sumAnfahrt += auftrag.Anfahrt;
+         
+            }
+            
+            arrayAnfahrt.push(auftrag.Anfahrt);
+            arrayDauer.push(auftrag.Dauer);
+          });
+          countAnfahrt = arrayAnfahrt.length;
+          countDauer = arrayDauer.length;
+          avgAnfahrt = sumAnfahrt / countAnfahrt;
+          avgDauer = sumDauer / countDauer;
+     
+          maxAnfahrt = Math.max(...arrayAnfahrt);
+          minAnfahrt = Math.min(...arrayAnfahrt);
+          maxDauer = Math.max(...arrayDauer);
+          minDauer = Math.min(...arrayDauer);
+  
+          data = {
+           
+            _avg: {
+              Anfahrt: avgAnfahrt,
+              Dauer: avgDauer,
+            },
+            _sum: {
+              Anfahrt: sumAnfahrt,
+              Dauer: sumDauer,
+            },
+            _max: {
+              Anfahrt: maxAnfahrt,
+              Dauer: maxDauer,
+            },
+            _count: {
+              Anfahrt: countAnfahrt,
+              Dauer: countDauer,
+            },
+            _min: {
+              Anfahrt: minAnfahrt,
+              Dauer: minAnfahrt,
+            }
+          };
+          console.log(data);
+          break;
       }
       case "frontend": {
         const data = await prisma.rechnung.findMany();
@@ -168,7 +239,40 @@ export class BusinessDataController {
       }
 
       case "backend": {
-        const data = await prisma.montage.findMany();
+        const montagen: Montage[] = await prisma.montage.findMany();
+        let avg,
+          max,
+          count,
+          min,
+          sum: number = 0;
+        let array: any = [];
+        montagen.forEach((montage) => {
+          sum += montage.Anzahl;
+          array.push(montage.Anzahl);
+        });
+        count = montagen.length;
+        avg = sum / count;
+        console.log(array);
+        max = Math.max(...array);
+        min = Math.min(...array);
+
+        data = {
+         
+          _count: {
+            Anzahl: true,
+          },
+          _avg: {
+            Anzahl: true,
+          },
+          _sum: {
+            Anzahl: true,
+          },
+          where: {
+            ...filter,
+          },
+        };
+        console.log(data);
+        break;
         // BERECHNEN IM BACKEND
       }
       case "frontend": {
