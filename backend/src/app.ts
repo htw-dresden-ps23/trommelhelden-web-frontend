@@ -67,10 +67,12 @@ app.patch("/settings", settingsController.updateSettings);
 
 const businessDataController = new BusinessDataController();
 
-app.post("/buisness-data/invoices", businessDataController.getInvoices);
-app.post("/buisness-data/assembly", businessDataController.getAssembly);
-app.post("/buisness-data/customers", businessDataController.getCustomers);
-app.post("/buisness-data/orders", businessDataController.getOrders);
+app.post("/business-data/sales/employees", businessDataController.getSalesEmployees);
+app.post("/business-data/sales/branches", businessDataController.getSalesBranches);
+app.post("/business-data/sales/customers", businessDataController.getSalesCustomers);
+app.post("/business-data/trip", businessDataController.getTrip);
+app.post("/business-data/spareparts", businessDataController.getSpareparts);
+app.post("/business-data/sales", businessDataController.getSales);
 
 app.use(prismaErrorMiddleware);
 
