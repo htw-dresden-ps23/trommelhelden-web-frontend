@@ -59,6 +59,7 @@ export abstract class BaseService<T> implements IWrite<T>, IRead<T> {
     page = 0,
     rows: number = BaseService.rows,
     optParams?: any,
+    optBodyParams?: any,
   ): Promise<T[]> {
     return (
       await this._axiosInstance.post(
@@ -68,6 +69,7 @@ export abstract class BaseService<T> implements IWrite<T>, IRead<T> {
           filter,
           page,
           rows,
+          ...optBodyParams,
         },
         {
           params: optParams,
@@ -81,7 +83,8 @@ export abstract class BaseService<T> implements IWrite<T>, IRead<T> {
     page = 0,
     rows: number = BaseService.rows,
     optParams?: any,
-  ): Promise<T[]> {
+    optBodyParams?: any,
+  ): Promise<{ data: T[]; count: number }> {
     return (
       await this._axiosInstance.post(
         `/${this._tableName}`,
@@ -90,6 +93,7 @@ export abstract class BaseService<T> implements IWrite<T>, IRead<T> {
           filter,
           page,
           rows,
+          ...optBodyParams,
         },
         {
           params: {

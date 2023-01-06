@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "docker start db & nodemon src/app.ts",
     "init": " npm i && docker compose up -d && print 'waiting till data is inserted into db ...' && sleep 2m  && npm run prisma:generate && nodemon src/app.ts",

@@ -15,21 +15,24 @@
         <div class="inv"><span class="order_column_header">Auftrag Nr:</span><span>#{{ invoice?.Auftrag.Aufnr }}</span>
         </div>
         <div class="due"><span class="order_column_header">Auftragsdatum:</span><span>{{
-            useDateFormat(invoice?.Auftrag.AufDat, "DD.MM.YYYY", {
-              locales: "de-DE",
-            }).value
+          useDateFormat(invoice?.Auftrag.AufDat, "DD.MM.YYYY", {
+          locales: "de-DE",
+        }).value
         }}</span>
         </div>
         <div class="amount"><span class="order_column_header">Gesamtbetrag
             (EUR)</span><span class="big-font bold-font gradient-bg-1">{{
-                invoice?.Auftrag.Rechnung[0].RechBetrag
+              invoice?.Auftrag.Rechnung[0].RechBetrag
             }}€</span>
         </div>
       </div>
     </div>
     <div>
       <div class="main-content-tab">
-        <table aria-colcount="4" class="inv-table">
+        <table
+          aria-colcount="4"
+          class="inv-table"
+        >
           <thead class="dark-bg-1">
             <tr>
               <th>Bezeichnung</th>
@@ -40,16 +43,16 @@
           </thead>
           <tbody>
             <tr class="">
-              <td>{{invoice?.Auftrag.Mitarbeiter?.MitJob }}</td>
-              <td>{{invoice?.Auftrag.Mitarbeiter?.MitStundensatz}} €</td>
-              <td>{{ invoice?.Auftrag.Dauer}} (h.)</td>
-              <td>{{ 1* (invoice?.Auftrag.Dauer) * (invoice?.Auftrag.Mitarbeiter?.MitStundensatz)}} €</td>
+              <td>{{ invoice?.Auftrag.Mitarbeiter?.MitJob }}</td>
+              <td>{{ invoice?.Auftrag.Mitarbeiter?.MitStundensatz }} €</td>
+              <td>{{ invoice?.Auftrag.Dauer }} (h.)</td>
+              <td>{{ 1* (invoice.Auftrag.Dauer) * (invoice!.Auftrag!.Mitarbeiter!.MitStundensatz) }} €</td>
             </tr>
             <tr>
               <td>Fahrkosten</td>
-              <td>2,50  €</td>
-              <td>{{ invoice?.Auftrag.Anfahrt}} (km.)</td>
-              <td>{{( 1* (invoice?.Auftrag.Anfahrt) * 2.50)}} €</td>
+              <td>2,50 €</td>
+              <td>{{ invoice?.Auftrag.Anfahrt }} (km.)</td>
+              <td>{{(1 * (invoice?.Auftrag.Anfahrt) * 2.50)}} €</td>
             </tr>
           </tbody>
         </table>
@@ -61,10 +64,15 @@
               {{ ((invoice?.Auftrag.Rechnung[0].RechBetrag * 1) / 1.19).toFixed(2) }}€</span></div>
           <div><span>MwSt. </span><span>
               {{ (invoice?.Auftrag.Rechnung[0].RechBetrag * 0.19).toFixed(2) }}€</span></div>
-          <div class=" sum"><span>Gesamt (EUR)</span><span> {{ invoice?.Auftrag.Rechnung[0].RechBetrag
+          <div class=" sum"><span>Gesamt (EUR)</span><span> {{
+            invoice?.Auftrag.Rechnung[0].RechBetrag
           }}€</span></div>
         </div>
-        <Button label="Drücken" icon="pi pi-print"  @click="printWindow()"  />
+        <Button
+          label="Drücken"
+          icon="pi pi-print"
+          @click="printWindow()"
+        />
       </div>
     </div>
   </div>
@@ -146,7 +154,6 @@ import { useDateFormat } from "@vueuse/core";
 
 import InvoiceService from "@/api/services/Invoices";
 import { IRechnung } from "@/types";
-import Card from "primevue/card";
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
@@ -161,7 +168,7 @@ const {
 } = route.params as any;
 
 const invoiceService = new InvoiceService();
-const invoice = ref<IRechnung>();
+const invoice = ref<IRechnung>({} as IRechnung);
 
 onMounted(async () => {
   invoice.value = await invoiceService.getInvoice(AufNr, KunNr);
@@ -345,17 +352,26 @@ a {
 }
 
 @media print {
-Button, button{
-display:none;
-}
-.main-app{
-  box-shadow: none;
-}
-.order_column_header, .addr, .bold-font, h1, .sum{
-  color: black;
-}
-body{
-  margin-top: -9rem;
-}
+
+  Button,
+  button {
+    display: none;
+  }
+
+  .main-app {
+    box-shadow: none;
+  }
+
+  .order_column_header,
+  .addr,
+  .bold-font,
+  h1,
+  .sum {
+    color: black;
+  }
+
+  body {
+    margin-top: -9rem;
+  }
 }
 </style>

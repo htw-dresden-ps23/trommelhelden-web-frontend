@@ -5,12 +5,14 @@
     <div class="container m-auto my-8 flex h-full flex-1 justify-center">
       <router-view :key="$route.fullPath" />
     </div>
+    <DebugBar v-if="store.showDebugBar" />
     <Toast />
     <ScrollTop />
   </div>
 </template>
 
 <script setup lang="ts">
+import DebugBar from "@/components/DebugBar.vue";
 import Header from "@/components/Menu/Header.vue";
 import { onMounted } from "vue";
 import SidebarMenu from "./components/Menu/SidebarMenu.vue";

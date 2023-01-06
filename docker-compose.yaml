@@ -1,0 +1,39 @@
+version: "3"
+services:
+  trommelhelden-database:
+    container_name: trommelhelden-database
+    build:
+      context: ./backend
+      dockerfile: db.Dockerfile
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Trommelhelden1
+    ports:
+      - "1433:1433"
+    networks:
+      - backend
+  trommelhelden-backend:
+    container_name: trommelhelden-backend
+    build:
+      context: ./backend
+      dockerfile: backend.Dockerfile
+    environment:
+      - DATABASE_URL=sqlserver://db.localhost:1433;initial catalog=trommelhelden;user=sa;password=Trommelhelden1;TrustServerCertificate=true;integratedSecurity=true;
+    links:
+      - trommelhelden-database:db.localhost
+    networks:
+      - backend
+    ports:
+      - "5000:5000"
+  trommelhelden-frontend:
+    container_name: trommelhelden-frontend
+    build:
+      context: ./frontend
+      dockerfile: frontend.Dockerfile
+    links:
+      - trommelhelden-backend
+      - trommelhelden-database
+    ports:
+      - "8080:8080"
+networks:
+  backend:

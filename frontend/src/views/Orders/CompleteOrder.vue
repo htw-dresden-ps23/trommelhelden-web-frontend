@@ -1,11 +1,7 @@
 <template>
   <div class="mx-auto mt-8 flex-1">
-    <div
-      class="card flex flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl"
-    >
-      <h1
-        class="bg-gradient-to-l from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
-      >
+    <div class="card flex flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl">
+      <h1 class="bg-gradient-to-l from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent">
         Auftrag erfüllen
       </h1>
       <Divider />
@@ -34,7 +30,7 @@
 <script setup lang="ts">
 import EntityTable from "@/components/Entity/EntityTable.vue";
 
-import { IAuftrag } from "@/types";
+import { IAuftrag, IMasterDataField } from "@/types";
 import { ref } from "vue";
 import { useDialog } from "primevue/usedialog";
 import disableScroll from "disable-scroll";
@@ -69,43 +65,59 @@ const onButtonClick = (order: IAuftrag) => {
   });
 };
 
-const columns = [
+const columns: IMasterDataField[] = [
   {
     name: "Aufnr",
     label: "Auftragsnummer",
     type: "text",
+    allowCreate: false,
+    allowUpdate: false,
   },
   {
     name: "KunNr",
     label: "Kundennummer",
     type: "text",
+    allowCreate: false,
+    allowUpdate: false,
   },
   {
     name: "Kunde.KunName",
     label: "Kunde",
     type: "text",
+    allowCreate: false,
+    allowUpdate: false,
   },
   {
     name: "AufDat",
     label: "Auftragsdatum",
     type: "date",
+    allowCreate: false,
+    allowUpdate: false,
   },
   {
     name: "ErlDat",
     label: "Erledigungsdatum",
     type: "date",
+    allowCreate: false,
+    allowUpdate: false,
   },
   {
     name: "Mitarbeiter.MitID",
     label: "Mitarbeiter ID",
     type: "text",
+    allowCreate: false,
+    allowUpdate: false,
   },
   {
     name: "Mitarbeiter.MitName",
     label: "Mitarbeiter ID",
     type: "text",
+    allowCreate: false,
+    allowUpdate: false,
   },
 ];
 </script>
 
-<style></style>
+<style>
+
+</style>

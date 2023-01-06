@@ -19,6 +19,25 @@
             @change="onInvoiceMethodChange"
           />
         </div>
+        <div class="flex flex-col">
+          <div>Which method shall be used to fetch Business Data?</div>
+          <SelectButton
+            v-model="calcMode"
+            class="flex-1"
+            option-label="name"
+            :options="options2"
+            option-value="value"
+            aria-labelledby="single"
+            @change="onCalcMethodChange"
+          />
+        </div>
+        <div class="field-checkbox">
+          <Checkbox
+            v-model="store.showDebugBar"
+            :binary="true"
+          />
+          <label for="binary">Show debug Bar</label>
+        </div>
         <!-- <button
           class="group relative mb-2 mr-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 p-0.5 text-sm font-medium text-gray-900 shadow-lg shadow-purple-400 hover:text-white focus:outline-none focus:ring-4 focus:ring-purple-200 group-hover:from-purple-500 group-hover:to-pink-500"
         >
@@ -34,14 +53,17 @@
 </template>
 
 <script setup lang="ts">
+import Checkbox from "primevue/checkbox";
 import { useStore } from "@/store";
 import Card from "primevue/card";
-import SelectButton from "primevue/selectbutton";
+import SelectButton, { SelectButtonChangeEvent } from "primevue/selectbutton";
 import { ref } from "vue";
 
 const store = useStore();
 
 const mode = ref(store.settings.useTrigger ? 1 : 2);
+const calcMode = ref(store.settings.calcType);
+
 console.log(mode.value);
 
 const options = [
@@ -55,9 +77,30 @@ const options = [
   },
 ];
 
-const onInvoiceMethodChange = async (event) => {
+const options2 = [
+  {
+    name: "use Backend (node)",
+    value: "backend",
+  },
+  {
+    name: "use SQL",
+    value: "sql",
+  },
+  {
+    name: "use frontend ",
+    value: "frontend",
+  },
+];
+
+const onInvoiceMethodChange = async (event: SelectButtonChangeEvent) => {
   await store.updateSettings("useTrigger", event.value === 1);
+};
+
+const onCalcMethodChange = async (event: SelectButtonChangeEvent) => {
+  await store.updateSettings("calcType", calcMode.value);
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>
