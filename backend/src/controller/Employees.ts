@@ -4,14 +4,12 @@ import { send } from "process";
 import { Runtype } from "runtypes";
 import { uuid } from "uuidv4";
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: ["query", "info", "warn", "error"],
+});
 
 export class EmployeesController {
-  async list(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response | void> {
+  async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const { sort, filter, page, rows } = req.body;
     const { getCount } = req.query;
     let count;
@@ -33,11 +31,7 @@ export class EmployeesController {
     });
     return res.status(200).json({ data: allEmployees, count });
   }
-  async get(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response | void> {
+  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const { id } = req.params;
 
     const employee = await prisma.mitarbeiter.findUnique({

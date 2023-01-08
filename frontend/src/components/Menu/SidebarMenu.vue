@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
 import { useStore } from "@/store";
-import { MenuItem } from "primevue/menuitem";
+import type { MenuItem } from "primevue/menuitem";
 import PanelMenu from "primevue/panelmenu";
 import { ref } from "vue";
 

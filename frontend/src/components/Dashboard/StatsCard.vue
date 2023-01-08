@@ -1,55 +1,139 @@
 <template>
-  <div>
-    <Card style="width: 25rem; margin-bottom: 2em">
-      <template #content>
-        <div class="card mb-0">
-          <div class="justify-content-between mb-3 flex">
-            <span class="text-500 mb-3 block font-medium">{{
-              props.data
-            }}</span>
-            <div class="text-900 text-xl font-medium">{{ props.data }}</div>
-            <div
-              class="align-items-center justify-content-center border-round flex bg-blue-100"
-              style="width: 2.5rem; height: 2.5rem"
-            >
-
-            </div>
-            <Chart
-              type="bar"
-              :data="basicData"
-            />
-          </div>
-        </div>
-      </template>
-    </Card>
+  <div class="rounded-xl bg-white px-6 py-8 shadow-lg hover:scale-[1.02] transition-all duration-300">
+    <div class="card mb-0">
+      <div class="justify-content-between mb-3 flex flex-col">
+        <div class="text-lg font-semibold">{{ props.name }}</div>
+        <Chart
+          :options="basicOptions"
+          :type="chartType"
+          :data="basicData"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import Card from "primevue/card";
 import Chart from 'primevue/chart';
+import BusinessDataService from "@/api/services/BusinessData";
+import { onMounted, ref } from "vue";
 
 const props = defineProps<{
-  labels: string[];
-  data: number[];
+  entity: string;
+  orderBy: string;
+  orderByDirection: "asc" | "desc";
   label: string;
-  backgroundColor: string;
+  name: string;
+  startDate: string;
+  endDate: string;
+  labelKey: string;
   chartType: string;
 }>();
 
-const basicData = {
-  labels: props.labels,
-  datasets: [
-    {
-      label: props.label,
-      backgroundColor: props.backgroundColor,
-      data: props.data
-    }
-  ]
+const buisnessDataService = new BusinessDataService(props.entity);
+const data = ref();
+const basicData = ref()
+
+
+onMounted(async () => {
+  data.value = await buisnessDataService.getStats(props.startDate, props.endDate, props.orderBy, props.orderByDirection);
+
+  basicData.value = {
+    labels: data.value.map((x: any) => x[props.labelKey]),
+    datasets: [
+      {
+        label: props.label,
+        data: data.value.map(x => x[props.orderBy]),
+        backgroundColor: (ctx) => {
+
+          return colors.map(x => {
+            const canvas = ctx.chart.ctx;
+            const gradient = canvas.createLinearGradient(0, 0, 0, 160);
+
+            gradient.addColorStop(0, x.color1);
+            gradient.addColorStop(1, x.color2);
+
+            return gradient;
+          })
+
+        },
+      }
+    ]
+  }
+})
+
+const colors = [{
+  color1: "#00ff87",
+  color2: "#60efff"
+},
+{
+  color1: "#0061ff",
+  color2: "#60efff"
+},
+
+
+{
+  color1: "#ff930f",
+  color2: "#fff95b"
+},
+{
+  color1: "#f9c823",
+  color2: "#fc506e"
+},
+{
+  color1: "#6ef195",
+  color2: "#00e3fd"
+},
+{
+  color1: "#51c26f",
+  color2: "#f2e901"
+},
+{
+  color1: "#fcef64",
+  color2: "#f44c7d"
 }
+  , {
+  color1: "#ef709b",
+  color2: "#fa9372"
+}
+]
+
+const basicOptions = ref(
+  {
+    plugins: {
+      legend: {
+        labels: {
+          color: '#495057'
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          color: '#495057'
+        },
+        grid: {
+          color: '#ebedef'
+        }
+      },
+      y: {
+        ticks: {
+          color: '#495057'
+        },
+        grid: {
+          color: '#ebedef'
+        }
+      }
+    }
+  }
+);
+
+
+
 
 </script>
 
-<style scoped>
 
-</style>
+
+
+

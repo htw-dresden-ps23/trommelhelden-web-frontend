@@ -58,6 +58,7 @@ import EmployeesService from "@/api/services/Employees";
 import OrderService from "@/api/services/Order";
 import { useToast } from "primevue/usetoast";
 import { unflatten } from "flat";
+import Divider from "primevue/divider";
 
 const dialogRef: any = inject("dialogRef");
 
