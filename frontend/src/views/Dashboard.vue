@@ -37,12 +37,22 @@
 
 <script setup lang="ts">
 import Calendar from "primevue/calendar";
-import { onMounted, ref } from "vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 // import BusinessData from "@/api/services/BusinessData";
 import StatsCard from "@/components/Dashboard/StatsCard.vue";
 import { useStore } from "@/store";
 import StatCategory from "@/components/Dashboard/StatCategory.vue";
 
+const store = useStore();
+
+onBeforeMount(() => {
+
+  store.loadingTime = performance.now()
+
+})
+onMounted(() => {
+  store.loadingTime = performance.now() - store.loadingTime;
+})
 
 
 const dateRange = ref()

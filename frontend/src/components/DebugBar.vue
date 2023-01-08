@@ -5,7 +5,7 @@
 
 
 
-        <span class="text-lg font-bold text-white ">Ladezeit: {{}}</span>
+        <span class="text-lg font-bold text-white ">Ladezeit: {{ parseFloat(store.loadingTime).toFixed(2) }} ms</span>
         <span class="text-lg font-bold text-white">Berechnungsart: {{ store.settings.calcType }}</span>
 
     </div>

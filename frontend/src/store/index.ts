@@ -15,6 +15,7 @@ export const useStore = defineStore("main", {
       calcType: "sql",
     } as any,
     showDebugBar: false,
+    loadingTime: 0,
   }),
   actions: {
     async startUp() {
