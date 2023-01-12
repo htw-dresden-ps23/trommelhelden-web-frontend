@@ -12,6 +12,11 @@ export const routes = [
     component: () => import("@/views/Orders/CreateOrder.vue"),
   },
   {
+    path: "/orders/addInvoice",
+    name: "addInvoice",
+    component: () => import("@/views/Orders/CreateInvoice.vue"),
+  },
+  {
     path: "/orders/complete",
     component: () => import("@/views/Orders/CompleteOrder.vue"),
   },

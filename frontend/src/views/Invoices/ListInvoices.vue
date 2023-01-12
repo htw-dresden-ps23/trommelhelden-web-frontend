@@ -7,8 +7,16 @@
         >
           Rechungen
         </h1>
+        <router-link to="/orders/addInvoice">
+          <Button
+            icon="pi pi-plus"
+            class="mr-2 mb-2 rounded-lg !border-none !bg-gradient-to-r from-blue-400 to-pink-800 text-center text-2xl font-medium text-white shadow-lg hover:scale-105 hover:transform"
+            label="Rechnung erstellen"
+          />
+        </router-link>
       </div>
-      <Divider />
+      <Divider /> 
+      
       <EntityTable
         :key="reRender"
         name="Rechnungen"
