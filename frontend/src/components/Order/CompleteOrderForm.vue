@@ -28,18 +28,42 @@
     </div>
 
     <Divider />
-    <InputNumber
-      v-model="order.Anfahrt"
-      placeholder="Anfahrt"
-    ></InputNumber>
-    <Divider />
+    <div class="grid col-span-2 row-span-2 gap-4 mb-4">
+      <InputNumber
+        v-model="order.Anfahrt"
+        class="col-start-1 col-end-1"
+        placeholder="Anfahrt"
+      ></InputNumber>
 
-    <InputNumber
-      v-model="order.Dauer"
-      placeholder="Dauer"
-    ></InputNumber>
-    <Divider />
 
+      <InputNumber
+        v-model="order.Dauer"
+        class="col-start-2 col-end-2 "
+        placeholder="Dauer"
+      ></InputNumber>
+
+      <Dropdown
+        v-model="selectedSpareParts"
+        :options="spareparts"
+        option-label="EtBezeichnung"
+        :filter="true"
+        placeholder="Ersatzteile auswählen"
+        :show-clear="true"
+      >
+        <template #option="slotProps">
+
+          <div class="flex justify-between">
+            <Chip>{{ slotProps.option?.EtPreis }} €</Chip><span>{{
+              slotProps.option?.EtBezeichnung
+            }}</span>
+          </div>
+
+
+        </template>
+
+      </Dropdown>
+
+    </div>
     <div />
     <Button
       type="submit"
@@ -51,26 +75,36 @@
   </div>
 </template>
 <script setup lang="ts">
+import Chip from 'primevue/chip';
+import Listbox from 'primevue/listbox';
 import { useDateFormat } from "@vueuse/core";
 import { inject, onMounted, ref } from "vue";
-import { IAuftrag, IMitarbeiter } from "@/types";
+import { IAuftrag, IErsatzteil, IMitarbeiter } from "@/types";
 import EmployeesService from "@/api/services/Employees";
 import OrderService from "@/api/services/Order";
 import { useToast } from "primevue/usetoast";
 import { unflatten } from "flat";
 import Divider from "primevue/divider";
 
-const dialogRef: any = inject("dialogRef");
+import GenericService from '@/api/services/Generic';
 
+
+const sparepartsService = new GenericService<IErsatzteil>("spareparts");
+
+const dialogRef: any = inject("dialogRef");
+const selectedSpareParts = ref<IErsatzteil>({} as IErsatzteil);
 const toast = useToast();
 const employee = ref<IMitarbeiter>({} as IMitarbeiter);
 const orderService = new OrderService();
 const employeesSevice = new EmployeesService();
 const order = ref<IAuftrag>({} as IAuftrag);
+const spareparts = ref<IErsatzteil[]>([] as IErsatzteil[]);
+
 
 onMounted(async () => {
   console.log(order.value);
 
+  spareparts.value = await sparepartsService.list([], {}, 0, 1000);
   order.value = unflatten(dialogRef.value.data.order);
   console.log(order.value);
 
@@ -80,8 +114,19 @@ onMounted(async () => {
 const planOrder = async () => {
   try {
     let { Aufnr, MitID, Kunde, Mitarbeiter, ...x }: any = order.value;
-    console.log(x);
 
+    console.log(x);
+    if (selectedSpareParts.value.EtID) {
+      x.Montage = {
+        create: {
+
+          EtID: selectedSpareParts.value.EtID,
+          Anzahl: 1,
+
+
+        }
+      }
+    }
     await orderService.update(String(Aufnr), {
       ...x,
     });

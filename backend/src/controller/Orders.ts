@@ -68,6 +68,15 @@ export class OrdersController {
       where: {
         Aufnr: Number(id),
       },
+      include: {
+        Kunde: true,
+        Mitarbeiter: true,
+        Montage: {
+          include: {
+            Ersatzteil: true,
+          },
+        },
+      },
     });
     return res.json(order);
   }
@@ -107,7 +116,10 @@ export class OrdersController {
 
     console.log(id);
 
-    const order = await prisma.auftrag.updateMany({
+    const order = await prisma.auftrag.update({
+      include: {
+        Montage: true,
+      },
       data,
       where: {
         Aufnr: Number(id),

@@ -24,6 +24,8 @@
         resource-name="orders"
         :allow-edit="false"
         :allow-delete="false"
+        @onRowSelect="(event)=>router.push({name: 'singleOrder', params: {id: event.Aufnr}})"
+        
       />
     </div>
   </div>
@@ -32,6 +34,9 @@
 <script setup lang="ts">
 import EntityTable from "@/components/Entity/EntityTable.vue";
 import { IMasterDataField } from "@/types";
+import { useRouter } from "vue-router";
+
+const router = useRouter()
 
 const columns: IMasterDataField[] = [
   {

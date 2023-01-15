@@ -63,8 +63,8 @@ onMounted(async () => {
 })
 
 const colors = [{
-  color1: "#00ff87",
-  color2: "#60efff"
+  color1: "#ff5858",
+  color2: "#ffc8c8"
 },
 {
   color1: "#0061ff",
