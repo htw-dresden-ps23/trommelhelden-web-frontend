@@ -38,7 +38,7 @@
                             class="flex justify-between"
                         >
                             <span class="">{{ kunde }}</span>
-                            <span>{{ order.Kunde[kunde] }}</span>
+                            <span>{{ order.Kunde[kunde as keyof IKunde] }}</span>
 
                         </div>
 
@@ -54,7 +54,7 @@
                             class="flex justify-between"
                         >
                             <span class="">{{ mitarbeiter }}</span>
-                            <span>{{ order.Mitarbeiter[mitarbeiter] }}</span>
+                            <span>{{ order.Mitarbeiter[mitarbeiter as keyof IMitarbeiter] }}</span>
 
                         </div>
                     </Panel>
@@ -87,9 +87,10 @@ import { useDateFormat } from '@vueuse/shared';
 import Panel from 'primevue/panel';
 import Timeline from 'primevue/timeline';
 import GenericService from '@/api/services/Generic';
-import { IAuftrag } from '@/types';
+import { IAuftrag, IKunde, IMitarbeiter } from '@/types';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import OrderService from '@/api/services/Order';
 
 
 

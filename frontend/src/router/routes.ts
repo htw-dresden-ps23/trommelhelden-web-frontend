@@ -68,7 +68,16 @@ export const routes = [
   //------------------------------------------------------------------
   //Masterdata
   //------------------------------------------------------------------
-
+  {
+    path: "/startup",
+    name: "startup",
+    component: () => import("@/views/Startup/Start.vue"),
+  },
+  {
+    path: "/startup/1",
+    name: "startup1",
+    component: () => import("@/views/Startup/Config.vue"),
+  },
   // {
   //   path: "/masterdata/:entity/:id?",
   //   component: () => import("@/views/MasterData.vue"),

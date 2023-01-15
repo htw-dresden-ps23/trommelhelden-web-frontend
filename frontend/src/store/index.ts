@@ -9,6 +9,8 @@ const settingsService = new GenericService("settings");
 // the first argument is a unique id of the store across your application
 export const useStore = defineStore("main", {
   state: () => ({
+    firstStartUp: false,
+    showHeader: true,
     sideBarMenuIsOpen: false,
     settings: {
       useTrigger: null,
@@ -19,6 +21,10 @@ export const useStore = defineStore("main", {
   }),
   actions: {
     async startUp() {
+      this.firstStartUp = (
+        await settingsService._axiosInstance.get("/startUp")
+      ).data.isStartUp;
+
       this.settings = (
         await settingsService._axiosInstance.post("/settings")
       ).data;

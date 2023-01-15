@@ -68,5 +68,3 @@ AS
             CURRENT_TIMESTAMP,
             @sum )
 END; 
-
-UPDATE Auftrag SET Anfahrt = 10, Dauer = 10 WHERE Aufnr = 3007

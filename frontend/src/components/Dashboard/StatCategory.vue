@@ -13,6 +13,8 @@
                 :order-by="stat?.orderBy"
                 :order-by-direction="stat?.orderByDirection"
                 :chart-type="stat?.chartType"
+                :start-date="startDate"
+                :end-date="endDate"
                 :name="stat?.name"
                 :label="
                 stat?.label"
@@ -31,8 +33,8 @@ import StatsCard from "@/components/Dashboard/StatsCard.vue";
 const props = defineProps<{
     name: string;
     data: any;
-    startDate: string;
-    endDate: string
+    startDate: Date;
+    endDate: Date
 }>();
 
 </script>

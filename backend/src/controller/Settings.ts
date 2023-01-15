@@ -5,18 +5,14 @@ import { Runtype } from "runtypes";
 const prisma = new PrismaClient();
 
 export class SettingsController {
-  async list(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response | void> {
+  async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const trigger: any =
-      await prisma.$queryRaw`SELECT  is_disabled FROM sys.triggers WHERE name = 'create_invoice'`;
+      await prisma.$queryRaw`SELECT is_disabled FROM sys.triggers WHERE name = 'create_invoice'`;
 
+    console.log(trigger);
     const settings = {
       useTrigger: !trigger[0].is_disabled,
     };
-    console.log(trigger);
 
     return res.json(settings);
   }

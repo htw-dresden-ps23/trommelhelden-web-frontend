@@ -12,6 +12,7 @@ import morgan from "morgan";
 import { BusinessDataController } from "./controller/BusinessData";
 import { InvoicesController } from "./controller/Invoices";
 import { SettingsController } from "./controller/Settings";
+import { isStartUp, startUp } from "./controller/Startup";
 
 const app = express();
 app.use(cors());
@@ -64,6 +65,9 @@ app.patch("/invoices", invoicesController.update);
 const settingsController = new SettingsController();
 app.post("/settings", settingsController.list);
 app.patch("/settings", settingsController.updateSettings);
+
+app.get("/startup", isStartUp);
+app.post("/startup", startUp);
 
 const businessDataController = new BusinessDataController();
 

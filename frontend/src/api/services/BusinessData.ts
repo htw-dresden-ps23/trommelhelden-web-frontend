@@ -10,8 +10,8 @@ export default class BusinessDataService {
     });
   }
   getStats = async (
-    startDate: string,
-    endDate: string,
+    startDate: Date,
+    endDate: Date,
     orderBy: string,
     orderByDirection: "desc" | "asc",
   ) => {
