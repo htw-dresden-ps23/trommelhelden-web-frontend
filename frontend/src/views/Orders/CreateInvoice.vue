@@ -5,20 +5,32 @@
     </h1>
     <Divider />
 
-    <div class="my-4 flex items-center justify-between">
+    <div class="my-4 justify-between flex flex-col items-start">
       <div
         v-if="order.Aufnr"
-        class="grid flex-1 grid-cols-2"
+        class="grid flex-1 grid-cols-2 mb-12 text-lg font-medium text-gray-900 dark:text-black"
       >
-      <span>Aufnr: </span><span>{{ order.Aufnr }}</span>
-        <span>Kundennummer: </span><span>{{ order.KunNr }}</span>
-        <span>MitNR: </span><span>{{ order.MitID }}</span>
-        <span>Beschreibung </span><span>{{ order.Beschreibung }}</span>
-        <span>AufDat  </span><span>{{ order.AufDat }}</span>
-        <span>ErlDat </span><span>{{ order.ErlDat }}</span>
+
+        <label class="w-32 mb-1 text-gray-800 block font-bold text-sm uppercase tracking-wide">Auftragnummer:</label>
+        <span class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker" type="text" id="datepicker1"    x-model="invoiceDate"   autocomplete="off" readonly>{{ order.Aufnr }}</span>
+        <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Kundennummer:</label>
+        <span class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker" type="text" id="datepicker1"    x-model="invoiceDate"   autocomplete="off" readonly>{{ order.KunNr }}</span>
+        <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Mitarbeiternummer:</label>
+        <span class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker" type="text" id="datepicker1"    x-model="invoiceDate"   autocomplete="off" readonly>{{ order.MitID }}</span>
+        <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Beschreibung:</label>
+        <span class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker" type="text" id="datepicker1"    x-model="invoiceDate"   autocomplete="off" readonly>{{ order.Beschreibung }}</span>
+        <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Erledigungsdatum:</label>
+        <span class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker" type="text" id="datepicker1"    x-model="invoiceDate"   autocomplete="off" readonly>{{ useDateFormat(order.ErlDat , "DD.MM.YYYY", {
+          locales: "de-DE",
+        }).value }}</span>
+        <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Auftragsdatum:</label>
+        <span class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker" type="text" id="datepicker1"    x-model="invoiceDate"   autocomplete="off" readonly>{{ useDateFormat(order.AufDat , "DD.MM.YYYY", {
+          locales: "de-DE",
+        }).value }}</span>
+
 
       </div>
-      <Button
+      <Button 
         type="button"
         icon="pi pi-search"
         :label="'Auftrag wählen'"
@@ -78,14 +90,14 @@
   
     <Divider />
     <div>
-      <span class="p-float-label my-4">
+      <!-- <span class="p-float-label my-4">
         <Calendar
           id="order-calendar"
           v-model="order.AufDat"
           :show-icon="true"
         />
         <label for="order-calendar">Auftragsdatum</label>
-      </span>
+      </span> -->
     </div>
     <Divider />
     <div class="flex justify-between">
@@ -94,8 +106,8 @@
         icon="pi pi-check"
         label="Erstellen"
         class="ml-auto"
-        :disabled="!order.Beschreibung || !order.Kunde || !order.AufDat"
-        @click="createOrder"
+        :disabled="!!order.Kunde"
+        @click="createInovice"
       />
       <Button
         style="background-color: #d92979"
@@ -111,52 +123,52 @@
 
 <script setup lang="ts">
 import EntityTable from "@/components/Entity/EntityTable.vue";
-import Calendar from "primevue/calendar";
-import CustomerService from "@/api/services/Customers";
-import { IKunde, IAuftrag, IEntityTableColumns, IMasterDataField } from "@/types";
+import { useDateFormat } from "@vueuse/core";
+
+import {IMasterDataField, IRechnung } from "@/types";
 import { ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
-import OrderService from "@/api/services/Order";
+import InvoiceService from "@/api/services/Invoices";
 
 const router = useRouter();
 const toast = useToast();
 
-const customerService = new CustomerService();
-const orderService = new OrderService();
+const invoiceService = new InvoiceService();
 const op = ref();
-const order = ref<IAuftrag>({} as IAuftrag);
+const order = ref<IRechnung>({} as IRechnung);
 
 
 const toggle = async (event: Event) => {
   op.value.toggle(event);
 };
 
-const onSelectOrder = (newOrder: IAuftrag) => {
+const onSelectOrder = (newOrder: IRechnung) => {
   order.value = newOrder;
   op.value.hide()
 };
 
-const createOrder = async () => {
+const createInovice = async () => {
   try {
     if (order.value) {
-      await orderService.create(order.value);
+      await invoiceService.create(order.value);
       toast.add({
         severity: "success",
-        summary: "Order Created ",
+        summary: "Invoice Created ",
         detail: "",
         life: 5000,
       });
-      router.push("/orders");
+      router.push("/invoices");
     }
   } catch (e) {
     toast.add({
       severity: "error",
-      summary: "Error while creating Order ",
+      summary: "Error while creating Invoice ",
       detail: e,
       life: 5000,
     });
     // order.value = {} as IAuftrag;
+   
   }
 };
 
