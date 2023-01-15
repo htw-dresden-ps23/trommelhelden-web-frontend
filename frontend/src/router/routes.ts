@@ -19,6 +19,11 @@ export const routes = [
     path: "/orders/plan",
     component: () => import("@/views/Orders/PlanOrder.vue"),
   },
+  {
+    path: "/orders/:id",
+    name: "singleOrder",
+    component: () => import("@/views/Orders/SingleOrder.vue"),
+  },
   //------------------------------------------------------------------
   //Dashboard
   //------------------------------------------------------------------

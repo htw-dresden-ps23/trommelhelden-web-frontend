@@ -163,33 +163,14 @@ const customerStats = [
   {
     label: "Umsatz in €",
     name: " mit niedrigstem Umsatz",
-    entity: "branches",
-    orderBy: "min_RechBetrag",
+    entity: "customers",
+    orderBy: "sum_RechBetrag",
     orderByDirection: "desc",
-    labelKey: "Ort",
+    labelKey: "KunOrt",
     chartType: "bar"
 
   },
-  {
-    label: "Anfahrt in km",
-    name: "Anfahrt",
-    entity: "branches",
-    orderBy: "sum_Anfahrt",
-    orderByDirection: "desc",
-    labelKey: "Ort",
-    chartType: "bar"
 
-  },
-  {
-    label: "Arbeitszeit in h",
-    name: "Arbeitszeit",
-    entity: "branches",
-    orderBy: "sum_Dauer",
-    orderByDirection: "desc",
-    labelKey: "Ort",
-    chartType: "bar"
-
-  },
 
 ]
 
