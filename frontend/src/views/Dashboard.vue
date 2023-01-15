@@ -27,7 +27,6 @@
         statIconColor="bg-emerald-500"
     />
       
-<CardTable></CardTable>
     <StatCategory
       start-date=""
       end-date=""
@@ -51,7 +50,7 @@
 
 <script setup lang="ts">
 import CardStats from "@/components/Dashboard/CardStats.vue" 
-import CardTable from "@/components/Dashboard/CardLPageVisits.vue" 
+
 
 import Calendar from "primevue/calendar";
 import { onBeforeMount, onMounted, ref } from "vue";
