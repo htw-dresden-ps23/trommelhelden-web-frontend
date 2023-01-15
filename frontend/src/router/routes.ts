@@ -19,6 +19,11 @@ export const routes = [
     path: "/orders/plan",
     component: () => import("@/views/Orders/PlanOrder.vue"),
   },
+  {
+    path: "/orders/:id",
+    name: "singleOrder",
+    component: () => import("@/views/Orders/SingleOrder.vue"),
+  },
   //------------------------------------------------------------------
   //Dashboard
   //------------------------------------------------------------------
@@ -48,7 +53,12 @@ export const routes = [
   {
     path: "/invoices",
     name: "Invoices",
-    component: () => import("@/views/Invoices.vue"),
+    component: () => import("@/views/Invoices/ListInvoices.vue"),
+  },
+  {
+    path: "/invoices/:AufNr/:KunNr",
+    name: "Invoice",
+    component: () => import("@/views/Invoices/SingeInvoice.vue"),
   },
   {
     path: "/settings",
@@ -58,7 +68,16 @@ export const routes = [
   //------------------------------------------------------------------
   //Masterdata
   //------------------------------------------------------------------
-
+  {
+    path: "/startup",
+    name: "startup",
+    component: () => import("@/views/Startup/Start.vue"),
+  },
+  {
+    path: "/startup/1",
+    name: "startup1",
+    component: () => import("@/views/Startup/Config.vue"),
+  },
   // {
   //   path: "/masterdata/:entity/:id?",
   //   component: () => import("@/views/MasterData.vue"),

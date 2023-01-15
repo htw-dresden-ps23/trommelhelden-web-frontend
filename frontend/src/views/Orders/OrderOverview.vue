@@ -24,6 +24,8 @@
         resource-name="orders"
         :allow-edit="false"
         :allow-delete="false"
+        @onRowSelect="(event)=>router.push({name: 'singleOrder', params: {id: event.Aufnr}})"
+        
       />
     </div>
   </div>
@@ -31,44 +33,62 @@
 
 <script setup lang="ts">
 import EntityTable from "@/components/Entity/EntityTable.vue";
+import { IMasterDataField } from "@/types";
+import { useRouter } from "vue-router";
 
-const columns = [
+const router = useRouter()
+
+const columns: IMasterDataField[] = [
   {
     name: "Aufnr",
     label: "Aufnr",
     type: "numeric",
-    create: false,
-    update: false,
+    allowCreate: false,
+    allowUpdate: false,
+
   },
   {
     name: "MitID",
     label: "MitID",
     type: "text",
-    create: false,
-    update: false,
-    format: "link",
-    linkKey: "MitID",
-    linkRoute: "masterdata/employees",
-    color: "#e4ff7a",
+    allowCreate: false,
+    allowUpdate: false,
+
   },
   {
     name: "KunNr",
     label: "KunNr",
     type: "numeric",
-    create: false,
-    update: false,
-    format: "link",
-    linkKey: "KunNr",
-    linkRoute: "masterdata/customers",
-    color: "#de8aff",
+    allowCreate: false,
+    allowUpdate: false,
   },
-  { name: "AufDat", label: "AufDat", type: "date" },
-  { name: "ErlDat", label: "ErlDat", type: "date" },
-  { name: "Dauer", label: "Dauer", type: "numeric" },
-  { name: "Anfahrt", label: "Anfahrt", type: "numeric" },
-  { name: "Beschreibung", label: "Beschreibung", type: "text" },
-  { name: "Kunde.KunName", label: "Kundenname", type: "text" },
+  {
+    name: "AufDat", label: "AufDat", type: "date", allowCreate: false,
+    allowUpdate: false,
+  },
+  {
+    name: "ErlDat", label: "ErlDat", type: "date", allowCreate: false,
+    allowUpdate: false,
+  },
+  {
+    name: "Dauer", label: "Dauer", type: "numeric", allowCreate: false,
+    allowUpdate: false,
+  },
+  {
+    name: "Anfahrt", label: "Anfahrt", type: "numeric", allowCreate: false,
+    allowUpdate: false,
+  },
+  {
+    name: "Beschreibung", label: "Beschreibung", type: "text", allowCreate: false,
+    allowUpdate: false,
+  },
+  {
+    name: "Kunde.KunName", label: "Kundenname", type: "text", allowCreate: false,
+    allowUpdate: false,
+  },
 ];
 </script>
 
-<style></style>
+<style>
+
+</style>

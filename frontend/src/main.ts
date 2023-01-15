@@ -1,8 +1,13 @@
 import { createPinia } from "pinia";
+import "./index.css";
+
+import "primevue/resources/themes/tailwind-light/theme.css";
+
+import "primevue/resources/primevue.min.css";
+
 import PrimeVue from "primevue/config";
 import { createApp } from "vue";
 import App from "./App.vue";
-import "./index.css";
 
 import Column from "primevue/column";
 import ColumnGroup from "primevue/columngroup"; //optional for column grouping
@@ -10,9 +15,6 @@ import ConfirmationService from "primevue/confirmationservice";
 import DataTable from "primevue/datatable";
 import Row from "primevue/row";
 // import "./assets/_theme.css";
-
-import "primevue/resources/primevue.min.css";
-import "primevue/resources/themes/tailwind-light/theme.css";
 
 import "primeicons/primeicons.css";
 import Avatar from "primevue/avatar";
@@ -74,4 +76,5 @@ app.use(router);
 app.use(PrimeVue, { ripple: true });
 app.use(DialogService);
 app.use(ToastService);
+
 app.mount("#app");

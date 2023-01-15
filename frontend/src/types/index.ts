@@ -11,7 +11,7 @@ interface IAuftrag {
   Anfahrt?: number;
   Beschreibung?: string;
   Mitarbeiter?: IMitarbeiter;
-  Montage: IMontage[];
+  Montage?: IMontage;
   Rechnung: IRechnung[];
 }
 
@@ -187,19 +187,23 @@ interface IMasterData {
   primaryKey: string;
 }
 
+type IMasterDataFieldTypes = "text" | "date" | "numeric" | "relation" | "money";
+
 interface IMasterDataField {
   name: string;
   label: string;
-  type: "text" | "date" | "numeric" | "relation";
+  type: IMasterDataFieldTypes;
   relation?: IMasterDataFieldRelation;
   format?: IMasterDataFieldFormat;
   allowUpdate: boolean;
   allowCreate: boolean;
 }
+
 interface IMasterDataFieldRelation {
   name: string;
   label: string;
   resourceName: string;
+  primaryKey: string;
 }
 interface IMasterDataFieldFormat {
   color: string;
@@ -247,4 +251,5 @@ export {
   IMasterData,
   TGenericService,
   IMasterDataField,
+  IMasterDataFieldTypes,
 };

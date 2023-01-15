@@ -42,7 +42,7 @@ AS
         INNER JOIN ersatzteil E
         ON E.etid = M.etid)
     --  STUNDENKOSTEN
-    SET @sum_arrival =(SELECT Sum(a.anfahrt * M.mitstundensatz)
+    SET @sum_arrival =(SELECT Sum(a.anfahrt * 2,50)
     FROM inserted i
         INNER JOIN auftrag a
         ON i.aufnr = a.aufnr
@@ -68,5 +68,3 @@ AS
             CURRENT_TIMESTAMP,
             @sum )
 END; 
-
-UPDATE Auftrag SET Anfahrt = 10, Dauer = 10 WHERE Aufnr = 3007

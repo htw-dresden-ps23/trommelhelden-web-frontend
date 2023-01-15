@@ -1,92 +1,186 @@
 <template>
- <BarChart v-bind="barChartProps" style="padding-right:10rem"/>
- <DoughnutChart :chartData="chartData"  style="padding-right:10rem"/>
- <LineChart :chartData="chartData"/>
+  <div>
+    <div class="w-full flex  items-end my-8">
+      <h1 class=" bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text text-6xl font-extrabold text-transparent ">
+        Trommelhelden Dashboard
+      </h1>
+      <Calendar
+        v-model="dateRange"
+        placeholder="All Time"
+        input-id="icon"
+        :show-icon="true"
+        selection-mode="range"
+        :manual-input="false"
+        class="ml-auto h-1/2"
+      />
+    </div>
+    <StatCategory
+      :key="String(dateRange[0]) + String(dateRange[1])"
+      :start-date="dateRange[0]"
+      :end-date="dateRange[1]"
+      :data="employeeStats"
+      name="Mitarbeiter"
+    ></StatCategory>
+    <StatCategory
+      :key="String(dateRange[0]) + String(dateRange[1])"
+      :start-date="dateRange[0]"
+      :end-date="dateRange[1]"
+      :data="branchStats"
+      name="Niederlassung"
+    ></StatCategory>
+    <StatCategory
+      :key="String(dateRange[0]) + String(dateRange[1])"
+      :start-date="dateRange[0]"
+      :end-date="dateRange[1]"
+      :data="customerStats"
+      name="Kunden"
+    ></StatCategory>
+  </div>
+</template>
 
-<!-- 
- <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 mb-6">
-        <CardBoxWidget
-          trend="12%"
-          trend-type="up"
-          color="text-emerald-500"
-          :icon="mdiAccountMultiple"
-          :number="512"
-          label="Clients"
-        />
-        <CardBoxWidget
-          trend="12%"
-          trend-type="down"
-          color="text-blue-500"
-          :icon="mdiCartOutline"
-          :number="7770"
-          prefix="$"
-          label="Sales"
-        />
-        <CardBoxWidget
-          trend="Overflow"
-          trend-type="alert"
-          color="text-red-500"
-          :icon="mdiChartTimelineVariant"
-          :number="256"
-          suffix="%"
-          label="Performance"
-        />
-      </div>
+<script setup lang="ts">
+import Calendar from "primevue/calendar";
+import { onBeforeMount, onMounted, ref } from "vue";
+// import BusinessData from "@/api/services/BusinessData";
+import StatsCard from "@/components/Dashboard/StatsCard.vue";
+import { useStore } from "@/store";
+import StatCategory from "@/components/Dashboard/StatCategory.vue";
 
-  -->
-
- </template>
-  
-<script lang="ts">
-
-// import {
-//   mdiAccountMultiple,
-//   mdiCartOutline,
-//   mdiChartTimelineVariant,
-//   mdiMonitorCellphone,
-//   mdiReload,
-//   mdiGithub,
-//   mdiChartPie,
-// } from "@mdi/js";
-
+const store = useStore();
 
 
 
-import { ref, computed, defineComponent } from 'vue';
-import { Chart, registerables } from 'chart.js';
-import { BarChart, useBarChart, DoughnutChart, LineChart } from 'vue-chart-3';
+onBeforeMount(() => {
+
+  store.loadingTime = performance.now()
+
+})
+onMounted(() => {
+  store.loadingTime = performance.now() - store.loadingTime;
+})
 
 
-Chart.register(...registerables);
-
-export default defineComponent({
-    name: 'DashboardTH',
-    components: { DoughnutChart, BarChart, LineChart },
-    setup() {
-        const data = ref([30, 40, 60, 70, 5]);
-
-        const chartData = computed(() => ({
-            labels: ['Mitarbeiter', 'Test', 'Dresden', 'Zahl', 'Uwe'],
-            datasets: [
-                {
-                    data: data.value,
-                    backgroundColor: ['#77CEFF', '#2ab7d9', '#669ef3', '#9c68bb', '#d82a7a'],
-                },
-            ],
-        }));
+const dateRange = ref([new Date(new Date().setFullYear(2015)), new Date()])
 
 
-        const bubbleChartData = computed(() => ({
-            labels: ['Paris', 'Nîmes', 'Toulon', 'Perpignan', 'Autre'],
-            
-        }));
 
-        const { barChartProps, barChartRef } = useBarChart({
-            chartData,
-        });
+const employeeStats = [
+
+  {
+    label: "Umsatz in €",
+    name: " mit höchstem Umsatz",
+    entity: "employees",
+    orderBy: "max_RechBetrag",
+    orderByDirection: "desc",
+    labelKey: "MitName",
+    chartType: "bar"
+
+  },
+  {
+    label: "Umsatz in €",
+    name: "mit niedrigstem Umsatz",
+    entity: "employees",
+    orderBy: "max_RechBetrag",
+    orderByDirection: "asc",
+    labelKey: "MitName",
+    chartType: "bar"
+
+  },
+  {
+    label: "Anfahrt in km",
+    name: "Wer hat die längste Anfahrt?",
+    entity: "employees",
+    orderBy: "sum_Anfahrt",
+    orderByDirection: "desc",
+    labelKey: "MitName",
+    chartType: "bar"
+
+  },
+  {
+    label: "Arbeitszeit in h",
+    name: "Wer hat am längsten gearbeitet?",
+    entity: "employees",
+    orderBy: "sum_Dauer",
+    orderByDirection: "desc",
+    labelKey: "MitName",
+    chartType: "bar"
+
+  },
+]
+
+const branchStats = [
+
+  {
+    label: "Umsatz in €",
+    name: " mit höchstem Umsatz",
+    entity: "branches",
+    orderBy: "max_RechBetrag",
+    orderByDirection: "desc",
+    labelKey: "Ort",
+    chartType: "bar"
+
+  },
+  {
+    label: "Umsatz in €",
+    name: " mit niedrigstem Umsatz",
+    entity: "branches",
+    orderBy: "min_RechBetrag",
+    orderByDirection: "desc",
+    labelKey: "Ort",
+    chartType: "bar"
+
+  },
+  {
+    label: "Anfahrt in km",
+    name: "Anfahrt",
+    entity: "branches",
+    orderBy: "sum_Anfahrt",
+    orderByDirection: "desc",
+    labelKey: "Ort",
+    chartType: "bar"
+
+  },
+  {
+    label: "Arbeitszeit in h",
+    name: "Arbeitszeit",
+    entity: "branches",
+    orderBy: "sum_Dauer",
+    orderByDirection: "desc",
+    labelKey: "Ort",
+    chartType: "bar"
+
+  },
+
+]
+
+const customerStats = [
+
+  {
+    label: "Umsatz in €",
+    name: "Stadt mit höchstem Umsatz",
+    entity: "customers",
+    orderBy: "sum_RechBetrag",
+    orderByDirection: "desc",
+    labelKey: "KunOrt",
+    chartType: "bar"
+
+  },
+  {
+    label: "Umsatz in €",
+    name: " mit niedrigstem Umsatz",
+    entity: "customers",
+    orderBy: "sum_RechBetrag",
+    orderByDirection: "desc",
+    labelKey: "KunOrt",
+    chartType: "bar"
+
+  },
 
 
-        return { barChartProps, barChartRef, chartData,bubbleChartData };
-    },
-});
+]
+
 </script>
+
+<style>
+
+</style>

@@ -9,8 +9,10 @@ import { prismaErrorMiddleware } from "./middleware";
 require("express-async-errors");
 
 import morgan from "morgan";
+import { BusinessDataController } from "./controller/BusinessData";
 import { InvoicesController } from "./controller/Invoices";
 import { SettingsController } from "./controller/Settings";
+import { isStartUp, startUp } from "./controller/Startup";
 
 const app = express();
 app.use(cors());
@@ -63,6 +65,19 @@ app.patch("/invoices", invoicesController.update);
 const settingsController = new SettingsController();
 app.post("/settings", settingsController.list);
 app.patch("/settings", settingsController.updateSettings);
+
+app.get("/startup", isStartUp);
+app.post("/startup", startUp);
+
+const businessDataController = new BusinessDataController();
+
+app.post("/business-data/sales/employees", businessDataController.getSalesEmployees);
+app.post("/business-data/sales/branches", businessDataController.getSalesBranches);
+app.post("/business-data/sales/customers", businessDataController.getSalesCustomers);
+app.post("/business-data/trip", businessDataController.getTrip);
+app.post("/business-data/spareparts", businessDataController.getSpareparts);
+app.post("/business-data/sales", businessDataController.getSales);
+
 app.use(prismaErrorMiddleware);
 
 app.listen(port, () => {

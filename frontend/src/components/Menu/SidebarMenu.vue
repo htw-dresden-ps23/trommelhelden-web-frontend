@@ -6,9 +6,7 @@
   >
     <template #header>
       <div class="flex items-center justify-center">
-        <div
-          class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text text-2xl font-extrabold text-transparent"
-        >
+        <div class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text text-2xl font-extrabold text-transparent">
           Trommelhelden DB
         </div>
       </div>
@@ -18,9 +16,7 @@
       class=""
       :model="menuItems"
     />
-    <div
-      class="mt-auto flex items-center justify-between border-t-2 bg-slate-50 p-4 shadow-inner"
-    >
+    <div class="mt-auto flex items-center justify-between border-t-2 bg-slate-50 p-4 shadow-inner">
       <div class="flex items-center">
         <Avatar
           label="A"
@@ -43,6 +39,7 @@
 
 <script setup lang="ts">
 import { useStore } from "@/store";
+import type { MenuItem } from "primevue/menuitem";
 import PanelMenu from "primevue/panelmenu";
 import { ref } from "vue";
 
@@ -56,7 +53,7 @@ const onOpenTab = (key: string) => {
   store.sideBarMenuIsOpen = false;
 };
 
-const menuItems = ref([
+const menuItems: MenuItem[] = [
   {
     to: "/dashboard",
     label: "Dashboard",
@@ -164,7 +161,9 @@ const menuItems = ref([
       },
     ],
   },
-]);
+];
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

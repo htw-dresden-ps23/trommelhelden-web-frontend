@@ -32,21 +32,19 @@
             v-for="filter in activeFilters"
             :key="filter"
             class="mr-2"
-            :label="`${filter} ${Object.keys(filterOptions[filter])[0]} ${
-              columns.find((c) => c.name === filter)?.type === 'date'
-                ? useDateFormat(
-                  filterOptions[filter][Object.keys(filterOptions[filter])[0] as string] ,
-                  'DD.MM.YYYY'
-                ).value
-                : filterOptions[filter][Object.keys(filterOptions[filter])[0]]
+            :label="`${filter} ${Object.keys(filterOptions[filter])[0]} ${columns.find((c) => c.name === filter)?.type === 'date'
+            ? useDateFormat(
+              filterOptions[filter][Object.keys(filterOptions[filter])[0] as string],
+              'DD.MM.YYYY'
+            ).value
+            : filterOptions[filter][Object.keys(filterOptions[filter])[0]]
             }`"
             removable
             @remove="removeFilter(filter)"
           />
           <Chip
             v-if="Object.keys(filterOptions).length > props.showMaxActiveFilter"
-            :label="`+ ${
-              Object.keys(filterOptions).length - props.showMaxActiveFilter
+            :label="`+ ${Object.keys(filterOptions).length - props.showMaxActiveFilter
             } more`"
           />
         </div>
@@ -89,24 +87,30 @@
           <div v-if="isLoading">
             <Skeleton />
           </div>
-          <div v-else>
+          <div v-else-if="!isLoading && data">
+            <div v-if="cols.type === 'date'">
+              {{
+  data && data[cols.name]
+  ? useDateFormat(data[cols.name], "DD.MM.YYYY", {
+    locales: "de-DE",
+  }).value
+  : ""
+              }}
+            </div>
+            <div v-if="cols.type === 'money'">{{ data[cols.name] }} €</div>
+            <div v-if="cols.type === 'numeric'">
+              {{ data[cols.name] }}
+            </div>
+            <div v-if="cols.type === 'relation'">
+              <RouterLink :to="`/${cols.relation?.resourceName}/${data[cols.relation?.primaryKey as string]}`">
+                <Chip>{{ data[cols.name] }}</Chip>
+              </RouterLink>
+            </div>
             <div
-              v-if="data && cols.type !== 'date'"
+              v-if="cols.type === 'text'"
               class="truncate"
             >
               {{ data[cols.name] }}
-            </div>
-            <div
-              v-else
-              class=""
-            >
-              {{
-                data && data[cols.name]
-                  ? useDateFormat(data[cols.name], "DD.MM.YYYY", {
-                      locales: "de-DE",
-                    }).value
-                  : ""
-              }}
             </div>
           </div>
         </template>
@@ -137,8 +141,9 @@
               class="p-button-danger"
               @click="onDelete($event, slotProps.data)"
             />
-          </div> </template
-      ></Column>
+          </div>
+        </template>
+      </Column>
     </DataTable>
     <ConfirmDialog></ConfirmDialog>
   </div>
@@ -176,7 +181,7 @@ const filters = ref();
 
 const emit = defineEmits(["editRow", "onRowSelect"]);
 
-const onRowSelect = (event) => {
+const onRowSelect = (event: any) => {
   emit("onRowSelect", event.data);
 };
 
@@ -309,9 +314,8 @@ const onDelete = async ($event: Event, data: any) => {
       toast.add({
         severity: "success",
         summary: "Success",
-        detail: `Data deleted successfully Value with ${props.primaryKey}: ${
-          data[props.primaryKey]
-        }`,
+        detail: `Data deleted successfully Value with ${props.primaryKey}: ${data[props.primaryKey]
+          }`,
         life: 3000,
       });
     },
@@ -356,9 +360,7 @@ const onSort = async (event: any) => {
   await fetchData(false);
 };
 
-const onProductSelect = (event: any) => {
-  emit("selectRow", event.data);
-};
+
 
 const fetchData = async (isInitial: boolean) => {
   try {
@@ -399,4 +401,6 @@ const fetchData = async (isInitial: boolean) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

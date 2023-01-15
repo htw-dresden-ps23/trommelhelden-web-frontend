@@ -1,10 +1,6 @@
 <template>
-  <div
-    class="card mx-[20%] flex flex-1 flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl"
-  >
-    <h1
-      class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
-    >
+  <div class="card mx-[20%] flex flex-1 flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl">
+    <h1 class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent">
       Auftrag erstellen
     </h1>
     <Divider />
@@ -20,9 +16,7 @@
         <label for="order-description">Auftragsbeschreibung*</label>
       </span>
 
-      <span class="ml-4 text-sm"
-        >{{ order.Beschreibung ? order.Beschreibung.length : 0 }}/500</span
-      >
+      <span class="ml-4 text-sm">{{ order.Beschreibung ? order.Beschreibung.length : 0 }}/500</span>
     </div>
     <Divider />
     <div class="my-4 flex items-center justify-between">
@@ -80,19 +74,19 @@
     <Divider />
     <div class="flex justify-between">
       <Button
-          type="submit"
-          icon="pi pi-check"
-          label="Erstellen"
-          class="ml-auto"
-          :disabled="!order.Beschreibung || !order.Kunde || !order.AufDat"
-          @click="createOrder"
-        />
+        type="submit"
+        icon="pi pi-check"
+        label="Erstellen"
+        class="ml-auto"
+        :disabled="!order.Beschreibung || !order.Kunde || !order.AufDat"
+        @click="createOrder"
+      />
       <Button
-          style="background-color: #d92979"
-          label="Zurück"
-          icon="pi pi-backward"
-          @click="$router.go(-1)"
-        />
+        style="background-color: #d92979"
+        label="Zurück"
+        icon="pi pi-backward"
+        @click="$router.go(-1)"
+      />
     </div>
   </div>
 </template>
@@ -101,7 +95,7 @@
 import EntityTable from "@/components/Entity/EntityTable.vue";
 import Calendar from "primevue/calendar";
 import CustomerService from "@/api/services/Customers";
-import { IKunde, IAuftrag, IEntityTableColumns } from "@/types";
+import { IKunde, IAuftrag, IEntityTableColumns, IMasterDataField } from "@/types";
 import { ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
@@ -149,33 +143,45 @@ const createOrder = async () => {
   }
 };
 
-const columns = [
+const columns: IMasterDataField[] = [
   {
     label: "Name",
     name: "KunName",
     type: "text",
+    allowCreate: false,
+    allowUpdate: false,
   },
   {
-    helabelader: "Kunden Nr.",
+    label: "Kunden Nr.",
     name: "KunNr",
     type: "numeric",
+    allowCreate: false,
+    allowUpdate: false,
   },
   {
     label: "Ort",
     name: "KunOrt",
     type: "text",
+    allowCreate: false,
+    allowUpdate: false,
   },
   {
     label: "Postleitzahl",
     name: "KunPLZ",
     type: "text",
+    allowCreate: false,
+    allowUpdate: false,
   },
   {
     label: "Straße",
     name: "KunStrasse",
     type: "text",
+    allowCreate: false,
+    allowUpdate: false,
   },
 ];
 </script>
 
-<style></style>
+<style>
+
+</style>

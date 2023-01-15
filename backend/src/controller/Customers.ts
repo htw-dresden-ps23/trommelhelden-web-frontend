@@ -3,14 +3,12 @@ import { NextFunction, Request, Response } from "express";
 import { send } from "process";
 import { Runtype } from "runtypes";
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: ["query", "info", "warn", "error"],
+});
 
 export class CustomersController {
-  async list(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response | void> {
+  async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const { sort, filter, page, rows } = req.body;
     const { getCount } = req.query;
     let count;
@@ -35,11 +33,7 @@ export class CustomersController {
 
     return res.status(200).json({ data: allCustomers, count });
   }
-  async get(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response | void> {
+  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const { id } = req.params;
 
     const customer = await prisma.kunde.findUnique({

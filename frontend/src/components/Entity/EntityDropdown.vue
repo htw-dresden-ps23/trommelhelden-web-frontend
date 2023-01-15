@@ -17,13 +17,13 @@
       }"
       placeholder="Select Item"
       @change="
-        (event) => {
+        (event: any) => {
           $emit('update:modelValue', event.value);
           selectedValue = event.value;
         }
       "
     >
-      <template #loader="{ options }">
+      <template #loader="{}">
         <div
           class="align-items-center flex p-2"
           style="height: 38px"
@@ -37,8 +37,8 @@
 
 <script setup lang="ts">
 import GenericService from "@/api/services/Generic";
-import { IFilter, ISort } from "@/types";
-import { computed, onMounted, ref } from "vue";
+import { IFilter } from "@/types";
+import { onMounted, ref } from "vue";
 
 const selectedValue = ref();
 const pageSize = ref(50);
@@ -84,7 +84,7 @@ onMounted(async () => {
   let foo: any = await genericService.get(String(props.modelValue));
   selectedValue.value = props.modelValue;
   if (
-    !values.value.find((value) => {
+    !values.value.find((value: any) => {
       return value[props.valueKey] === foo[props.valueKey];
     })
   ) {
@@ -94,7 +94,7 @@ onMounted(async () => {
   isLoading.value = false;
 });
 
-const onLazyLoad = async (event) => {
+const onLazyLoad = async (event: any) => {
   console.log(event);
   const { first, last } = event;
   loading.value = true;
@@ -108,4 +108,6 @@ const onLazyLoad = async (event) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

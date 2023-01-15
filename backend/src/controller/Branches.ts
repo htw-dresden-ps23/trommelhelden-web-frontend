@@ -2,14 +2,12 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import { send } from "process";
 import { Runtype } from "runtypes";
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: ["query", "info", "warn", "error"],
+});
 
 export class BranchesController {
-  async list(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response | void> {
+  async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const { sort, filter, page, rows } = req.body;
     const { getCount } = req.query;
     let count;
@@ -32,11 +30,7 @@ export class BranchesController {
     });
     return res.status(200).json({ data: alleBranches, count });
   }
-  async get(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response | void> {
+  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const { id } = req.params;
 
     const branch = await prisma.niederlassung.findUnique({

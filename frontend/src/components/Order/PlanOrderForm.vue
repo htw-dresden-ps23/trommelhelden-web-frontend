@@ -24,8 +24,8 @@
       >
         <span>Name : </span> <span>{{ employee?.MitName }}</span>
         <span>Mitarbeiter Vorname :</span>
-        <span>{{ employee?.MitVorname }}</span> <span>Mitarbeiter ID : </span
-        ><span>{{ employee?.MitID }}</span> <span>Mitarbeiter Beruf : </span>
+        <span>{{ employee?.MitVorname }}</span> <span>Mitarbeiter ID : </span><span>{{ employee?.MitID }}</span>
+        <span>Mitarbeiter Beruf : </span>
         <span>{{ employee?.MitJob }}</span>
       </div>
 
@@ -79,7 +79,7 @@ import Calendar from "primevue/calendar";
 import { useDateFormat } from "@vueuse/core";
 import { inject, onMounted, ref } from "vue";
 import EntityTable from "@/components/Entity/EntityTable.vue";
-import { IAuftrag, IEntityTableColumns, IMitarbeiter } from "@/types";
+import { IAuftrag, IEntityTableColumns, IMasterDataField, IMitarbeiter } from "@/types";
 import OrderService from "@/api/services/Order";
 import { useToast } from "primevue/usetoast";
 import { unflatten } from "flat";
@@ -95,36 +95,49 @@ const toast = useToast();
 
 const order = ref<IAuftrag>({} as IAuftrag);
 
-const columns = [
+const columns: IMasterDataField[] = [
   {
     label: "ID",
     name: "MitID",
     type: "text",
+    allowCreate: false,
+    allowUpdate: false,
+
   },
   {
     label: "Vorname",
     name: "MitVorname",
     type: "text",
+    allowCreate: false,
+    allowUpdate: false,
   },
   {
     label: "Nachname",
     name: "MitName",
     type: "text",
+    allowCreate: false,
+    allowUpdate: false,
   },
   {
     label: "Stelle",
     name: "MitJob",
     type: "text",
+    allowCreate: false,
+    allowUpdate: false,
   },
   {
     label: "Niederlassung",
     name: "NLNr",
     type: "text",
+    allowCreate: false,
+    allowUpdate: false,
   },
   {
     label: "Stundensatz",
     name: "MitStundensatz",
     type: "numeric",
+    allowCreate: false,
+    allowUpdate: false,
   },
 ];
 
@@ -173,4 +186,6 @@ const planOrder = async () => {
 };
 </script>
 
-<style></style>
+<style>
+
+</style>
