@@ -175,41 +175,55 @@ const createInovice = async () => {
 
 
 const columns: IMasterDataField[] = [
-  {
-    label: "Auftragsnummer",
+{
     name: "Aufnr",
-    type: "numeric",
-    allowCreate: false,
-    allowUpdate: false,
-  },
-  {
-    label: "Mitarbeiter ID",
-    name: "MitID",
+    label: "Auftragsnummer",
     type: "text",
     allowCreate: false,
     allowUpdate: false,
   },
   {
-    label: "Kunden ID",
     name: "KunNr",
-    type: "numeric",
+    label: "Kundennummer",
+    type: "text",
     allowCreate: false,
     allowUpdate: false,
   },
-//   {
-//     label: "Postleitzahl",
-//     name: "KunPLZ",
-//     type: "text",
-//     allowCreate: false,
-//     allowUpdate: false,
-//   },
-//   {
-//     label: "Straße",
-//     name: "KunStrasse",
-//     type: "text",
-//     allowCreate: false,
-//     allowUpdate: false,
-//   },
+  {
+    name: "Kunde.KunName",
+    label: "Kunde",
+    type: "text",
+    allowCreate: false,
+    allowUpdate: false,
+  },
+  {
+    name: "AufDat",
+    label: "Auftragsdatum",
+    type: "date",
+    allowCreate: false,
+    allowUpdate: false,
+  },
+  {
+    name: "ErlDat",
+    label: "Erledigungsdatum",
+    type: "date",
+    allowCreate: false,
+    allowUpdate: false,
+  },
+  {
+    name: "Mitarbeiter.MitID",
+    label: "Mitarbeiter ID",
+    type: "text",
+    allowCreate: false,
+    allowUpdate: false,
+  },
+  {
+    name: "Mitarbeiter.MitName",
+    label: "Mitarbeiter ID",
+    type: "text",
+    allowCreate: false,
+    allowUpdate: false,
+  },
 ];
 </script>
 
