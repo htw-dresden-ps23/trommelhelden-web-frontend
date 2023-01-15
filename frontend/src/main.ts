@@ -76,4 +76,5 @@ app.use(router);
 app.use(PrimeVue, { ripple: true });
 app.use(DialogService);
 app.use(ToastService);
+
 app.mount("#app");

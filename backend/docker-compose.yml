@@ -3,7 +3,6 @@ services:
   db:
     container_name: db
     build:
-      context: ./Docker
       dockerfile: db.Dockerfile
     environment:
       - ACCEPT_EULA=Y

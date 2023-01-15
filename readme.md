@@ -1,5 +1,7 @@
 # trommelhelden-web-frontend
 
+![Trommelhelden Schema](trommelhelden.png)
+
 ## Start Backend Dev Server
 
 1. Create .env file in backend folder containing the following string

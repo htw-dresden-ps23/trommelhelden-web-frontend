@@ -15,20 +15,23 @@
       />
     </div>
     <StatCategory
-      start-date=""
-      end-date=""
+      :key="String(dateRange[0]) + String(dateRange[1])"
+      :start-date="dateRange[0]"
+      :end-date="dateRange[1]"
       :data="employeeStats"
       name="Mitarbeiter"
     ></StatCategory>
     <StatCategory
-      start-date=""
-      end-date=""
+      :key="String(dateRange[0]) + String(dateRange[1])"
+      :start-date="dateRange[0]"
+      :end-date="dateRange[1]"
       :data="branchStats"
       name="Niederlassung"
     ></StatCategory>
     <StatCategory
-      start-date=""
-      end-date=""
+      :key="String(dateRange[0]) + String(dateRange[1])"
+      :start-date="dateRange[0]"
+      :end-date="dateRange[1]"
       :data="customerStats"
       name="Kunden"
     ></StatCategory>
@@ -45,6 +48,8 @@ import StatCategory from "@/components/Dashboard/StatCategory.vue";
 
 const store = useStore();
 
+
+
 onBeforeMount(() => {
 
   store.loadingTime = performance.now()
@@ -55,7 +60,7 @@ onMounted(() => {
 })
 
 
-const dateRange = ref()
+const dateRange = ref([new Date(new Date().setFullYear(2015)), new Date()])
 
 
 

@@ -24,8 +24,8 @@ const props = defineProps<{
   orderByDirection: "asc" | "desc";
   label: string;
   name: string;
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   labelKey: string;
   chartType: string;
 }>();
@@ -43,8 +43,8 @@ onMounted(async () => {
     datasets: [
       {
         label: props.label,
-        data: data.value.map(x => x[props.orderBy]),
-        backgroundColor: (ctx) => {
+        data: data.value.map((x: any) => x[props.orderBy]),
+        backgroundColor: (ctx: any) => {
 
           return colors.map(x => {
             const canvas = ctx.chart.ctx;
