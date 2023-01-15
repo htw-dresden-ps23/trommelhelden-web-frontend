@@ -15,18 +15,38 @@
         class="ml-auto h-1/2"
       />
     </div>
-   
-    <CardStats class="max-w-sm"
-        statSubtitle="PERFORMANCE"
-        statTitle="49,65%"
+    <div class="w-full flex  items-end my-8">
+    <CardStats class="max-w-sm mr-10"
+        statSubtitle="Anzahl der Kunden "
+        statTitle="999999"
+        statArrow="up"
+        statPercent="12"
+        statPercentColor="text-emerald-500"
+        statDescripiron="Since last month"
+        statIconName="pi pi-users"
+        statIconColor="bg-orange-600"
+    />
+    <CardStats class="max-w-sm mr-10"
+        statSubtitle="Anzahl der Aufträge "
+        statTitle="999999"
         statArrow="up"
         statPercent="12"
         statPercentColor="text-emerald-500"
         statDescripiron="Since last month"
         statIconName="pi pi-chart-line"
+        statIconColor="bg-cyan-500"
+    />
+    <CardStats class="max-w-sm mr-10"
+        statSubtitle="Gesamte Umsatz"
+        statTitle="999999"
+        statArrow="up"
+        statPercent="12"
+        statPercentColor="text-emerald-500"
+        statDescripiron="Since last month"
+        statIconName="pi pi-money-bill"
         statIconColor="bg-emerald-500"
     />
-      
+    </div>
     <StatCategory
       start-date=""
       end-date=""
