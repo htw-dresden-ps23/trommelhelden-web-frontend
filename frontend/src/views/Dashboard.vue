@@ -23,7 +23,7 @@
         statPercent="12"
         statPercentColor="text-emerald-500"
         statDescripiron="Since last month"
-        statIconName="fas fa-percent"
+        statIconName="pi pi-chart-line"
         statIconColor="bg-emerald-500"
     />
       
