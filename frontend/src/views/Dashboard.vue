@@ -1,5 +1,6 @@
 <template>
   <div>
+    
     <div class="w-full flex  items-end my-8">
       <h1 class=" bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text text-6xl font-extrabold text-transparent ">
         Trommelhelden Dashboard
@@ -14,6 +15,19 @@
         class="ml-auto h-1/2"
       />
     </div>
+   
+    <CardStats class="max-w-sm"
+        statSubtitle="PERFORMANCE"
+        statTitle="49,65%"
+        statArrow="up"
+        statPercent="12"
+        statPercentColor="text-emerald-500"
+        statDescripiron="Since last month"
+        statIconName="fas fa-percent"
+        statIconColor="bg-emerald-500"
+    />
+      
+<CardTable></CardTable>
     <StatCategory
       start-date=""
       end-date=""
@@ -36,6 +50,9 @@
 </template>
 
 <script setup lang="ts">
+import CardStats from "@/components/Dashboard/CardStats.vue" 
+import CardTable from "@/components/Dashboard/CardLPageVisits.vue" 
+
 import Calendar from "primevue/calendar";
 import { onBeforeMount, onMounted, ref } from "vue";
 // import BusinessData from "@/api/services/BusinessData";
