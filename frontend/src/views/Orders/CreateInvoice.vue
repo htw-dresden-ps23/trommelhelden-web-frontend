@@ -7,7 +7,7 @@
 
     <div class="my-4 justify-between flex flex-col items-start">
       <div
-        v-if="order.AufNr"
+        v-if="order.Aufnr"
         class="grid flex-1 grid-cols-2 mb-12 text-lg font-medium text-gray-900 dark:text-black"
       >
 
@@ -19,7 +19,7 @@
           x-model="invoiceDate"
           autocomplete="off"
           readonly
-        >{{ order.AufNr }}</span>
+        >{{ order.Aufnr }}</span>
         <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Kundennummer:</label>
         <span
           id="datepicker1"
@@ -98,28 +98,14 @@
             :columns="columns"
             resource-name="orders"
             :allow-delete="false"
-            :opt-params="{ status: 'completed' }"
+            :opt-params="{ status: 'completed', invoice: false }"
             :emit-edit-only="true"
             @on-row-select="onSelectOrder"
           />
         </OverlayPanel>
       </div>
     </div>
-    <Divider />
 
-
-    <Divider />
-    <div>
-      <!-- <span class="p-float-label my-4">
-        <Calendar
-          id="order-calendar"
-          v-model="order.AufDat"
-          :show-icon="true"
-        />
-        <label for="order-calendar">Auftragsdatum</label>
-      </span> -->
-    </div>
-    <Divider />
     <div class="flex justify-between">
       <Button
         type="submit"
@@ -159,7 +145,7 @@ const toast = useToast();
 
 const invoiceService = new InvoiceService();
 const op = ref();
-const order = ref<IRechnung>();
+const order = ref<IRechnung>({} as IRechnung);
 
 
 const toggle = async (event: Event) => {

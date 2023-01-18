@@ -8,7 +8,21 @@ const prisma = new PrismaClient({
 export class OrdersController {
   async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const { sort, filter, page, rows } = req.body;
-    const { getCount, status, getSum } = req.query;
+    const { getCount, status, getSum, invoice } = req.query;
+
+    console.log(Boolean(invoice));
+
+    if (!Boolean(invoice)) {
+      console.log("no invoice");
+
+      filter.Rechnung = {
+        every: {
+          RechBetrag: {
+            gt: 0,
+          },
+        },
+      };
+    }
 
     let query: any = {
       take: rows,
@@ -38,6 +52,7 @@ export class OrdersController {
           MitID: {
             not: null,
           },
+
           ErlDat: {
             not: null,
           },
@@ -47,16 +62,18 @@ export class OrdersController {
         };
         break;
     }
-    let count, sum: any;
+    let count, sum: any, invoiceFilter;
 
     if (getCount) {
       count = await prisma.auftrag.count({
         where: {
-          ...filter,
           ...query.where,
         },
       });
     }
+
+    console.log(filter);
+
     if (getSum) {
       sum =
         await prisma.$queryRaw`SELECT sum(r.RechBetrag) as Umsatz FROM Auftrag a INNER JOIN Rechnung r ON r.AufNr = a.Aufnr `;
