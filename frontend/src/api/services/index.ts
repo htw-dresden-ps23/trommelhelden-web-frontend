@@ -84,7 +84,7 @@ export abstract class BaseService<T> implements IWrite<T>, IRead<T> {
     rows: number = BaseService.rows,
     optParams?: any,
     optBodyParams?: any,
-  ): Promise<{ data: T[]; count: number }> {
+  ): Promise<{ data: T[]; count: number; sum: number }> {
     return (
       await this._axiosInstance.post(
         `/${this._tableName}`,
@@ -99,6 +99,7 @@ export abstract class BaseService<T> implements IWrite<T>, IRead<T> {
           params: {
             ...optParams,
             getCount: true,
+            getSum: true,
           },
         },
       )

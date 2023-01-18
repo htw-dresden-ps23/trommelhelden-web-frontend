@@ -1,6 +1,6 @@
 <template>
   <div>
-    
+
     <div class="w-full flex  items-end my-8">
       <h1 class=" bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text text-6xl font-extrabold text-transparent ">
         Trommelhelden Dashboard
@@ -16,36 +16,39 @@
       />
     </div>
     <div class="w-full flex  items-end my-8">
-    <CardStats class="max-w-sm mr-10"
-        statSubtitle="Anzahl der Kunden "
-        statTitle="999999"
-        statArrow="up"
-        statPercent="12"
-        statPercentColor="text-emerald-500"
-        statDescripiron="Since last month"
-        statIconName="pi pi-users"
-        statIconColor="bg-orange-600"
-    />
-    <CardStats class="max-w-sm mr-10"
-        statSubtitle="Anzahl der Aufträge "
-        statTitle="999999"
-        statArrow="up"
-        statPercent="12"
-        statPercentColor="text-emerald-500"
-        statDescripiron="Since last month"
-        statIconName="pi pi-chart-line"
-        statIconColor="bg-cyan-500"
-    />
-    <CardStats class="max-w-sm mr-10"
-        statSubtitle="Gesamte Umsatz"
-        statTitle="999999"
-        statArrow="up"
-        statPercent="12"
-        statPercentColor="text-emerald-500"
-        statDescripiron="Since last month"
-        statIconName="pi pi-money-bill"
-        statIconColor="bg-emerald-500"
-    />
+      <CardStats
+        class="max-w-sm mr-10"
+        stat-subtitle="Anzahl der Kunden "
+        :stat-title="singleStats.customers"
+        stat-arrow="up"
+        stat-percent="12"
+        stat-percent-color="text-emerald-500"
+        stat-descripiron="Since last month"
+        stat-icon-name="pi pi-users"
+        stat-icon-color="bg-orange-600"
+      />
+      <CardStats
+        class="max-w-sm mr-10"
+        stat-subtitle="Anzahl der Aufträge "
+        :stat-title="singleStats.orders"
+        stat-arrow="up"
+        stat-percent="12"
+        stat-percent-color="text-emerald-500"
+        stat-descripiron="Since last month"
+        stat-icon-name="pi pi-chart-line"
+        stat-icon-color="bg-cyan-500"
+      />
+      <CardStats
+        class="max-w-sm mr-10"
+        stat-subtitle="Gesamte Umsatz"
+        :stat-title="singleStats.revenue + '€'"
+        stat-arrow="up"
+        stat-percent="12"
+        stat-percent-color="text-emerald-500"
+        stat-descripiron="Since last month"
+        stat-icon-name="pi pi-money-bill"
+        stat-icon-color="bg-emerald-500"
+      />
     </div>
     <StatCategory
       :key="String(dateRange[0]) + String(dateRange[1])"
@@ -72,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import CardStats from "@/components/Dashboard/CardStats.vue" 
+import CardStats from "@/components/Dashboard/CardStats.vue"
 
 
 import Calendar from "primevue/calendar";
@@ -81,12 +84,33 @@ import { onBeforeMount, onMounted, ref } from "vue";
 import StatsCard from "@/components/Dashboard/StatsCard.vue";
 import { useStore } from "@/store";
 import StatCategory from "@/components/Dashboard/StatCategory.vue";
+import GenericService from "@/api/services/Generic";
+import { ISort } from "@/types";
 
 const store = useStore();
 
 
 
-onBeforeMount(() => {
+const singleStats = ref({
+  customers: 0,
+  orders: 0,
+  revenue: 0,
+});
+
+
+
+
+
+
+onBeforeMount(async () => {
+  const customerService = new GenericService("customers");
+  singleStats.value.customers = (await customerService.listAndCount({}, {})).count;
+
+  const orderService = new GenericService("orders");
+  let foo = (await orderService.listAndCount({}, {},));
+
+  singleStats.value.orders = foo.count;
+  singleStats.value.revenue = foo.sum
 
   store.loadingTime = performance.now()
 
@@ -116,7 +140,7 @@ const employeeStats = [
     label: "Umsatz in €",
     name: "mit niedrigstem Umsatz",
     entity: "employees",
-    orderBy: "max_RechBetrag",
+    orderBy: "min_RechBetrag",
     orderByDirection: "asc",
     labelKey: "MitName",
     chartType: "bar"
@@ -161,7 +185,7 @@ const branchStats = [
     name: " mit niedrigstem Umsatz",
     entity: "branches",
     orderBy: "min_RechBetrag",
-    orderByDirection: "desc",
+    orderByDirection: "asc",
     labelKey: "Ort",
     chartType: "bar"
 
@@ -206,10 +230,18 @@ const customerStats = [
     name: " mit niedrigstem Umsatz",
     entity: "customers",
     orderBy: "sum_RechBetrag",
-    orderByDirection: "desc",
+    orderByDirection: "asc",
     labelKey: "KunOrt",
     chartType: "bar"
-
+  },
+  {
+    label: "Umsatz in €",
+    name: " mit niedrigstem Umsatz",
+    entity: "customers",
+    orderBy: "sum_RechBetrag",
+    orderByDirection: "asc",
+    labelKey: "KunName",
+    chartType: "bar"
   },
 
 

@@ -8,7 +8,7 @@ const prisma = new PrismaClient({
 export class OrdersController {
   async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const { sort, filter, page, rows } = req.body;
-    const { getCount, status } = req.query;
+    const { getCount, status, getSum } = req.query;
 
     let query: any = {
       take: rows,
@@ -47,7 +47,7 @@ export class OrdersController {
         };
         break;
     }
-    let count;
+    let count, sum: any;
 
     if (getCount) {
       count = await prisma.auftrag.count({
@@ -57,9 +57,13 @@ export class OrdersController {
         },
       });
     }
+    if (getSum) {
+      sum =
+        await prisma.$queryRaw`SELECT sum(r.RechBetrag) as Umsatz FROM Auftrag a INNER JOIN Rechnung r ON r.AufNr = a.Aufnr `;
+    }
 
     const allOrders = await prisma.auftrag.findMany(query);
-    return res.status(200).json({ data: allOrders, count });
+    return res.status(200).json({ data: allOrders, count, sum: sum[0].Umsatz });
   }
   async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const { id } = req.params;
