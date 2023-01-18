@@ -59,7 +59,7 @@ function createRandomMitarbeiter(
   i: string,
   ret: Niederlassung[]
 ): Prisma.MitarbeiterCreateInput {
-  const MitID = i;
+  const MitID = faker.datatype.uuid();
   const MitName = faker.name.lastName();
   const MitVorname = faker.name.firstName();
   const MitGebDat = faker.datatype.datetime({ min: 1950, max: 2000 });
