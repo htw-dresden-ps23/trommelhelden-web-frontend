@@ -19,7 +19,7 @@
       <CardStats
         class="max-w-sm mr-10"
         stat-subtitle="Anzahl der Kunden "
-        :stat-title="singleStats.customers"
+        :stat-title="String(singleStats.customers)"
         stat-arrow="up"
         stat-percent="12"
         stat-percent-color="text-emerald-500"
@@ -30,7 +30,7 @@
       <CardStats
         class="max-w-sm mr-10"
         stat-subtitle="Anzahl der Aufträge "
-        :stat-title="singleStats.orders"
+        :stat-title="String(singleStats.orders)"
         stat-arrow="up"
         stat-percent="12"
         stat-percent-color="text-emerald-500"
@@ -104,10 +104,10 @@ const singleStats = ref({
 
 onBeforeMount(async () => {
   const customerService = new GenericService("customers");
-  singleStats.value.customers = (await customerService.listAndCount({}, {})).count;
+  singleStats.value.customers = (await customerService.listAndCount([{}], {})).count;
 
   const orderService = new GenericService("orders");
-  let foo = (await orderService.listAndCount({}, {},));
+  let foo = (await orderService.listAndCount([{} as ISort], {},));
 
   singleStats.value.orders = foo.count;
   singleStats.value.revenue = foo.sum
