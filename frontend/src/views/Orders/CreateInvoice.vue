@@ -7,16 +7,16 @@
 
     <div class="my-4 justify-between flex flex-col items-start">
       <div
-        v-if="order.Aufnr"
+        v-if="order.AufNr"
         class="grid flex-1 grid-cols-2 mb-12 text-lg font-medium text-gray-900 dark:text-black"
       >
 
         <label class="w-32 mb-1 text-gray-800 block font-bold text-sm uppercase tracking-wide">Auftragnummer:</label>
-        <span class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker" type="text" id="datepicker1"    x-model="invoiceDate"   autocomplete="off" readonly>{{ order.Aufnr }}</span>
+        <span class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker" type="text" id="datepicker1"    x-model="invoiceDate"   autocomplete="off" readonly>{{ order.AufNr }}</span>
         <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Kundennummer:</label>
         <span class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker" type="text" id="datepicker1"    x-model="invoiceDate"   autocomplete="off" readonly>{{ order.KunNr }}</span>
         <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Mitarbeiternummer:</label>
-        <span class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker" type="text" id="datepicker1"    x-model="invoiceDate"   autocomplete="off" readonly>{{ order.MitID }}</span>
+        <span class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker" type="text" id="datepicker1"    x-model="invoiceDate"   autocomplete="off" readonly>{{ order. }}</span>
         <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Beschreibung:</label>
         <span class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker" type="text" id="datepicker1"    x-model="invoiceDate"   autocomplete="off" readonly>{{ order.Beschreibung }}</span>
         <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Erledigungsdatum:</label>
@@ -136,7 +136,7 @@ const toast = useToast();
 
 const invoiceService = new InvoiceService();
 const op = ref();
-const order = ref<IRechnung>({} as IRechnung);
+const order = ref<IRechnung | IKunde | IMitarbeiter >({} as IRechnung);
 
 
 const toggle = async (event: Event) => {
