@@ -42,7 +42,6 @@ export class BusinessDataController {
       }
 
       case "backend": {
-
     //     A.MitID,
     //     M.MitName,
     //     avg(A.Anfahrt) as avg_Anfahrt,
@@ -67,28 +66,18 @@ export class BusinessDataController {
     //     LEFT JOIN Niederlassung N
     //     ON N.NLNr = M.NLNr
 
-        const auftraege : Auftrag [] = await prisma.auftrag.findMany();
-        const mitarbeiter: Mitarbeiter[] = await prisma.mitarbeiter.findMany();
-        const rechnungen: Rechnung[] = await prisma.rechnung.findMany();
-        const kunden: Kunde[] = await prisma.kunde.findMany();
-        const niederlassung: Niederlassung[] = await prisma.niederlassung.findMany();
-
-        console.log(auftraege);
+        // const auftraege : Auftrag [] = await prisma.auftrag.findMany();
+        // const mitarbeiter: Mitarbeiter[] = await prisma.mitarbeiter.findMany();
+        // const rechnungen: Rechnung[] = await prisma.rechnung.findMany();
+        // const kunden: Kunde[] = await prisma.kunde.findMany();
+        // const niederlassung: Niederlassung[] = await prisma.niederlassung.findMany();
         
-        let avg_Anfahrt:any,max_Anfahrt:any,min_Anfahrt,sum_Anfahrt,avg_Dauer,max_Dauer,min_Dauer,sum_Dauer,
-        avg_RechBetrag,max_RechBetrag, min_RechBetrag;
-        let data = []
+        // let avg_Anfahrt:any,max_Anfahrt:any,min_Anfahrt,sum_Anfahrt,avg_Dauer,max_Dauer,min_Dauer,sum_Dauer,
+        // avg_RechBetrag,max_RechBetrag, min_RechBetrag;
+      
+        // avg_Anfahrt = auftraege.reduce((a:any, b:any) => (a + b.Anfahrt ) / auftraege.length, 0 ) ;
+        // console.log("AVG",avg_Anfahrt ); 
 
-        avg_Anfahrt = auftraege.reduce((a:any, b:any) => (a + b.Anfahrt ) / auftraege.length, 0 ) ;
-        console.log("AVG",avg_Anfahrt ); 
-       data.push(avg_Anfahrt);
-       return res.json(data)
-       for (let key in auftraege) {
-        
-        console.log(key) ;  
-    
-        console.log( auftraege[key] ); 
-      }
         // max_Anfahrt = Math.max(auftraege['Anfahrt']);
         // let umsatz: any = 0;
         // let foundAuftraege: any = [];
