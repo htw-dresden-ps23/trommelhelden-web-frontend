@@ -2,9 +2,11 @@ import {
   Auftrag,
   Mitarbeiter,
   Montage,
+  Niederlassung,
   Prisma,
   PrismaClient,
   Rechnung,
+  Kunde,
 } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import { send } from "process";
@@ -40,17 +42,63 @@ export class BusinessDataController {
       }
 
       case "backend": {
-        // const mitarbeiter: Mitarbeiter[] = await prisma.mitarbeiter.findMany();
-        // const auftraege: Auftrag[] = await prisma.auftrag.findMany();
-        // const rechnungen: Rechnung[] = await prisma.rechnung.findMany();
 
+    //     A.MitID,
+    //     M.MitName,
+    //     avg(A.Anfahrt) as avg_Anfahrt,
+    //     max(A.Anfahrt) as max_Anfahrt,
+    //     min(A.Anfahrt) as min_Anfahrt,
+    //     sum(A.Anfahrt) as sum_Anfahrt,
+    //     avg(A.Dauer) as avg_Dauer,
+    //     max(A.Dauer) as max_Dauer,
+    //     min(A.Dauer) as min_Dauer,
+    //     sum(A.Dauer) as sum_Dauer,
+    //     avg(R.RechBetrag) as avg_RechBetrag,
+    //     max(R.RechBetrag) as max_RechBetrag,
+    //     min(R.RechBetrag) as min_RechBetrag,
+    //     sum(R.RechBetrag) as sum_RechBetrag
+    // FROM Auftrag A
+    //     INNER JOIN Mitarbeiter M
+    //     ON A.MitID = M.MitID
+    //     LEFT JOIN Rechnung R
+    //     ON R.AufNr = A.Aufnr
+    //     LEFT JOIN KUNDE K
+    //     ON K.KunNr = A.KunNr
+    //     LEFT JOIN Niederlassung N
+    //     ON N.NLNr = M.NLNr
+
+        const auftraege : Auftrag [] = await prisma.auftrag.findMany();
+        const mitarbeiter: Mitarbeiter[] = await prisma.mitarbeiter.findMany();
+        const rechnungen: Rechnung[] = await prisma.rechnung.findMany();
+        const kunden: Kunde[] = await prisma.kunde.findMany();
+        const niederlassung: Niederlassung[] = await prisma.niederlassung.findMany();
+
+        console.log(auftraege);
+        
+        let avg_Anfahrt:any,max_Anfahrt:any,min_Anfahrt,sum_Anfahrt,avg_Dauer,max_Dauer,min_Dauer,sum_Dauer,
+        avg_RechBetrag,max_RechBetrag, min_RechBetrag;
+        let data = []
+
+        avg_Anfahrt = auftraege.reduce((a:any, b:any) => (a + b.Anfahrt ) / auftraege.length, 0 ) ;
+        console.log("AVG",avg_Anfahrt ); 
+       data.push(avg_Anfahrt);
+       return res.json(data)
+       for (let key in auftraege) {
+        
+        console.log(key) ;  
+    
+        console.log( auftraege[key] ); 
+      }
+        // max_Anfahrt = Math.max(auftraege['Anfahrt']);
         // let umsatz: any = 0;
         // let foundAuftraege: any = [];
         // let foundMitarbeiter: any = mitarbeiter.find(
         //   (mitarbeiter) => mitarbeiter.MitID === filter
         // );
         // console.log(foundMitarbeiter);
-
+        
+ 
+        
         // auftraege.forEach((auftrag: Auftrag) => {
         //   if (auftrag.MitID === foundMitarbeiter.MitID) {
         //     foundAuftraege.push(auftrag);
