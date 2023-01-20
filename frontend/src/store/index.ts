@@ -1,5 +1,4 @@
 import GenericService from "@/api/services/Generic";
-import { calculateOrderStats } from "@/api/webworker/business-data";
 import { defineStore } from "pinia";
 
 // You can name the return value of `defineStore()` anything you want,
@@ -28,10 +27,6 @@ export const useStore = defineStore("main", {
   },
   actions: {
     async startUp() {
-      const { workerFn } = calculateOrderStats;
-      console.time("Execution Time");
-      const fet = await workerFn();
-      console.timeEnd("Execution Time");
       this.firstStartUp = (
         await settingsService._axiosInstance.get("/startUp")
       ).data.isStartUp;
