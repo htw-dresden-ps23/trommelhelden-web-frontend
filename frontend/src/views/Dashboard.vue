@@ -79,7 +79,7 @@ import CardStats from "@/components/Dashboard/CardStats.vue"
 
 
 import Calendar from "primevue/calendar";
-import { onBeforeMount, onMounted, ref } from "vue";
+import { onBeforeMount, onMounted, onUnmounted, ref } from "vue";
 // import BusinessData from "@/api/services/BusinessData";
 import StatsCard from "@/components/Dashboard/StatsCard.vue";
 import { useStore } from "@/store";
@@ -98,26 +98,33 @@ const singleStats = ref({
 });
 
 
-
-
-
-
 onBeforeMount(async () => {
-  const customerService = new GenericService("customers");
-  singleStats.value.customers = (await customerService.listAndCount([{}], {})).count;
-
-  const orderService = new GenericService("orders");
-  let foo = (await orderService.listAndCount([{} as ISort], {},));
-
-  singleStats.value.orders = foo.count;
-  singleStats.value.revenue = foo.sum
+  console.log("onBeforeMount");
 
   store.loadingTime = performance.now()
 
+
+  const customerService = new GenericService("customers");
+  singleStats.value.customers = (await customerService.listAndCount([], {})).count;
+
+  const orderService = new GenericService("orders");
+  let foo = (await orderService.listAndCount([], {},));
+
+  singleStats.value.orders = foo.count;
+  singleStats.value.revenue = foo.sum
+  console.log("onBeforeMount2");
+
+
 })
-onMounted(() => {
-  store.loadingTime = performance.now() - store.loadingTime;
+
+onUnmounted(() => {
+  console.log("onUnmounted");
+  store.firstLoadingTimeStamp = 0;
+  store.lastLoadingTimeStamp = 0;
+
+
 })
+
 
 
 const dateRange = ref([new Date(new Date().setFullYear(2015)), new Date()])

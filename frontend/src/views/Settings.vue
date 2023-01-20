@@ -22,13 +22,12 @@
         <div class="flex flex-col">
           <div>Which method shall be used to fetch Business Data?</div>
           <SelectButton
-            v-model="calcMode"
+            v-model="store.settings.calcType"
             class="flex-1"
             option-label="name"
             :options="options2"
             option-value="value"
             aria-labelledby="single"
-            @change="onCalcMethodChange"
           />
         </div>
         <div class="field-checkbox">
@@ -84,12 +83,9 @@ const options2 = [
   },
   {
     name: "use SQL",
-    value: "sql",
+    value: "database",
   },
-  {
-    name: "use frontend ",
-    value: "frontend",
-  },
+
 ];
 
 const onInvoiceMethodChange = async (event: SelectButtonChangeEvent) => {

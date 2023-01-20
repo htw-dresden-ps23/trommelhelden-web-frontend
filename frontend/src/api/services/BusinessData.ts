@@ -1,3 +1,4 @@
+import { useStore } from "@/store";
 import axios, { AxiosInstance } from "axios";
 
 export default class BusinessDataService {
@@ -15,14 +16,21 @@ export default class BusinessDataService {
     orderBy: string,
     orderByDirection: "desc" | "asc",
   ) => {
-    return (
+    const store = useStore();
+    const ret = (
       await this.axios.post(`/${this.entity}`, {
         startDate,
         endDate,
         orderBy,
         orderByDirection,
-        calcType: "database",
+        calcType: store.settings.calcType,
       })
     ).data;
+    if (store.firstLoadingTimeStamp === 0) {
+      store.firstLoadingTimeStamp = new Date().getTime();
+    } else {
+      store.lastLoadingTimeStamp = new Date().getTime();
+    }
+    return ret;
   };
 }

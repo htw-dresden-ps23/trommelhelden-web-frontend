@@ -1,4 +1,5 @@
 import GenericService from "@/api/services/Generic";
+import { calculateOrderStats } from "@/api/webworker/business-data";
 import { defineStore } from "pinia";
 
 // You can name the return value of `defineStore()` anything you want,
@@ -14,13 +15,23 @@ export const useStore = defineStore("main", {
     sideBarMenuIsOpen: false,
     settings: {
       useTrigger: null,
-      calcType: "sql",
+      calcType: "database",
     } as any,
     showDebugBar: false,
-    loadingTime: 0,
+    firstLoadingTimeStamp: 0,
+    lastLoadingTimeStamp: 0,
   }),
+  getters: {
+    getDashboardTimeSeconds(): any {
+      return this.lastLoadingTimeStamp - this.firstLoadingTimeStamp;
+    },
+  },
   actions: {
     async startUp() {
+      const { workerFn } = calculateOrderStats;
+      console.time("Execution Time");
+      const fet = await workerFn();
+      console.timeEnd("Execution Time");
       this.firstStartUp = (
         await settingsService._axiosInstance.get("/startUp")
       ).data.isStartUp;
@@ -28,7 +39,7 @@ export const useStore = defineStore("main", {
       this.settings = (
         await settingsService._axiosInstance.post("/settings")
       ).data;
-      this.settings.calcType = "sql";
+      this.settings.calcType = "database";
     },
     async updateSettings(key: string, value: any) {
       const foo = {} as any;
