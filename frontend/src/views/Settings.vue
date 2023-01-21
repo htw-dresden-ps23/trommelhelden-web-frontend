@@ -28,12 +28,15 @@
             :options="options2"
             option-value="value"
             aria-labelledby="single"
+            @change="onCalcMethodChange"
           />
         </div>
         <div class="field-checkbox">
           <Checkbox
             v-model="store.showDebugBar"
             :binary="true"
+            :value="store.showDebugBar"
+            @input="onChangeShowDebugBar"
           />
           <label for="binary">Show debug Bar</label>
         </div>
@@ -57,6 +60,7 @@ import { useStore } from "@/store";
 import Card from "primevue/card";
 import SelectButton, { SelectButtonChangeEvent } from "primevue/selectbutton";
 import { ref } from "vue";
+import { useLocalStorage, useStorage } from '@vueuse/core'
 
 const store = useStore();
 
@@ -64,6 +68,13 @@ const mode = ref(store.settings.useTrigger ? 1 : 2);
 const calcMode = ref(store.settings.calcType);
 
 console.log(mode.value);
+
+
+const onChangeShowDebugBar = (e: any) => {
+
+
+  window.localStorage.setItem("show-debug-bar", e);
+}
 
 const options = [
   {
@@ -93,8 +104,14 @@ const onInvoiceMethodChange = async (event: SelectButtonChangeEvent) => {
 };
 
 const onCalcMethodChange = async (event: SelectButtonChangeEvent) => {
-  await store.updateSettings("calcType", calcMode.value);
+  // await store.updateSettings("calcType", calcMode.value);
+  window.localStorage.setItem("calc-type", event.value);
+
 };
+
+
+
+
 </script>
 
 <style scoped>
