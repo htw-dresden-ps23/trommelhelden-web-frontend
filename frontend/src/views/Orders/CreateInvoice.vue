@@ -108,6 +108,12 @@
 
     <div class="flex justify-between">
       <Button
+        style="background-color: #d92979"
+        label="Zurück"
+        icon="pi pi-backward"
+        @click="$router.go(-1)"
+      />
+      <Button
         type="submit"
         icon="pi pi-check"
         label="Erstellen"
@@ -115,12 +121,7 @@
         :disabled="!order"
         @click="createInovice"
       />
-      <Button
-        style="background-color: #d92979"
-        label="Zurück"
-        icon="pi pi-backward"
-        @click="$router.go(-1)"
-      />
+
     </div>
   </div>
 </template>

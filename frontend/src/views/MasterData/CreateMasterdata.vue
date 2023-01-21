@@ -38,17 +38,18 @@
       </span>
     </div>
     <div class="flex justify-between">
-      <Button
-        label="Erstellen"
-        icon="pi pi-plus"
-        :disabled="!isFilled"
-        @click="onCreate"
-      />
+
       <Button
         style="background-color: #d92979"
         label="Zurück"
         icon="pi pi-backward"
         @click="$router.go(-1)"
+      />
+      <Button
+        label="Erstellen"
+        icon="pi pi-plus"
+        :disabled="!isFilled"
+        @click="onCreate"
       />
     </div>
   </div>

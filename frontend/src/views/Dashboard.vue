@@ -6,13 +6,14 @@
         Trommelhelden Dashboard
       </h1>
       <Calendar
-        v-model="dateRange"
+        v-model="dateRange1"
         placeholder="All Time"
         input-id="icon"
         :show-icon="true"
         selection-mode="range"
         :manual-input="false"
         class="ml-auto h-1/2"
+        @hide="onDateRangeChange"
       />
     </div>
     <div class="w-full flex  items-end my-8">
@@ -97,28 +98,39 @@ const singleStats = ref({
   revenue: 0,
 });
 
+const onDateRangeChange = async () => {
+  dateRange.value = dateRange1.value
+  await fetchSingleStats()
+}
+
+const fetchSingleStats = async () => {
+  const orderService = new GenericService("orders");
+  let foo = (await orderService.listAndCount([], {
+    ErlDat: {
+      gte: dateRange.value[0],
+      lte: dateRange.value[1]
+    }
+  },));
+
+  singleStats.value.orders = foo.count;
+  singleStats.value.revenue = foo.sum
+}
+
 
 onBeforeMount(async () => {
-  console.log("onBeforeMount");
 
-  store.loadingTime = performance.now()
 
 
   const customerService = new GenericService("customers");
   singleStats.value.customers = (await customerService.listAndCount([], {})).count;
 
-  const orderService = new GenericService("orders");
-  let foo = (await orderService.listAndCount([], {},));
+  await fetchSingleStats()
 
-  singleStats.value.orders = foo.count;
-  singleStats.value.revenue = foo.sum
-  console.log("onBeforeMount2");
 
 
 })
 
 onUnmounted(() => {
-  console.log("onUnmounted");
   store.firstLoadingTimeStamp = 0;
   store.lastLoadingTimeStamp = 0;
 
@@ -127,8 +139,8 @@ onUnmounted(() => {
 
 
 
-const dateRange = ref([new Date(new Date().setFullYear(2015)), new Date()])
-
+const dateRange = ref([new Date("2015-01-01"), new Date()])
+const dateRange1 = ref([new Date(new Date().setFullYear(2015)), new Date()])
 
 
 const employeeStats = [

@@ -1,9 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 
-const prisma = new PrismaClient({
-  log: ["query", "info", "warn", "error"],
-});
+const prisma = new PrismaClient();
 
 export class OrdersController {
   async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {

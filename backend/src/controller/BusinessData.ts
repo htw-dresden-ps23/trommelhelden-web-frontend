@@ -18,9 +18,7 @@ import {
 } from "../db/querries";
 import { aggregateQuery } from "../util.helpers";
 
-const prisma = new PrismaClient({
-  log: ["query", "info", "warn", "error"],
-});
+const prisma = new PrismaClient();
 
 export class BusinessDataController {
   async getSalesEmployees(
@@ -45,7 +43,8 @@ export class BusinessDataController {
       case "backend": {
         const orders: any = [];
         let respo = [];
-        let i = 1000;
+        let i = 0;
+
         do {
           respo = await prisma.auftrag.findMany({
             include: {
@@ -55,15 +54,18 @@ export class BusinessDataController {
             skip: i,
             take: 1000,
             where: {
-              AufDat: {
+              ErlDat: {
                 gte: startDate,
                 lte: endDate,
               },
             },
           });
+          console.log(respo.length);
+
           orders.push(...respo);
           i += 1000;
         } while (respo.length > 0);
+        console.log(orders.length);
 
         data = Array.from(new Set(orders.map((order: Auftrag) => order.MitID)))
           .map((x) => {
@@ -112,7 +114,7 @@ export class BusinessDataController {
       case "backend": {
         const orders: any = [];
         let respo = [];
-        let i = 1000;
+        let i = 0;
         do {
           respo = await prisma.auftrag.findMany({
             include: {
@@ -126,7 +128,7 @@ export class BusinessDataController {
             skip: i,
             take: 1000,
             where: {
-              AufDat: {
+              ErlDat: {
                 gte: startDate,
                 lte: endDate,
               },
@@ -186,7 +188,7 @@ export class BusinessDataController {
         {
           const orders: any = [];
           let respo = [];
-          let i = 1000;
+          let i = 0;
           do {
             respo = await prisma.auftrag.findMany({
               include: {
@@ -196,7 +198,7 @@ export class BusinessDataController {
               skip: i,
               take: 1000,
               where: {
-                AufDat: {
+                ErlDat: {
                   gte: startDate,
                   lte: endDate,
                 },

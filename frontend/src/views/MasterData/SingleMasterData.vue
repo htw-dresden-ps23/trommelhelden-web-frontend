@@ -3,16 +3,12 @@
     v-if="!isLoading"
     class="h-full w-fit rounded-xl bg-white py-8 px-[10%] shadow-2xl"
   >
-    <h1
-      class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
-    >
+    <h1 class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent">
       {{ props.label }} | {{ data[primaryKey] }}
     </h1>
-    <div
-      class="col-span-1 grid grid-cols-1 justify-items-center gap-x-4 gap-y-6 py-8"
-    >
+    <div class="col-span-1 grid grid-cols-1 justify-items-center gap-x-4 gap-y-6 py-8">
       <span
-        v-for="field in props.fields.filter((x:any) => x.allowUpdate)"
+        v-for="field in props.fields.filter((x: any) => x.allowUpdate)"
         :id="`input-${field.name}`"
         :key="field.name"
         class="w-full"
@@ -47,6 +43,12 @@
     </div>
     <div class="flex justify-between">
       <Button
+        style="background-color: #61a5fa"
+        label="Zurück"
+        icon="pi pi-backward"
+        @click="$router.go(-1)"
+      />
+      <Button
         label="Delete"
         icon="pi pi-trash"
         class="p-button-danger"
@@ -57,12 +59,7 @@
         icon="pi pi-refresh"
         @click="onUpdate"
       />
-      <Button
-        style="background-color: #61a5fa"
-        label="Zurück"
-        icon="pi pi-backward"
-        @click="$router.go(-1)"
-      />
+
     </div>
     <ConfirmDialog></ConfirmDialog>
   </div>
@@ -141,4 +138,6 @@ const onDelete = async () => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>
