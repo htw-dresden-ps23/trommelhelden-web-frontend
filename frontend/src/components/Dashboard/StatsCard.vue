@@ -1,14 +1,27 @@
 <template>
   <div class="rounded-xl bg-white px-6 py-8 shadow-lg hover:scale-[1.02] transition-all duration-300">
-    <div class="card mb-0">
-      <div class="justify-content-between mb-3 flex flex-col">
+    <div class="card mb-0 w-full">
+      <div
+        v-if="!isLoading"
+        class="justify-content-between mb-3 flex flex-col"
+      >
         <div class="text-lg font-semibold">{{ props.name }}</div>
         <Chart
           :options="basicOptions"
           :type="chartType"
           :data="basicData"
         />
+
+
+
       </div>
+
+      <Skeleton
+        v-if="isLoading"
+        width="10rem"
+        class=" !w-[300px] !h-[178px]"
+      ></Skeleton>
+
     </div>
   </div>
 </template>
@@ -17,6 +30,8 @@
 import Chart from 'primevue/chart';
 import BusinessDataService from "@/api/services/BusinessData";
 import { onMounted, ref } from "vue";
+
+const isLoading = ref(false);
 
 const props = defineProps<{
   entity: string;
@@ -36,6 +51,7 @@ const basicData = ref()
 
 
 onMounted(async () => {
+  isLoading.value = true;
   data.value = await buisnessDataService.getStats(props.startDate, props.endDate, props.orderBy, props.orderByDirection);
 
   basicData.value = {
@@ -60,6 +76,11 @@ onMounted(async () => {
       }
     ]
   }
+
+  console.log("finished");
+
+  isLoading.value = false;
+
 })
 
 const colors = [{

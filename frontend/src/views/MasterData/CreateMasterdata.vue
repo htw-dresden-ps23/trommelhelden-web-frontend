@@ -1,15 +1,11 @@
 <template>
   <div class="h-full w-fit rounded-xl bg-white py-8 px-[10%] shadow-2xl">
-    <h1
-      class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
-    >
+    <h1 class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent">
       {{ props.label }} erstellen
     </h1>
-    <div
-      class="col-span-1 grid grid-cols-1 justify-items-center gap-x-4 gap-y-6 py-8"
-    >
+    <div class="col-span-1 grid grid-cols-1 justify-items-center gap-x-4 gap-y-6 py-8">
       <span
-        v-for="field in props.fields.filter((x:any) => x.allowUpdate)"
+        v-for="field in props.fields.filter((x: any) => x.allowUpdate)"
         :id="`input-${field.name}`"
         :key="field.name"
         class="w-full"
@@ -42,17 +38,18 @@
       </span>
     </div>
     <div class="flex justify-between">
-      <Button
-        label="Erstellen"
-        icon="pi pi-plus"
-        :disabled="data[props.primaryKey] == null "
-        @click="onCreate"
-      />
+
       <Button
         style="background-color: #d92979"
         label="Zurück"
         icon="pi pi-backward"
         @click="$router.go(-1)"
+      />
+      <Button
+        label="Erstellen"
+        icon="pi pi-plus"
+        :disabled="!isFilled"
+        @click="onCreate"
       />
     </div>
   </div>
@@ -65,7 +62,7 @@ import GenericService from "@/api/services/Generic";
 import { router } from "@/router";
 import { TGenericService } from "@/types";
 import { useToast } from "primevue/usetoast";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 const data: any = ref({});
 const toast = useToast();
 const props = defineProps([
@@ -90,6 +87,22 @@ const onCreate = async () => {
     life: 5000,
   });
 };
+
+const isFilled = computed(() => {
+
+
+
+
+  return Object.keys(data.value).filter(x => data.value[x]).length === props.fields.filter((x: any) => x.allowUpdate).length;
+
+
+
+})
+
+
+
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

@@ -1,7 +1,9 @@
 import {
   Auftrag,
+  Kunde,
   Mitarbeiter,
   Montage,
+  Niederlassung,
   Prisma,
   PrismaClient,
   Rechnung,
@@ -14,10 +16,9 @@ import {
   salesCustomersQuery,
   salesEmployeeQuery,
 } from "../db/querries";
+import { aggregateQuery } from "../util.helpers";
 
-const prisma = new PrismaClient({
-  log: ["query", "info", "warn", "error"],
-});
+const prisma = new PrismaClient();
 
 export class BusinessDataController {
   async getSalesEmployees(
@@ -40,33 +41,49 @@ export class BusinessDataController {
       }
 
       case "backend": {
-        // const mitarbeiter: Mitarbeiter[] = await prisma.mitarbeiter.findMany();
-        // const auftraege: Auftrag[] = await prisma.auftrag.findMany();
-        // const rechnungen: Rechnung[] = await prisma.rechnung.findMany();
+        const orders: any = [];
+        let respo = [];
+        let i = 0;
 
-        // let umsatz: any = 0;
-        // let foundAuftraege: any = [];
-        // let foundMitarbeiter: any = mitarbeiter.find(
-        //   (mitarbeiter) => mitarbeiter.MitID === filter
-        // );
-        // console.log(foundMitarbeiter);
+        do {
+          respo = await prisma.auftrag.findMany({
+            include: {
+              Rechnung: true,
+              Mitarbeiter: true,
+            },
+            skip: i,
+            take: 1000,
+            where: {
+              ErlDat: {
+                gte: startDate,
+                lte: endDate,
+              },
+            },
+          });
+          console.log(respo.length);
 
-        // auftraege.forEach((auftrag: Auftrag) => {
-        //   if (auftrag.MitID === foundMitarbeiter.MitID) {
-        //     foundAuftraege.push(auftrag);
-        //   }
-        // });
+          orders.push(...respo);
+          i += 1000;
+        } while (respo.length > 0);
+        console.log(orders.length);
 
-        // for (let auftrag of foundAuftraege) {
-        //   let foundRechnung: any = rechnungen.find(
-        //     (rechnung) => rechnung.AufNr === auftrag.Aufnr
-        //   );
-        //   if (foundRechnung !== undefined) {
-        //     console.log(foundRechnung.RechBetrag);
-        //     umsatz += foundRechnung.RechBetrag;
-        //   }
-        // }
-        // data = umsatz;
+        data = Array.from(new Set(orders.map((order: Auftrag) => order.MitID)))
+          .map((x) => {
+            const filteredOrders = orders.filter((order: Auftrag) => order.MitID === x);
+            return {
+              MitID: x,
+              MitName: filteredOrders[0]?.Mitarbeiter?.MitName,
+              ...aggregateQuery(filteredOrders, orders, x),
+            };
+          })
+          .sort((a: any, b: any) => {
+            if (orderByDirection === "asc") {
+              return a[orderBy] - b[orderBy];
+            } else {
+              return b[orderBy] - a[orderBy];
+            }
+          })
+          .splice(0, 5);
 
         break;
 
@@ -95,66 +112,52 @@ export class BusinessDataController {
 
         break;
       case "backend": {
-        // const auftraege: Auftrag[] = await prisma.auftrag.findMany();
-        // let avgAnfahrt,
-        //   avgDauer,
-        //   maxDauer,
-        //   maxAnfahrt,
-        //   countAnfahrt,
-        //   countDauer,
-        //   minDauer,
-        //   minAnfahrt,
-        //   sumAnfahrt: any | number = 0,
-        //   sumDauer: any | number = 0;
-        // let arrayAnfahrt: any = [];
-        // let arrayDauer: any = [];
-        // auftraege.forEach((auftrag) => {
-        //   if (
-        //     (auftrag.Anfahrt !== 0 &&
-        //       auftrag.Anfahrt !== null &&
-        //       auftrag.Anfahrt !== undefined) ||
-        //     (auftrag.Dauer !== null && auftrag.Dauer !== undefined)
-        //   ) {
-        //     sumAnfahrt += auftrag.Anfahrt;
-        //     // auftrag.Dauer = Math.round(auftrag.Dauer)
-        //     sumDauer += auftrag.Dauer;
-        //     sumAnfahrt += auftrag.Anfahrt;
-        //   }
-        //   arrayAnfahrt.push(auftrag.Anfahrt);
-        //   arrayDauer.push(auftrag.Dauer);
-        // });
-        // countAnfahrt = arrayAnfahrt.length;
-        // countDauer = arrayDauer.length;
-        // avgAnfahrt = sumAnfahrt / countAnfahrt;
-        // avgDauer = sumDauer / countDauer;
-        // maxAnfahrt = Math.max(...arrayAnfahrt);
-        // minAnfahrt = Math.min(...arrayAnfahrt);
-        // maxDauer = Math.max(...arrayDauer);
-        // minDauer = Math.min(...arrayDauer);
-        // data = {
-        //   _avg: {
-        //     Anfahrt: avgAnfahrt,
-        //     Dauer: avgDauer,
-        //   },
-        //   _sum: {
-        //     Anfahrt: sumAnfahrt,
-        //     Dauer: sumDauer,
-        //   },
-        //   _max: {
-        //     Anfahrt: maxAnfahrt,
-        //     Dauer: maxDauer,
-        //   },
-        //   _count: {
-        //     Anfahrt: countAnfahrt,
-        //     Dauer: countDauer,
-        //   },
-        //   _min: {
-        //     Anfahrt: minAnfahrt,
-        //     Dauer: minAnfahrt,
-        //   },
-        // };
-        // console.log(data);
-        // break;
+        const orders: any = [];
+        let respo = [];
+        let i = 0;
+        do {
+          respo = await prisma.auftrag.findMany({
+            include: {
+              Rechnung: true,
+              Mitarbeiter: {
+                include: {
+                  Niederlassung: true,
+                },
+              },
+            },
+            skip: i,
+            take: 1000,
+            where: {
+              ErlDat: {
+                gte: startDate,
+                lte: endDate,
+              },
+            },
+          });
+
+          orders.push(...respo);
+          i += 1000;
+        } while (respo.length > 0);
+
+        data = Array.from(new Set(orders.map((order: any) => order.Mitarbeiter?.NLNr)))
+          .map((x) => {
+            const filteredOrders = orders.filter(
+              (order: any) => order.Mitarbeiter?.NLNr === x
+            );
+            return {
+              NLNr: x,
+              Ort: filteredOrders[0].Mitarbeiter?.Niederlassung?.Ort,
+              ...aggregateQuery(filteredOrders, orders, x),
+            };
+          })
+          .sort((a: any, b: any) => {
+            if (orderByDirection === "asc") {
+              return a[orderBy] - b[orderBy];
+            } else {
+              return b[orderBy] - a[orderBy];
+            }
+          })
+          .splice(0, 5);
       }
     }
 
@@ -181,49 +184,50 @@ export class BusinessDataController {
         break;
       }
 
-      case "backend": {
-        // const montagen: Montage[] = await prisma.montage.findMany();
-        // let avg,
-        //   max,
-        //   count,
-        //   min,
-        //   sum: number = 0;
-        // let array: any = [];
-        // montagen.forEach((montage) => {
-        //   sum += montage.Anzahl;
-        //   array.push(montage.Anzahl);
-        // });
-        // count = montagen.length;
-        // avg = sum / count;
-        // console.log(array);
-        // max = Math.max(...array);
-        // min = Math.min(...array);
-        // data = {
-        //   _count: {
-        //     Anzahl: true,
-        //   },
-        //   _avg: {
-        //     Anzahl: true,
-        //   },
-        //   _sum: {
-        //     Anzahl: true,
-        //   },
-        //   where: {
-        //     ...filter,
-        //   },
-        // };
-        // console.log(data);
-        // break;
-        // // BERECHNEN IM BACKEND
-      }
-      case "frontend": {
-        const data = await prisma.montage.findMany({
-          include: {
-            Ersatzteil: true,
-          },
-        });
-        return res.json(data);
-      }
+      case "backend":
+        {
+          const orders: any = [];
+          let respo = [];
+          let i = 0;
+          do {
+            respo = await prisma.auftrag.findMany({
+              include: {
+                Rechnung: true,
+                Kunde: true,
+              },
+              skip: i,
+              take: 1000,
+              where: {
+                ErlDat: {
+                  gte: startDate,
+                  lte: endDate,
+                },
+              },
+            });
+            orders.push(...respo);
+            i += 1000;
+          } while (respo.length > 0);
+
+          data = Array.from(new Set(orders.map((order: any) => order.Kunde.KunOrt)))
+            .map((x) => {
+              const filteredOrders = orders.filter(
+                (order: any) => order.Kunde.KunOrt === x
+              );
+              return {
+                KunOrt: filteredOrders[0].Kunde.KunOrt,
+                ...aggregateQuery(filteredOrders, orders, x),
+              };
+            })
+            .sort((a: any, b: any) => {
+              if (orderByDirection === "asc") {
+                return a[orderBy] - b[orderBy];
+              } else {
+                return b[orderBy] - a[orderBy];
+              }
+            })
+            .splice(0, 5);
+        }
+        break;
     }
 
     return res.json(data);

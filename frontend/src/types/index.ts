@@ -1,5 +1,5 @@
 // import { FilterMatchModeOptions } from "primevue/api";
- 
+
 interface IAuftrag {
   Aufnr: number;
   MitID?: string;
@@ -123,7 +123,7 @@ interface IProduktsubkategorie {
   Produkt: IProdukt[];
 }
 
-interface IRechnung {
+interface IRechnung extends IAuftrag {
   KunNr: number;
   AufNr: number;
   RechDat: Date;

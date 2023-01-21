@@ -4,7 +4,7 @@ import { PropType } from "vue";
 
 <template>
   <div
-    class="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg"
+    class="relative flex flex-col min-w-0 break-words bg-white rounded-xl  mb-6 xl:mb-0 shadow-lg hover:scale-[1.02] transition-all duration-300"
   >
     <div class="flex-auto p-4">
       <div class="flex flex-wrap">
@@ -26,12 +26,13 @@ import { PropType } from "vue";
         </div>
       </div>
       <p class="text-sm text-blueGray-400 mt-4">
-        <span class="mr-2" :class="[statPercentColor]">
-          <i
-            :class="[
-              statArrow === 'up' ? `fas fa-arrow-up` : `fas fa-arrow-down`,
-            ]"
-          ></i>
+        <span
+          class="mr-2"
+          :class="[statPercentColor]"
+        >
+          <i :class="[
+            statArrow === 'up' ? `fas fa-arrow-up` : `fas fa-arrow-down`,
+          ]"></i>
           {{ statPercent }}%
         </span>
         <span class="whitespace-nowrap">{{ statDescripiron }}</span>

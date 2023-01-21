@@ -49,7 +49,7 @@
           "label": "ID",
           "name": "MitID",
           "type": "text",
-          "allowUpdate": true
+          "allowUpdate": false
         },
         {
           "label": "Vorname",

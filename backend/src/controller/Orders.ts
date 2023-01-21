@@ -1,14 +1,24 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 
-const prisma = new PrismaClient({
-  log: ["query", "info", "warn", "error"],
-});
+const prisma = new PrismaClient();
 
 export class OrdersController {
   async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const { sort, filter, page, rows } = req.body;
-    const { getCount, status } = req.query;
+    const { getCount, status, getSum, invoice } = req.query;
+
+    if (!Boolean(invoice)) {
+      console.log("no invoice");
+
+      filter.Rechnung = {
+        every: {
+          RechBetrag: {
+            gt: 0,
+          },
+        },
+      };
+    }
 
     let query: any = {
       take: rows,
@@ -18,10 +28,21 @@ export class OrdersController {
       },
       include: {
         Kunde: true,
-        Mitarbeiter: true,
+        Rechnung: true,
+        Mitarbeiter: {
+          include: {
+            Niederlassung: true,
+          },
+        },
       },
       orderBy: [...sort],
     };
+
+    if (!rows) {
+      delete query.take;
+    }
+
+    console.log(query);
 
     switch (status) {
       case "created":
@@ -38,6 +59,7 @@ export class OrdersController {
           MitID: {
             not: null,
           },
+
           ErlDat: {
             not: null,
           },
@@ -47,18 +69,26 @@ export class OrdersController {
         };
         break;
     }
-    let count;
+    let count, sum: any, invoiceFilter;
 
     if (getCount) {
       count = await prisma.auftrag.count({
         where: {
-          ...filter,
           ...query.where,
         },
       });
     }
 
     const allOrders = await prisma.auftrag.findMany(query);
+
+    if (getSum) {
+      console.log("getSum");
+
+      sum =
+        await prisma.$queryRaw`SELECT sum(r.RechBetrag) as Umsatz FROM Auftrag a INNER JOIN Rechnung r ON r.AufNr = a.Aufnr `;
+      return res.status(200).json({ data: allOrders, count, sum: sum[0]?.Umsatz });
+    }
+
     return res.status(200).json({ data: allOrders, count });
   }
   async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {

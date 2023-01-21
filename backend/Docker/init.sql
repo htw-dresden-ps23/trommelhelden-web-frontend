@@ -39,7 +39,7 @@ GO
 CREATE TABLE [dbo].[Auftrag]
 (
     [Aufnr] [int] IDENTITY(1,1) NOT NULL,
-    [MitID] [char](3) NULL,
+    [MitID] [char](36) NULL,
     [KunNr] [int] NOT NULL,
     [AufDat] [date] NOT NULL,
     [ErlDat] [date] NULL,
@@ -110,7 +110,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Mitarbeiter]
 (
-    [MitID] [char](3) NOT NULL,
+    [MitID] [char](36) NOT NULL,
     [MitName] [varchar](20) NOT NULL,
     [MitVorname] [varchar](20) NULL,
     [MitGebDat] [date] NOT NULL,
@@ -208,10 +208,7 @@ REFERENCES [dbo].[Auftrag] ([Aufnr])
 ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[Rechnung] CHECK CONSTRAINT [FK_Aufnr]
-GO
-ALTER TABLE [dbo].[Mitarbeiter]  WITH CHECK ADD  CONSTRAINT [CK_MitId] CHECK  (([MitId] like '[0-9][0-9][0-9]'))
-GO
-ALTER TABLE [dbo].[Mitarbeiter] CHECK CONSTRAINT [CK_MitId]
+
 GO
 
 CREATE OR ALTER TRIGGER create_invoice
@@ -253,7 +250,7 @@ WHERE i.Erldat IS NOT NULL AND i.Dauer is NOT NULL AND i.Anfahrt is NOT NULL)
         INNER JOIN ersatzteil E
         ON E.etid = M.etid)
     --  STUNDENKOSTEN
-    SET @sum_arrival =(SELECT Sum(a.anfahrt * M.mitstundensatz)
+    SET @sum_arrival =(SELECT Sum(a.anfahrt * 2.5)
     FROM inserted i
         INNER JOIN auftrag a
         ON i.aufnr = a.aufnr

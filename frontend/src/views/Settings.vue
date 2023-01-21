@@ -22,7 +22,7 @@
         <div class="flex flex-col">
           <div>Which method shall be used to fetch Business Data?</div>
           <SelectButton
-            v-model="calcMode"
+            v-model="store.settings.calcType"
             class="flex-1"
             option-label="name"
             :options="options2"
@@ -35,6 +35,8 @@
           <Checkbox
             v-model="store.showDebugBar"
             :binary="true"
+            :value="store.showDebugBar"
+            @input="onChangeShowDebugBar"
           />
           <label for="binary">Show debug Bar</label>
         </div>
@@ -58,6 +60,7 @@ import { useStore } from "@/store";
 import Card from "primevue/card";
 import SelectButton, { SelectButtonChangeEvent } from "primevue/selectbutton";
 import { ref } from "vue";
+import { useLocalStorage, useStorage } from '@vueuse/core'
 
 const store = useStore();
 
@@ -65,6 +68,13 @@ const mode = ref(store.settings.useTrigger ? 1 : 2);
 const calcMode = ref(store.settings.calcType);
 
 console.log(mode.value);
+
+
+const onChangeShowDebugBar = (e: any) => {
+
+
+  window.localStorage.setItem("show-debug-bar", e);
+}
 
 const options = [
   {
@@ -84,12 +94,9 @@ const options2 = [
   },
   {
     name: "use SQL",
-    value: "sql",
+    value: "database",
   },
-  {
-    name: "use frontend ",
-    value: "frontend",
-  },
+
 ];
 
 const onInvoiceMethodChange = async (event: SelectButtonChangeEvent) => {
@@ -97,8 +104,14 @@ const onInvoiceMethodChange = async (event: SelectButtonChangeEvent) => {
 };
 
 const onCalcMethodChange = async (event: SelectButtonChangeEvent) => {
-  await store.updateSettings("calcType", calcMode.value);
+  // await store.updateSettings("calcType", calcMode.value);
+  window.localStorage.setItem("calc-type", event.value);
+
 };
+
+
+
+
 </script>
 
 <style scoped>

@@ -3,7 +3,7 @@ import { resetErrorsCount } from "ajv/dist/compile/errors";
 import { NextFunction, Request, Response } from "express";
 import { createData } from "../services/db-startup";
 
-const prismaClient = new PrismaClient({ log: ["query", "info", "warn", "error"] });
+const prismaClient = new PrismaClient();
 
 export const startUp = async (
   req: Request,

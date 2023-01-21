@@ -20,7 +20,7 @@ function createRandomErsatzteil(): Prisma.ErsatzteilCreateManyInput {
   ]);
 
   const EtBezeichnung = faker.helpers.unique(faker.commerce.productName);
-  const EtPreis = faker.datatype.number({ min: 0.5, max: 1000, precision: 0.01 });
+  const EtPreis = faker.datatype.number({ min: 0.1, max: 30, precision: 0.01 });
   const EtAnzLager = faker.datatype.number({ min: 0, max: 1000 });
   const EtHersteller = faker.company.name().slice(0, 30);
 
@@ -59,12 +59,12 @@ function createRandomMitarbeiter(
   i: string,
   ret: Niederlassung[]
 ): Prisma.MitarbeiterCreateInput {
-  const MitID = i;
+  const MitID = faker.datatype.uuid();
   const MitName = faker.name.lastName();
   const MitVorname = faker.name.firstName();
   const MitGebDat = faker.datatype.datetime({ min: 1950, max: 2000 });
   const MitJob = faker.name.jobType();
-  const MitStundensatz = faker.datatype.number({ min: 12.5, max: 120 });
+  const MitStundensatz = faker.datatype.number({ min: 12.5, max: 50 });
   const NLNr = faker.helpers.arrayElement(ret).NLNr;
 
   return {
@@ -95,8 +95,8 @@ function createRandomAuftrag(
     new Date().setFullYear(2023)
   );
   const AufDat = faker.date.between(new Date().setFullYear(2015), ErlDat);
-  const Dauer = new Prisma.Decimal(faker.datatype.number({ min: 1, max: 100 }));
-  const Anfahrt = faker.datatype.number({ min: 1, max: 400 });
+  const Dauer = new Prisma.Decimal(faker.datatype.number({ min: 1, max: 20 }));
+  const Anfahrt = faker.datatype.number({ min: 1, max: 100 });
 
   return {
     Beschreibung,
@@ -116,7 +116,7 @@ function createRandomAuftrag(
     },
     Montage: {
       create: {
-        Anzahl: faker.datatype.number({ min: 1, max: 10 }),
+        Anzahl: faker.datatype.number({ min: 1, max: 3 }),
         Ersatzteil: {
           connect: {
             EtID: faker.helpers.arrayElement(Ersatzteil).EtID,

@@ -96,7 +96,7 @@ export class EmployeesController {
     }
 
     const { MitID } = await prisma.mitarbeiter.create({
-      data: { ...data },
+      data: { ...data, MitID: uuid() },
     });
 
     return res.status(200).json(MitID);
