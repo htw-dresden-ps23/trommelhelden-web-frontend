@@ -42,8 +42,6 @@ export class OrdersController {
       delete query.take;
     }
 
-    console.log(query);
-
     switch (status) {
       case "created":
         query.where = {
@@ -66,6 +64,26 @@ export class OrdersController {
 
           Dauer: null,
           Anfahrt: null,
+        };
+        break;
+      case "finished":
+        query.where = {
+          ...filter,
+          MitID: {
+            not: null,
+          },
+          ErlDat: {
+            not: null,
+          },
+          Rechnung: {
+            none: {},
+          },
+          Dauer: {
+            not: null,
+          },
+          Anfahrt: {
+            not: null,
+          },
         };
         break;
     }
