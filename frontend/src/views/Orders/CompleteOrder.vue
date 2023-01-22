@@ -2,7 +2,7 @@
   <div class="mx-auto mt-8 flex-1">
     <div class="card flex flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl">
       <h1 class="bg-gradient-to-l from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent">
-        Auftrag erfüllen
+        Auftrag erledigen
       </h1>
       <Divider />
       <EntityTable

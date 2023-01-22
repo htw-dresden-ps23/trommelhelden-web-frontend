@@ -19,7 +19,7 @@
     <div class="w-full flex  items-end my-8">
       <CardStats
         class="max-w-sm mr-10"
-        stat-subtitle="Anzahl der Kunden "
+        stat-subtitle="Anzahl der Kunden (gesamt)"
         :stat-title="String(singleStats.customers)"
         stat-arrow="up"
         stat-percent="12"
@@ -30,19 +30,16 @@
       />
       <CardStats
         class="max-w-sm mr-10"
-        stat-subtitle="Anzahl der Aufträge "
+        stat-subtitle="Anzahl der Aufträge"
         :stat-title="String(singleStats.orders)"
-        stat-arrow="up"
-        stat-percent="12"
         stat-percent-color="text-emerald-500"
-        stat-descripiron="Since last month"
         stat-icon-name="pi pi-chart-line"
         stat-icon-color="bg-cyan-500"
       />
       <CardStats
         class="max-w-sm mr-10"
-        stat-subtitle="Gesamte Umsatz"
-        :stat-title="singleStats.revenue + '€'"
+        stat-subtitle="Gesamter Umsatz"
+        :stat-title="new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(singleStats.revenue)"
         stat-arrow="up"
         stat-percent="12"
         stat-percent-color="text-emerald-500"
@@ -201,7 +198,7 @@ const branchStats = [
   },
   {
     label: "Umsatz in €",
-    name: " mit niedrigstem Umsatz",
+    name: "niedrigstem Umsatz",
     entity: "branches",
     orderBy: "min_RechBetrag",
     orderByDirection: "asc",
@@ -210,7 +207,7 @@ const branchStats = [
 
   },
   {
-    label: "Anfahrt in km",
+    label: "Längste Anfahrt (Summe) in km",
     name: "Anfahrt",
     entity: "branches",
     orderBy: "sum_Anfahrt",
@@ -220,7 +217,7 @@ const branchStats = [
 
   },
   {
-    label: "Arbeitszeit in h",
+    label: "Längste Arbeitszeit (Summe) in h",
     name: "Arbeitszeit",
     entity: "branches",
     orderBy: "sum_Dauer",
@@ -246,7 +243,7 @@ const customerStats = [
   },
   {
     label: "Umsatz in €",
-    name: " mit niedrigstem Umsatz",
+    name: "Stadt mit niedrigstem Umsatz",
     entity: "customers",
     orderBy: "sum_RechBetrag",
     orderByDirection: "asc",
@@ -254,14 +251,15 @@ const customerStats = [
     chartType: "bar"
   },
   {
-    label: "Umsatz in €",
-    name: " mit niedrigstem Umsatz",
+    label: "Stadt mit längster Arbeitszeit (Summe)",
+    name: " Stadt mit längster Arbeitszeit",
     entity: "customers",
-    orderBy: "sum_RechBetrag",
-    orderByDirection: "asc",
-    labelKey: "KunName",
+    orderBy: "sum_Dauer",
+    orderByDirection: "desc",
+    labelKey: "KunOrt",
     chartType: "bar"
   },
+
 
 
 ]

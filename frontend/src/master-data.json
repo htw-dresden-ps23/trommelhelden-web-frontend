@@ -78,15 +78,8 @@
         {
           "label": "Niederlassung",
           "name": "NLNr",
-          "type": "relation",
-          "allowUpdate": true,
-          "relation": {
-            "resourceName": "branches",
-            "label": "Niederlassung",
-            "name": "branches",
-            "labelKey": "Ort",
-            "valueKey": "NLNr"
-          }
+          "type": "text",
+          "allowUpdate": true
         },
         {
           "label": "Stundensatz",

@@ -32,14 +32,14 @@
       <InputNumber
         v-model="order.Anfahrt"
         class="col-start-1 col-end-1"
-        placeholder="Anfahrt"
+        placeholder="Anfahrt in km"
       ></InputNumber>
 
 
       <InputNumber
         v-model="order.Dauer"
         class="col-start-2 col-end-2 "
-        placeholder="Dauer"
+        placeholder="Dauer in h"
       ></InputNumber>
 
       <Dropdown

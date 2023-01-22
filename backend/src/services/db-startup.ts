@@ -62,7 +62,7 @@ function createRandomMitarbeiter(
   const MitID = faker.datatype.uuid();
   const MitName = faker.name.lastName();
   const MitVorname = faker.name.firstName();
-  const MitGebDat = faker.datatype.datetime({ min: 1950, max: 2000 });
+  const MitGebDat = faker.date.between("1950-01-01", "2000-12-31");
   const MitJob = faker.name.jobType();
   const MitStundensatz = faker.datatype.number({ min: 12.5, max: 50 });
   const NLNr = faker.helpers.arrayElement(ret).NLNr;
