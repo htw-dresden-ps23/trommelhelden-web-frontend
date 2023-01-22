@@ -4,11 +4,7 @@ import { NextFunction, Request, Response } from "express";
 const prisma = new PrismaClient();
 
 export class InvoicesController {
-  async list(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response | void> {
+  async list(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const { sort, filter, page, rows } = req.body;
     const { getCount } = req.query;
     let count;
@@ -33,9 +29,9 @@ export class InvoicesController {
             Rechnung: true,
             Mitarbeiter: true,
             Kunde: true,
-            Montage:  {
+            Montage: {
               include: {
-                Ersatzteil:true
+                Ersatzteil: true,
               },
             },
           },
@@ -45,11 +41,7 @@ export class InvoicesController {
     });
     return res.status(200).json({ data: allInvoices, count });
   }
-  async get(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ): Promise<Response | void> {
+  async get(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     const { KunNr, AufNr } = req.query;
 
     console.log(KunNr, AufNr);
@@ -122,8 +114,18 @@ export class InvoicesController {
     if (!data) {
       return res.sendStatus(400);
     }
+
+    console.log(data);
+
     const { AufNr, KunNr } = await prisma.rechnung.create({
-      data,
+      data: {
+        RechBetrag:
+          Number(data.Dauer) * Number(data["Mitarbeiter.MitStundensatz"]) +
+          2.5 * Number(data.Anfahrt),
+        AufNr: data.Aufnr,
+        KunNr: Number(data.KunNr),
+        RechDat: new Date(),
+      },
     });
 
     return res.status(200).json({ AufNr, KunNr });

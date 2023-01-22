@@ -98,7 +98,7 @@
             :columns="columns"
             resource-name="orders"
             :allow-delete="false"
-            :opt-params="{ status: 'completed', invoice: false }"
+            :opt-params="{ status: 'finished' }"
             :emit-edit-only="true"
             @on-row-select="onSelectOrder"
           />
@@ -220,20 +220,7 @@ const columns: IMasterDataField[] = [
     allowCreate: false,
     allowUpdate: false,
   },
-  {
-    name: "Mitarbeiter.MitID",
-    label: "Mitarbeiter ID",
-    type: "text",
-    allowCreate: false,
-    allowUpdate: false,
-  },
-  {
-    name: "Mitarbeiter.MitName",
-    label: "Mitarbeiter ID",
-    type: "text",
-    allowCreate: false,
-    allowUpdate: false,
-  },
+
 ];
 </script>
 
