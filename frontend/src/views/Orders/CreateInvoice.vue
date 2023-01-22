@@ -8,13 +8,13 @@
     <div class="my-4 justify-between flex flex-col items-start">
       <div
         v-if="order.Aufnr"
-        class="grid flex-1 grid-cols-2 mb-12 text-lg font-medium text-gray-900 dark:text-black"
+        class="grid flex-1 grid-cols-2 mb-12 text-lg font-medium text-gray-900 dark:text-black w-full"
       >
 
         <label class="w-32 mb-1 text-gray-800 block font-bold text-sm uppercase tracking-wide">Auftragnummer:</label>
         <span
           id="datepicker1"
-          class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker"
+          class="bg-gray-200  mb-1  appearance-none border-2 !w-full border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker"
           type="text"
           x-model="invoiceDate"
           autocomplete="off"
@@ -23,7 +23,7 @@
         <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Kundennummer:</label>
         <span
           id="datepicker1"
-          class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker"
+          class="bg-gray-200  mb-1  appearance-none border-2 !w-full border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker"
           type="text"
           x-model="invoiceDate"
           autocomplete="off"
@@ -32,16 +32,16 @@
         <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Mitarbeiternummer:</label>
         <span
           id="datepicker1"
-          class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker"
+          class="bg-gray-200  mb-1  appearance-none border-2 !w-full border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker"
           type="text"
           x-model="invoiceDate"
           autocomplete="off"
           readonly
-        >{{ order.AufDat }}</span>
+        >{{ order.MitID }}</span>
         <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Beschreibung:</label>
         <span
           id="datepicker1"
-          class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker"
+          class="bg-gray-200  mb-1  appearance-none border-2 !w-full border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker"
           type="text"
           x-model="invoiceDate"
           autocomplete="off"
@@ -50,7 +50,7 @@
         <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Erledigungsdatum:</label>
         <span
           id="datepicker1"
-          class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker"
+          class="bg-gray-200  mb-1  appearance-none border-2 !w-full border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker"
           type="text"
           x-model="invoiceDate"
           autocomplete="off"
@@ -61,7 +61,7 @@
         <label class="w-32 text-gray-800 block font-bold text-sm uppercase tracking-wide">Auftragsdatum:</label>
         <span
           id="datepicker1"
-          class="bg-gray-200  mb-1  appearance-none border-2 border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker"
+          class="bg-gray-200  mb-1  appearance-none border-2 !w-full border-gray-200 rounded w-48 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 js-datepicker"
           type="text"
           x-model="invoiceDate"
           autocomplete="off"
