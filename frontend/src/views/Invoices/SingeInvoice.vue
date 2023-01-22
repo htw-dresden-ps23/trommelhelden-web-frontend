@@ -1,28 +1,31 @@
 <template>
-  <div class="box-border text-2xl w-full main-app">
+  <div
+    v-if="invoice"
+    class="box-border text-2xl w-full main-app"
+  >
     <div class="main-header">
       <h1 class="bg-gradient-to-r from-blue-400 to-pink-800 bg-clip-text py-4 text-4xl font-extrabold text-transparent">
         Rechnung {{ invoice?.AufNr }}|{{ invoice?.KunNr }}
       </h1>
-      <div class="addr">AN: {{ invoice?.Auftrag.Mitarbeiter?.MitName }}
-        {{ invoice?.Auftrag.Mitarbeiter?.MitVorname }} <br> {{ invoice?.Auftrag.Kunde?.KunStrasse }},
-        {{ invoice?.Auftrag.Kunde?.KunPLZ }}, {{ invoice?.Auftrag.Kunde?.KunOrt }} </div>
+      <div class="addr">AN: {{ invoice?.Auftrag?.Mitarbeiter?.MitName }}
+        {{ invoice?.Auftrag?.Mitarbeiter?.MitVorname }} <br> {{ invoice?.Auftrag?.Kunde?.KunStrasse }},
+        {{ invoice?.Auftrag?.Kunde?.KunPLZ }}, {{ invoice?.Auftrag?.Kunde?.KunOrt }} </div>
     </div>
     <div class=" big-top-margin">
       <div class="main-content">
-        <div class="customer"><span class="order_column_header">Kunde:</span>{{ invoice?.Auftrag.Kunde?.KunName }} <br>
-          #{{ invoice?.Auftrag.Kunde?.KunNr }}</div>
-        <div class="inv"><span class="order_column_header">Auftrag Nr:</span><span>#{{ invoice?.Auftrag.Aufnr }}</span>
+        <div class="customer"><span class="order_column_header">Kunde:</span>{{ invoice?.Auftrag?.Kunde?.KunName }} <br>
+          #{{ invoice?.Auftrag?.Kunde?.KunNr }}</div>
+        <div class="inv"><span class="order_column_header">Auftrag Nr:</span><span>#{{ invoice?.Auftrag?.Aufnr }}</span>
         </div>
         <div class="due"><span class="order_column_header">Auftragsdatum:</span><span>{{
-          useDateFormat(invoice?.Auftrag.AufDat, "DD.MM.YYYY", {
-          locales: "de-DE",
-        }).value
+          useDateFormat(invoice?.Auftrag?.AufDat, "DD.MM.YYYY", {
+            locales: "de-DE",
+          }).value
         }}</span>
         </div>
         <div class="amount"><span class="order_column_header">Gesamtbetrag
             (EUR)</span><span class="big-font bold-font gradient-bg-1">{{
-              invoice?.Auftrag.Rechnung[0].RechBetrag
+              invoice?.Auftrag?.Rechnung[0].RechBetrag
             }}€</span>
         </div>
       </div>
@@ -43,10 +46,10 @@
           </thead>
           <tbody>
             <tr class="">
-              <td>{{ invoice?.Auftrag.Mitarbeiter?.MitJob }}</td>
-              <td>{{ invoice?.Auftrag.Mitarbeiter?.MitStundensatz }} €</td>
-              <td>{{ invoice?.Auftrag.Dauer }} (h.)</td>
-              <td>{{ 1* (invoice.Auftrag.Dauer) * (invoice!.Auftrag!.Mitarbeiter!.MitStundensatz) }} €</td>
+              <td>{{ invoice?.Auftrag?.Mitarbeiter?.MitJob }}</td>
+              <td>{{ invoice?.Auftrag?.Mitarbeiter?.MitStundensatz }} €</td>
+              <td>{{ invoice?.Auftrag?.Dauer }} (h.)</td>
+              <td>{{ Number(invoice?.Auftrag?.Dauer) * invoice?.Auftrag.Mitarbeiter.MitStundensatz }} €</td>
             </tr>
             <tr>
               <td>Fahrkosten</td>
@@ -61,7 +64,7 @@
         </div>
         <div class="summary">
           <div><span>Netto </span><span>
-              {{ ((invoice?.Auftrag.Rechnung[0].RechBetrag * 1) / 1.19).toFixed(2) }}€</span></div>
+              {{ ((invoice?.Auftrag?.Rechnung[0].RechBetrag * 1) / 1.19).toFixed(2) }}€</span></div>
           <div><span>MwSt. </span><span>
               {{ (invoice?.Auftrag.Rechnung[0].RechBetrag * 0.19).toFixed(2) }}€</span></div>
           <div class=" sum"><span>Gesamt (EUR)</span><span> {{
@@ -69,7 +72,7 @@
           }}€</span></div>
         </div>
         <Button
-          label="Drücken"
+          label="Drucken"
           icon="pi pi-print"
           @click="printWindow()"
         />
@@ -78,75 +81,7 @@
   </div>
   <div>
   </div>
-  <!-- <Card>
-    <template #content> 
-        <h1
-          class="bg-gradient-to-r from-blue-400 to-pink-800 bg-clip-text py-4 text-4xl font-extrabold text-transparent">
-          Rechnung {{ invoice?.AufNr }}|{{ invoice?.KunNr }}
-        </h1>
-        <Card class="!border-2 !border-solid !border-gray-300 !bg-slate-100">
-          <template #title>
-            <div class="text-xl">Auftrag</div>
-          </template>
-          <template #content>
-            <div class="grid grid-cols-2">
-              <span>Auftragsnr:</span><span>{{ invoice?.Auftrag.Aufnr }}</span>
-              <span>Auftragsdatum:</span><span>{{
-                  useDateFormat(invoice?.Auftrag.AufDat, "DD.MM.YYYY", {
-                    locales: "de-DE",
-                  }).value
-              }}</span>
-              <span>Beschreibung:</span><span>{{ invoice?.Auftrag.Beschreibung }}</span>
-              <span>Dauer:</span><span>{{ invoice?.Auftrag.Dauer }}</span>
-              <span>Anfahrt:</span><span>{{ invoice?.Auftrag.Anfahrt }}</span>
-            </div>
-          </template>
-        </Card>
 
-        <Card class="mt-4 !border-2 !border-solid !border-gray-300 !bg-slate-100">
-          <template #title>
-            <div class="text-xl">Mitarbeiter</div>
-          </template>
-          <template #content>
-            <div class="grid grid-cols-2">
-              <span>MitID:</span><span>{{ invoice?.Auftrag.Mitarbeiter?.MitID }}</span>
-              <span>Name:</span><span>{{ invoice?.Auftrag.Mitarbeiter?.MitName }}</span>
-              <span>Stundensatz:</span><span>{{ invoice?.Auftrag.Mitarbeiter?.MitStundensatz }}</span>
-            </div>
-          </template>
-        </Card>
-        <Card v-if="invoice?.Auftrag?.Montage?.length > 0"
-          class="mt-4 !border-2 !border-solid !border-gray-300 !bg-slate-100">
-          <template #title>
-            <div class="text-xl">Montage</div>
-          </template>
-          <template #content>
-            <div class="grid grid-cols-2">
-              <span>MitID:</span><span>{{ invoice?.Auftrag.Mitarbeiter?.MitID }}</span>
-              <span>Name:</span><span>{{ invoice?.Auftrag.Mitarbeiter?.MitName }}</span>
-              <span>Stundensatz:</span><span>{{ invoice?.Auftrag.Mitarbeiter?.MitStundensatz }}</span>
-            </div>
-          </template>
-        </Card>
-        <Card class="mt-4 !border-2 !border-solid !border-gray-300 !bg-slate-100">
-          <template #title>
-            <div class="text-xl">Gesamt</div>
-          </template>
-          <template #content>
-            <div class="grid grid-cols-2">
-              <span>Netto:</span>
-              <span>{{
-                  (invoice?.Auftrag.Rechnung[0].RechBetrag * 1) / 1.19
-              }}</span>
-              <span>Mehrwertsteuer: </span>
-              <span>{{ invoice?.Auftrag.Rechnung[0].RechBetrag * 0.19 }}</span>
-              <span>Bruttobetrag: </span>
-              <span>{{ invoice?.Auftrag.Rechnung[0].RechBetrag }}</span>
-            </div>
-          </template>
-        </Card>
-    </template>
-  </Card> -->
 </template>
 
 <script setup lang="ts">
@@ -154,7 +89,7 @@ import { useDateFormat } from "@vueuse/core";
 
 import InvoiceService from "@/api/services/Invoices";
 import { IRechnung } from "@/types";
-import { onMounted, ref } from "vue";
+import { onBeforeMount, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
@@ -170,7 +105,7 @@ const {
 const invoiceService = new InvoiceService();
 const invoice = ref<IRechnung>({} as IRechnung);
 
-onMounted(async () => {
+onBeforeMount(async () => {
   invoice.value = await invoiceService.getInvoice(AufNr, KunNr);
   console.log(invoice.value);
 });

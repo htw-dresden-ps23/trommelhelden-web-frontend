@@ -113,7 +113,7 @@ onMounted(async () => {
 
 const planOrder = async () => {
   try {
-    let { Aufnr, MitID, Kunde, Mitarbeiter, ...x }: any = order.value;
+    let { Aufnr, MitID, Kunde, Mitarbeiter, Rechnung, ...x }: any = order.value;
 
     console.log(x);
     if (selectedSpareParts.value.EtID) {
