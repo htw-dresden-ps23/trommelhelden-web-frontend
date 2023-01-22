@@ -1,11 +1,7 @@
 <template>
-  <div
-    class="card flex h-fit flex-1 flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl"
-  >
-    <div class="flex items-center justify-between">
-      <h1
-        class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent"
-      >
+  <div class="card flex h-fit flex-1 flex-col items-stretch justify-center rounded-xl bg-white p-6 shadow-2xl">
+    <div class="flex items-center justify-between ">
+      <h1 class="bg-gradient-to-r from-blue-500 to-pink-700 bg-clip-text py-4 text-6xl font-extrabold text-transparent">
         {{ props.label }}
       </h1>
       <RouterLink :to="{ name: 'Create' + props.name }">
@@ -14,7 +10,8 @@
           class="mr-2 mb-2 rounded-lg !border-none !bg-gradient-to-r from-blue-400 to-pink-800 text-center text-2xl font-medium text-white shadow-lg hover:scale-105 hover:transform"
           :label="`${props.label} erstellen`"
           @click="openDialog = true"
-      /></RouterLink>
+        />
+      </RouterLink>
     </div>
     <Divider />
     <EntityTable
@@ -57,4 +54,6 @@ const onEditRow = (data: any) => {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

@@ -120,12 +120,16 @@
         field="edit"
       >
         <template #body="slotProps">
-          <div v-if="isLoading">
+          <div
+            v-if="isLoading"
+            class="flex justify-around gap-x-4"
+          >
+            <Skeleton size="3rem" />
             <Skeleton size="3rem" />
           </div>
           <div
             v-else
-            class="flex justify-around"
+            class="flex justify-around gap-x-4"
           >
             <Button
               v-if="props.allowEdit"
@@ -169,7 +173,7 @@ import Skeleton from "primevue/skeleton";
 import { router } from "@/router";
 import { flatten } from "flat";
 import { useConfirm } from "primevue/useconfirm";
- 
+
 const confirm = useConfirm();
 const totalCount = ref(0);
 const isLoading = ref(false);

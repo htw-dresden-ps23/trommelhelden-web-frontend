@@ -19,7 +19,7 @@
     <div class="w-full flex  items-end my-8">
       <CardStats
         class="max-w-sm mr-10"
-        stat-subtitle="Anzahl der Kunden "
+        stat-subtitle="Anzahl der Kunden (gesamt)"
         :stat-title="String(singleStats.customers)"
         stat-arrow="up"
         stat-percent="12"
@@ -30,19 +30,16 @@
       />
       <CardStats
         class="max-w-sm mr-10"
-        stat-subtitle="Anzahl der Aufträge "
+        stat-subtitle="Anzahl der Aufträge"
         :stat-title="String(singleStats.orders)"
-        stat-arrow="up"
-        stat-percent="12"
         stat-percent-color="text-emerald-500"
-        stat-descripiron="Since last month"
         stat-icon-name="pi pi-chart-line"
         stat-icon-color="bg-cyan-500"
       />
       <CardStats
         class="max-w-sm mr-10"
-        stat-subtitle="Gesamte Umsatz"
-        :stat-title="singleStats.revenue + '€'"
+        stat-subtitle="Gesamter Umsatz"
+        :stat-title="new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(singleStats.revenue)"
         stat-arrow="up"
         stat-percent="12"
         stat-percent-color="text-emerald-500"

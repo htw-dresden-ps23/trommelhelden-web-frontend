@@ -25,18 +25,7 @@ import { PropType } from "vue";
           </div>
         </div>
       </div>
-      <p class="text-sm text-blueGray-400 mt-4">
-        <span
-          class="mr-2"
-          :class="[statPercentColor]"
-        >
-          <i :class="[
-            statArrow === 'up' ? `fas fa-arrow-up` : `fas fa-arrow-down`,
-          ]"></i>
-          {{ statPercent }}%
-        </span>
-        <span class="whitespace-nowrap">{{ statDescripiron }}</span>
-      </p>
+
     </div>
   </div>
 </template>
@@ -55,8 +44,8 @@ const props = defineProps({
     default: "350,897",
   },
   statArrow: {
-   type: String,
-   default: "up",
+    type: String,
+    default: "up",
   },
   statPercent: {
     type: String,
