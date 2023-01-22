@@ -159,7 +159,7 @@ const onSelectEmployee = (employeeP: IMitarbeiter) => {
 const planOrder = async () => {
   // TODO IMPLEMENT
   try {
-    let { Aufnr, MitID, Kunde, Mitarbeiter, ...x }: any = unflatten(
+    let { Aufnr, MitID, Kunde, Mitarbeiter, Rechnung, ...x }: any = unflatten(
       order.value,
     );
     console.log(x);

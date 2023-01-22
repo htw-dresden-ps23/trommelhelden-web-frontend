@@ -100,6 +100,7 @@ export class OrdersController {
       },
       include: {
         Kunde: true,
+        Rechnung: true,
         Mitarbeiter: true,
         Montage: {
           include: {

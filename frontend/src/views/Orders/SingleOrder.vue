@@ -62,15 +62,30 @@
                         header="Ersatzteile"
                         :toggleable="true"
                     >
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua.
-                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                            commodo consequat.
-                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                            pariatur. Excepteur sint occaecat
-                            cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    </Panel>
 
+                        <div
+                            v-for="ersatzteil in order.Montage"
+                            :key="ersatzteil.EtID"
+                            class="flex justify-between"
+                        >
+                            <span class="">{{ ersatzteil.Ersatzteil.EtBezeichnung }}({{
+                                ersatzteil.Ersatzteil.EtPreis
+                            }}€)</span>
+                            <span>{{ ersatzteil.Anzahl }}x</span>
+                        </div>
+                    </Panel>
+                    <Panel
+                        v-if="order.Rechnung"
+                        header="Rechnung"
+                        :toggleable="true"
+                    >
+                        <div class="flex justify-between">
+                            <RouterLink :to="`/invoices/${order.Aufnr}/${order.KunNr}`">
+                                <Chip>{{ order.Aufnr }}/{{ order.KunNr }}</Chip>
+                            </RouterLink>
+                            <span>{{ order.Rechnung[0].RechBetrag }} €</span>
+                        </div>
+                    </Panel>
 
 
 
@@ -91,7 +106,7 @@ import { IAuftrag, IKunde, IMitarbeiter } from '@/types';
 import { onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import OrderService from '@/api/services/Order';
-
+import Chip from 'primevue/chip';
 
 
 const route = useRoute()
