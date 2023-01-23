@@ -10,6 +10,10 @@
 1. In root folder run in cmd: `docker compose up -d`
 
 
+!! IMPORTANT !! Check that the files `entrypoint.sh` and `run-initialisiton.sh` in the folder backend/Docker have the end-of-line-sequence LF 
+
+
+
 ## Start Backend Dev Server
 
 1. Create .env file in backend folder containing the following string
