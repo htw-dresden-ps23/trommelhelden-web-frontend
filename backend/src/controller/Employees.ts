@@ -94,9 +94,19 @@ export class EmployeesController {
     if (!data) {
       return res.sendStatus(400);
     }
+    let nlnr = data.NLNr;
+    delete data.NLNr;
 
     const { MitID } = await prisma.mitarbeiter.create({
-      data: { ...data, MitID: uuid() },
+      data: {
+        Niederlassung: {
+          connect: {
+            NLNr: Number(nlnr),
+          },
+        },
+        ...data,
+        MitID: uuid(),
+      },
     });
 
     return res.status(200).json(MitID);

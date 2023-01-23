@@ -2,6 +2,14 @@
 
 ![Trommelhelden Schema](trommelhelden.png)
 
+
+
+
+## Start Application
+
+1. In root folder run in cmd: `docker compose up -d`
+
+
 ## Start Backend Dev Server
 
 1. Create .env file in backend folder containing the following string
