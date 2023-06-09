@@ -36,7 +36,7 @@ export class EmployeesController {
 
     const employee = await prisma.mitarbeiter.findUnique({
       where: {
-        MitID: String(id),
+        MitID: Number(id),
       },
     });
 
@@ -53,7 +53,7 @@ export class EmployeesController {
     if (id) {
       await prisma.mitarbeiter.delete({
         where: {
-          MitID: String(id),
+          MitID: Number(id),
         },
       });
     }
@@ -61,7 +61,7 @@ export class EmployeesController {
       await prisma.mitarbeiter.deleteMany({
         where: {
           MitID: {
-            in: ids.map((x: string) => String(x)),
+            in: ids.map((x: string) => Number(x)),
           },
         },
       });
@@ -79,7 +79,7 @@ export class EmployeesController {
     const employee = await prisma.mitarbeiter.updateMany({
       data,
       where: {
-        MitID: String(id),
+        MitID: Number(id),
       },
     });
 

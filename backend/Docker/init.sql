@@ -38,8 +38,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Auftrag]
 (
-    [Aufnr] [int] IDENTITY(1,1) NOT NULL,
-    [MitID] [char](36) NULL,
+    [Aufnr] [int] IDENTITY(5000,1) NOT NULL,
+    [MitID] [int] NULL,
     [KunNr] [int] NOT NULL,
     [AufDat] [date] NOT NULL,
     [ErlDat] [date] NULL,
@@ -92,7 +92,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Kunde]
 (
-    [KunNr] [int] IDENTITY(1,1) NOT NULL,
+    [KunNr] [int] IDENTITY(1000,1) NOT NULL,
     [KunName] [varchar](20) NOT NULL,
     [KunOrt] [varchar](20) NOT NULL,
     [KunPLZ] [char](5) NOT NULL,
@@ -110,7 +110,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Mitarbeiter]
 (
-    [MitID] [char](36) NOT NULL,
+    [MitID] [int] IDENTITY(100,1) NOT NULL,
     [MitName] [varchar](20) NOT NULL,
     [MitVorname] [varchar](20) NULL,
     [MitGebDat] [date] NOT NULL,

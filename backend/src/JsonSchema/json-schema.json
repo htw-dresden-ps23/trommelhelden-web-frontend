@@ -143,7 +143,7 @@
       "type": "object",
       "properties": {
         "MitID": {
-          "type": "string"
+          "type": "integer"
         },
         "MitName": {
           "type": "string"

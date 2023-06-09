@@ -18,7 +18,7 @@ datasource db {
 
 model Auftrag {
   Aufnr        Int          @id(map: "PK__Auftrag__D56A0E13A096AE56") @default(autoincrement())
-  MitID        String?      @db.Char(36)
+  MitID        Int?         
   KunNr        Int
   AufDat       DateTime     @default(dbgenerated("CONVERT([date],getdate())"), map: "df_Auftragsdatum") @db.Date
   ErlDat       DateTime?    @db.Date
@@ -57,7 +57,7 @@ model Kunde {
 }
 
 model Mitarbeiter {
-  MitID          String         @id(map: "PK__Mitarbei__7D0DA8080DFC1AF1") @db.Char(36)
+  MitID          Int            @id(map: "PK__Mitarbei__7D0DA8080DFC1AF1") @default(autoincrement())
   MitName        String         @db.VarChar(20)
   MitVorname     String?        @db.VarChar(20)
   MitGebDat      DateTime       @db.Date

@@ -56,10 +56,10 @@ function createRandomKunde(i: number): Prisma.KundeCreateManyInput {
 }
 
 function createRandomMitarbeiter(
-  i: string,
+  i: number,
   ret: Niederlassung[]
 ): Prisma.MitarbeiterCreateInput {
-  const MitID = faker.datatype.uuid();
+//   const MitID = i;
   const MitName = faker.name.lastName();
   const MitVorname = faker.name.firstName();
   const MitGebDat = faker.date.between("1950-01-01", "2000-12-31");
@@ -68,7 +68,7 @@ function createRandomMitarbeiter(
   const NLNr = faker.helpers.arrayElement(ret).NLNr;
 
   return {
-    MitID,
+    // MitID,
     MitName,
     MitVorname,
     MitGebDat,
@@ -147,7 +147,7 @@ export const createData = async (
   let baa = await prisma.niederlassung.findMany();
 
   for (let i = 100; i < employees + 100; i++) {
-    let o = createRandomMitarbeiter(String(i), baa);
+    let o = createRandomMitarbeiter(i, baa);
 
     await prisma.mitarbeiter.create({ data: o });
   }
