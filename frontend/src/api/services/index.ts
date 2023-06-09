@@ -21,7 +21,7 @@ interface IRead<T> {
 export abstract class BaseService<T> implements IWrite<T>, IRead<T> {
   public readonly _axiosInstance: AxiosInstance;
   private _tableName: string;
-  static port = 5000;
+  static port = 5001;
   static rows = 10;
 
   constructor(tableName: string) {

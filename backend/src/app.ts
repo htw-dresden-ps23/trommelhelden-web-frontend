@@ -19,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
-const port = 5000;
+const port = 5001;
 
 const ordersController = new OrdersController();
 app.get("/orders/:id", ordersController.get);
@@ -81,5 +81,5 @@ app.post("/business-data/sales", businessDataController.getSales);
 app.use(prismaErrorMiddleware);
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Trommelhelden app listening on port ${port}`);
 });

@@ -7,7 +7,7 @@ export default class BusinessDataService {
   constructor(entity: string) {
     this.entity = entity;
     this.axios = axios.create({
-      baseURL: `http://localhost:5000/business-data/sales`,
+      baseURL: `http://localhost:5001/business-data/sales`,
     });
   }
   getStats = async (
