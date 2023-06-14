@@ -127,8 +127,8 @@ const createOrder = async () => {
       await orderService.create(order.value);
       toast.add({
         severity: "success",
-        summary: "Order Created ",
-        detail: "",
+        summary: "Auftrag erstellt.",
+        detail: "Der Auftrag wurde erfolgreich erstellt.",
         life: 5000,
       });
       router.push("/orders");
@@ -136,7 +136,7 @@ const createOrder = async () => {
   } catch (e) {
     toast.add({
       severity: "error",
-      summary: "Error while creating Order ",
+      summary: "Fehler!",
       detail: e,
       life: 5000,
     });

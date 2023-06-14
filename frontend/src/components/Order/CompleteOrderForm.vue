@@ -194,8 +194,8 @@ const planOrder = async () => {
 
     toast.add({
       severity: "success",
-      summary: "Auftrag geplant",
-      detail: "Der Auftrag wurde erfolgreich erledigt",
+      summary: "Auftrag erledigt.",
+      detail: "Der Auftrag wurde erfolgreich erledigt.",
       life: 3000,
     });
 
@@ -203,8 +203,8 @@ const planOrder = async () => {
   } catch (e) {
     toast.add({
       severity: "error",
-      summary: "Fehler",
-      detail: "Der Auftrag konnte nicht geplant werden",
+      summary: "Fehler!",
+      detail: e,
       life: 3000,
     });
   }

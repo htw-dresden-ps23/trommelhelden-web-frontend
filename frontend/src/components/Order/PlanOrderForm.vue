@@ -170,16 +170,16 @@ const planOrder = async () => {
     });
     toast.add({
       severity: "success",
-      summary: "Auftrag geplant",
-      detail: "Der Auftrag wurde erfolgreich geplant",
+      summary: "Auftrag geplant.",
+      detail: "Der Auftrag wurde erfolgreich geplant.",
       life: 3000,
     });
     dialogRef.value.close();
   } catch (e) {
     toast.add({
       severity: "error",
-      summary: "Fehler",
-      detail: "Der Auftrag konnte nicht geplant werden",
+      summary: "Fehler!",
+      detail: e,
       life: 3000,
     });
   }
