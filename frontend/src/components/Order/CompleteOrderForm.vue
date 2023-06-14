@@ -42,7 +42,7 @@
         placeholder="Dauer in h"
       ></InputNumber>
 
-      <Dropdown
+      <!-- <Dropdown
         v-model="selectedSpareParts"
         :options="spareparts"
         option-label="EtBezeichnung"
@@ -53,7 +53,8 @@
         <template #option="slotProps">
 
           <div class="flex justify-between">
-            <Chip>{{ slotProps.option?.EtPreis }} €</Chip><span>{{
+            <Chip>{{ slotProps.option?.EtPreis }} €</Chip>
+            <span>{{
               slotProps.option?.EtBezeichnung
             }}</span>
           </div>
@@ -61,8 +62,28 @@
 
         </template>
 
-      </Dropdown>
+      </Dropdown> -->
 
+      <!-- Ersatz für DropDown: -->
+      <MultiSelect
+        filter
+        v-model="selectedSpareParts"
+        :options="spareparts"
+        option-label="EtBezeichnung"
+        placeholder="Ersatzteil(e) auswählen"
+      >
+        <template #option="slotProps">
+
+          <div class="flex justify-between">
+            <Chip>{{ slotProps.option?.EtPreis }} €</Chip>
+            <span>{{
+              slotProps.option?.EtBezeichnung
+            }}</span>
+          </div>
+
+        </template>
+      </MultiSelect>
+    
     </div>
     <div />
     <Button
@@ -88,11 +109,12 @@ import Divider from "primevue/divider";
 
 import GenericService from '@/api/services/Generic';
 
+import MultiSelect from "primevue/multiselect"
 
 const sparepartsService = new GenericService<IErsatzteil>("spareparts");
 
 const dialogRef: any = inject("dialogRef");
-const selectedSpareParts = ref<IErsatzteil>({} as IErsatzteil);
+const selectedSpareParts = ref<IErsatzteil[]>([] as IErsatzteil[]);
 const toast = useToast();
 const employee = ref<IMitarbeiter>({} as IMitarbeiter);
 const orderService = new OrderService();
@@ -111,31 +133,72 @@ onMounted(async () => {
   employee.value = await employeesSevice.get(order?.value?.MitID as string);
 });
 
+// Ersetzt durch Array (siehe unten)
+// const planOrder = async () => {
+//   try {
+//     let { Aufnr, MitID, Kunde, Mitarbeiter, Rechnung, ...x }: any = order.value;
+
+//     console.log(x);
+//     if (selectedSpareParts.value.EtID) {
+//       x.Montage = {
+//         create: {
+
+//           EtID: selectedSpareParts.value.EtID,
+//           Anzahl: 1,
+
+
+//         }
+//       }
+//     }
+//     await orderService.update(String(Aufnr), {
+//       ...x,
+//     });
+//     toast.add({
+//       severity: "success",
+//       summary: "Auftrag geplant",
+//       detail: "Der Auftrag wurde erfolgreich erledigt",
+//       life: 3000,
+//     });
+//     dialogRef.value.close();
+//   } catch (e) {
+//     toast.add({
+//       severity: "error",
+//       summary: "Fehler",
+//       detail: "Der Auftrag konnte nicht geplant werden",
+//       life: 3000,
+//     });
+//   }
+// };
+
 const planOrder = async () => {
   try {
     let { Aufnr, MitID, Kunde, Mitarbeiter, Rechnung, ...x }: any = order.value;
 
     console.log(x);
-    if (selectedSpareParts.value.EtID) {
+
+    // Überprüfe, ob ausgewählte Ersatzteile vorhanden sind
+    if (selectedSpareParts.value.length > 0) {
       x.Montage = {
-        create: {
-
-          EtID: selectedSpareParts.value.EtID,
-          Anzahl: 1,
-
-
-        }
-      }
+        create: selectedSpareParts.value.map((sparePart) => {
+          return {
+            EtID: sparePart.EtID,
+            Anzahl: 1,
+          };
+        }),
+      };
     }
+
     await orderService.update(String(Aufnr), {
       ...x,
     });
+
     toast.add({
       severity: "success",
       summary: "Auftrag geplant",
       detail: "Der Auftrag wurde erfolgreich erledigt",
       life: 3000,
     });
+
     dialogRef.value.close();
   } catch (e) {
     toast.add({
@@ -146,4 +209,5 @@ const planOrder = async () => {
     });
   }
 };
+
 </script>
